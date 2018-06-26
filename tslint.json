@@ -9,26 +9,27 @@
     /* tslint-immutable rules */
     // Recommended built-in rules
     "no-var-keyword": true,
-    "no-parameter-reassignment": true,
     "typedef": [true, "call-signature"],
+
 
     // Immutability rules
     "readonly-keyword": true,
-    "readonly-array": true,
-    "no-let": true,
-    "no-object-mutation": true,
+    "readonly-array": false,
+    "no-let": false,
     "no-delete": true,
     "no-method-signature": true,
-
+    "prefer-conditional-expression":false,
     // Functional style rules
     "no-this": true,
     "no-class": true,
+    "no-console":false,
     "no-mixed-interface": true,
-    "no-expression-statement": [
-      true,
-      { "ignore-prefix": ["console.", "process.exit"] }
-    ],
-    "no-if-statement": true
+    "no-bitwise":false,
+    "curly": [true, "ignore-same-line"]
+    //"no-expression-statement": [
+    //  true,
+    //  { "ignore-prefix": ["console.", "process.exit"] }
+    //]
     /* end tslint-immutable rules */
   }
 }
