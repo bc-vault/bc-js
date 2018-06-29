@@ -1,79 +1,12 @@
 import axios, { AxiosRequestConfig } from 'axios';
-/**
- * Multiplies a value by 2. (Also a full example of Typedoc's functionality.)
- *
- * ### Example (es module)
- * ```js
- * import { double } from 'typescript-starter'
- * console.log(double(4))
- * // => 8
- * ```
- *
- * ### Example (commonjs)
- * ```js
- * var double = require('typescript-starter').double;
- * console.log(double(4))
- * // => 8
- * ```
- *
- * @param value   Comment describing the `value` parameter.
- * @returns       Comment describing the return type.
- * @anotherNote   Some other value.
- */
-// export function double(value: number): number {
-//  return value * 2;
-// }
+import {Endpoint,HttpResponse,SpaceObject,BCHttpResponse} from './types'
 
-/**
- * Raise the value of the first parameter to the power of the second using the es7 `**` operator.
- *
- * ### Example (es module)
- * ```js
- * import { power } from 'typescript-starter'
- * console.log(power(2,3))
- * // => 8
- * ```
- *
- * ### Example (commonjs)
- * ```js
- * var power = require('typescript-starter').power;
- * console.log(power(2,3))
- * // => 8
- * ```
- */
-// export function power(base: number, exponent: number): number {
-  // This is a proposed es7 operator, which should be transpiled by Typescript
-//  return base ** exponent;
-// }
-export interface HttpResponse{
-  readonly status:number;
-  readonly body:BCHttpResponse|string|object;
-
-}
-export interface BCHttpResponse{
-  readonly errorCode:number;
-  readonly data:any;
-}
-export enum Endpoint{
-  Devices             ="Devices",
-  FirmwareVersion     ="FirmwareVersion",
-  AvailableSpace      ="AvailableSpace",
-  WalletTypes         ="WalletTypes",
-  SavedWalletTypes    ="SavedWalletTypes",
-  WalletsOfType       ="WalletsOfType",
-  GenerateWallet      ="GenerateWallet",
-  WalletUserData      ="WalletUserData",
-  GenerateTransaction ="GenerateTransaction",
-  SignTransactionData ="SignTransactionData",
-  CopyWalletToType    ="CopyWalletToType",
-  IsAddressValid      ="IsAddressValid",
-  EnterGlobalPin      ="EnterGlobalPin",
-  DisplayAddress      ="DisplayAddress",
-}
+import { polyfill } from 'es6-promise'; polyfill();
+export const Host:string="http://localhost:1991/"
 function getResponsePromised(endpoint:Endpoint,data:object):Promise<HttpResponse|any>{
   return new Promise((res,rej)=>{
     const options:AxiosRequestConfig = {
-      baseURL:"http://localhost:1991",
+      baseURL:Host,
       data:JSON.stringify(data),
       method:"POST",
       url:endpoint
@@ -164,9 +97,9 @@ export async function getWalletsOfType(device:number,type:WalletType): Promise<R
 
   return httpr.body.data as ReadonlyArray<string>;
 }
-export async function getWalletUserData(device:number,type:WalletType,publicAddress:string):Promise<String>{
+export async function getWalletUserData(device:number,type:WalletType,publicAddress:string):Promise<string>{
   let httpr;
-  httpr = await getResponsePromised(Endpoint.WalletsOfType,{device,walletType:type,sourcePublicID:publicAddress});
+  httpr = await getResponsePromised(Endpoint.WalletUserData,{device,walletType:type,sourcePublicID:publicAddress});
   assertHttpFine(httpr);
 
   return httpr.body.data as string;
@@ -174,7 +107,7 @@ export async function getWalletUserData(device:number,type:WalletType,publicAddr
 }
 export async function CopyWalletToType(device:number,oldType:WalletType,newType:WalletType,publicAddress:string):Promise<boolean>{
   let httpr;
-  httpr = await getResponsePromised(Endpoint.WalletsOfType,{device,walletType:oldType,newWalletType:newType,sourcePublicID:publicAddress});
+  httpr = await getResponsePromised(Endpoint.CopyWalletToType,{device,walletType:oldType,newWalletType:newType,sourcePublicID:publicAddress});
   assertHttpFine(httpr);
 
   return true;
@@ -182,9 +115,46 @@ export async function CopyWalletToType(device:number,oldType:WalletType,newType:
 }
 export async function IsAddressValid(device:number,type:WalletType,publicAddress:string):Promise<boolean>{
   let httpr;
-  httpr = await getResponsePromised(Endpoint.WalletsOfType,{device,walletType:type,address:publicAddress});
+  httpr = await getResponsePromised(Endpoint.IsAddressValid,{device,walletType:type,address:publicAddress});
   assertHttpFine(httpr);
 
   return true;
 
+}
+export async function DisplayAddressOnDevice(device:number,type:WalletType,publicAddress:string):Promise<boolean>{
+  let httpr;
+  httpr = await getResponsePromised(Endpoint.DisplayAddress,{device,walletType:type,publicID:publicAddress});
+  assertHttpFine(httpr);
+
+  return true;
+
+}
+
+function getSecureWindowResponse(actionID:Endpoint,actionParams:any,IEWorkaroundFrame?:HTMLIFrameElement):Promise<BCHttpResponse>{
+  return new Promise<BCHttpResponse>((res,rej)=>{
+      const destination = `${Host}${Endpoint.PasswordInput}?actionID=${encodeURIComponent(actionID)}&actionParams=${encodeURIComponent(JSON.stringify(actionParams))}`;
+      let target;
+      if(IEWorkaroundFrame){
+        target=IEWorkaroundFrame.contentWindow
+        target.postMessage(JSON.stringify({actionID,actionParams}),"*")
+      }else{
+        target=window.open(destination,"_blank","location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500");
+      }
+      if(!target) throw TypeError("Window failed to create.");
+      //target.postMessage(JSON.stringify({actionID,actionParams}),"*",[channel.port2]);
+        window.addEventListener("message",(x)=> {
+          var response = JSON.parse(x.data);
+          if(!IEWorkaroundFrame)target.close();
+          if(response.status === 200) res(JSON.parse(response.body) as BCHttpResponse);
+          else rej(response);
+        
+        });
+  });
+}
+
+export async function GenerateWallet(device:number,type:WalletType,iframe?:HTMLIFrameElement):Promise<string>{
+  const resp = await getSecureWindowResponse(Endpoint.GenerateWallet,{device,walletType:type},iframe);
+  if(resp.errorCode !== 0x9000) throw resp;
+  console.log("Made new wallet:"+resp.data);
+  return resp.data;
 }

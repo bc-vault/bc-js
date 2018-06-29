@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es3",
+    "outDir": "build/ie",
+    "rootDir": "src",
+    "moduleResolution": "node",
+    "module": "commonjs",
+
+    "lib": ["es6", "dom"],
+    "types": [],
+    "typeRoots": ["node_modules/@types", "src/types"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules/**"],
+  "compileOnSave": false
+}
