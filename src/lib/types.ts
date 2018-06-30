@@ -24,6 +24,9 @@ export interface HttpResponse{
     EnterGlobalPin      ="EnterGlobalPin",
     DisplayAddress      ="DisplayAddress",
     PasswordInput       ="PasswordInput",
+    FetchSecureWindow   ="FetchSecureWindow",
+    ReqIDForSecureWindow="ReqID",
+
   }
   export interface SpaceObject{
     readonly available:number;
