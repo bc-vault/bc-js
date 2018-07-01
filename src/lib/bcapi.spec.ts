@@ -1,8 +1,8 @@
 // tslint:disable:no-expression-statement
 import { ExecutionContext,test } from 'ava';
-import * as bc from './bcapi';
-import {WalletType, BCHttpResponse} from './types';
 import { polyfill } from 'es6-promise'; polyfill();
+import * as bc from './bcapi';
+import {BCHttpResponse, WalletType} from './types';
 interface TestStruct{
   devices:Device[];
 }

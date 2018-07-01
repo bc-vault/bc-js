@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import {Endpoint,HttpResponse,SpaceObject,BCHttpResponse} from './types'
+import {BCHttpResponse,Endpoint,HttpResponse,SpaceObject} from './types'
 
 import { polyfill } from 'es6-promise'; polyfill();
 export const Host:string="http://localhost:1991/"
@@ -129,46 +129,62 @@ export async function DisplayAddressOnDevice(device:number,type:WalletType,publi
   return true;
 
 }
-
-function getSecureWindowResponse(actionID:Endpoint,actionParams:any):Promise<BCHttpResponse>{
-  return new Promise<BCHttpResponse>(async (res)=>{
-      let x = await getResponsePromised(Endpoint.ReqIDForSecureWindow);
-      let id = parseInt(x.body as string);
-      
-      const destination = `${Host}${Endpoint.PasswordInput}?actionID=${encodeURIComponent(actionID)}&actionParams=${encodeURIComponent(JSON.stringify(actionParams))}&channelID=${id}`;
-      let target;
-      alert("OPENING POPUP")
-      target=window.open(destination,"_blank","location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500");
-      
-      if(!target) throw TypeError("Window failed to create.");
-      //target.postMessage(JSON.stringify({actionID,actionParams}),"*",[channel.port2]);
-      alert("PRINTING GENERATE WALLET INFO")
-      alert(target.closed);
-      alert(JSON.stringify(target));
-      var timer = setInterval(async()=>{
-        if(target.closed){
+function showAuthPopup(id:number):Promise<void>{
+  return new Promise<void>((res)=>{
+    const isIE = (window as any).ActiveXObject || "ActiveXObject" in window;
+    let target:Window|null;
+    if(isIE){
+      (window as any).showModalDialog("http://localhost:1991/PasswordInput?channelID="+id);
+      parent.postMessage("OKAY","*");
+      res();
+    }else{
+      target=window.open("http://localhost:1991/PasswordInput?channelID="+id,"_blank","location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500");
+      if(target === null) throw TypeError("Could not create popup!");
+      // target.onbeforeunload = ()=>{res();};
+      target=target as Window
+      const timer = setInterval(()=>{
+        if((target as Window).closed){
           clearInterval(timer);
-          alert("closed");
           res();
         }
-      },100);
-      target.addEventListener("close",()=> {
-        alert("GOT RESPONSE FROM POPUP:");
-        
-        //let WindowResponse = await getResponsePromised(Endpoint.FetchSecureWindow,{id});
-        //assertIsBCHttpResponse(WindowResponse);
-        //let body = WindowResponse.body;
-        //if(typeof body === typeof("")) body=JSON.parse(body as string);
-        //alert("GOT RESPONSE FROM POPUP:"+body);
-        //res(body as BCHttpResponse);
-      
-      });
+      },500);
+    }
   });
 }
 
-export async function GenerateWallet(device:number,type:WalletType):Promise<string>{
-  const resp = await getSecureWindowResponse(Endpoint.GenerateWallet,{device,walletType:type});
-  if(resp.errorCode !== 0x9000) throw resp;
-  console.log("Made new wallet:"+resp.data);
-  return resp.data;
+function getSecureWindowResponse():Promise<number>{
+  return new Promise<number>(async (res)=>{
+      const x = await getResponsePromised(Endpoint.GetAuthID);
+      const id = parseInt(x.body as string,10);
+      await showAuthPopup(id);
+      res(id);
+      // const destination = `${Host}${Endpoint.PasswordInput}?actionID=${encodeURIComponent(actionID)}&actionParams=${encodeURIComponent(JSON.stringify(actionParams))}&channelID=${id}`;
+      // let target:Window|null;
+      /*
+      if(iexplorerWorkaround){
+        target = iexplorerWorkaround.contentWindow;
+        (target as Window).postMessage(JSON.stringify({channelID:id}),"*",[mp.port2]);
+      }else{
+        target=window.open(destination,"_blank","location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500");
+      }
+      if(!target) throw TypeError("Window failed to create.");
+      addAnEventListener('message',(e:any)=> {
+        
+        if(e.data === "OKAY")res(id);
+        else rej();
+        // let WindowResponse = await getResponsePromised(Endpoint.FetchSecureWindow,{id});
+        // assertIsBCHttpResponse(WindowResponse);
+        // let body = WindowResponse.body;
+        // if(typeof body === typeof("")) body=JSON.parse(body as string);
+        // alert("GOT RESPONSE FROM POPUP:"+body);
+        // res(body as BCHttpResponse);
+      
+      });*/
+  });
+}
+
+export async function GenerateWallet():Promise<string>{
+  const resp = await getSecureWindowResponse();
+  console.log("Authenticated with guid:"+resp);
+  return "";
 }

@@ -24,8 +24,7 @@ export interface HttpResponse{
     EnterGlobalPin      ="EnterGlobalPin",
     DisplayAddress      ="DisplayAddress",
     PasswordInput       ="PasswordInput",
-    FetchSecureWindow   ="FetchSecureWindow",
-    ReqIDForSecureWindow="ReqID",
+    GetAuthID           ="GetAuthID",
 
   }
   export interface SpaceObject{

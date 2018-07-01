@@ -2,12 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
 
     <title>Channel messaging demo</title>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Lobster+Two' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="style.css">
     <script src="build/bc_js_ie.js"></script>
     <script>
     window.addEventListener("load",function(){
@@ -19,6 +16,6 @@
   </head>
 
   <body>
-    <button onclick="_bcvault.GenerateWallet(1,1).then(function(x){alert(x)});">TestMe!</button>
+    <button onclick="_bcvault.GenerateWallet(1,1).then(function(x){alert('RESPONSE FROM API:'+x)});">TestMe!</button>
   </body>
 </html>
