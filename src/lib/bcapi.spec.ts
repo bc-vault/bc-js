@@ -86,7 +86,7 @@ test("IsAddressValid - Correct",async t=>{
   await generateTestForAllDevices(t,async (currentDevice)=>{
     await generateTestForAllWalletTypes(t,currentDevice,async (currentWallet)=>{
 
-      const response = await bc.IsAddressValid(currentDevice,currentWallet.type,currentWallet.signature as string);
+      const response = await bc.getIsAddressValid(currentDevice,currentWallet.type,currentWallet.signature as string);
     
       t.true(response);
     });
@@ -96,7 +96,7 @@ test("IsAddressValid - Incorrect",async t=>{
   await generateTestForAllDevices(t,async (currentDevice)=>{
     await generateTestForAllWalletTypes(t,currentDevice,async (currentWallet)=>{
       try{
-        await bc.IsAddressValid(currentDevice,currentWallet.type,currentWallet.signature+"BAD" as string);
+        await bc.getIsAddressValid(currentDevice,currentWallet.type,currentWallet.signature+"BAD" as string);
       }catch(e){
         t.true((e as BCHttpResponse).errorCode !== undefined)
       }

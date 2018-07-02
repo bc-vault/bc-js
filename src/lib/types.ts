@@ -8,6 +8,54 @@ export interface HttpResponse{
     readonly errorCode:number;
     readonly data:any;
   }
+  export interface TransactionData{
+    // the public address from which to send
+    from:string;
+    // the public address to which to send
+    to:string;
+    // the transaction fee count (in eth this is the Gas Limit, btc and others, ignored field)
+    feeCount?:number;
+    // the price to pay for each fee( in BTC this is the transaction fee, in eth this is gas price) capped to 2^64
+    // this field is in MINIMUM CURRENCY UNITS (sat for BTC, wei for ETH) and is an INTEGER, not a decimal
+    feePrice:string;
+    // the amount to send
+    // this field is in MINIMUM CURRENCY UNITS (sat for BTC, wei for ETH) and is an INTEGER, not a decimal
+    amount:string;
+  }
+  export class DaemonError extends Error {
+    HttpResponse:HttpResponse
+    BCHttpResponse:BCHttpResponse
+    constructor(data:HttpResponse|BCHttpResponse,m:string="DaemonError") {
+        super(m);
+
+        // Set the prototype explicitly.
+        Object.setPrototypeOf(this, DaemonError.prototype);
+        this.name="DaemonError";
+        if((data as HttpResponse).status !== undefined){//data is HttpResponse
+          this.HttpResponse = data as HttpResponse;
+        }else{
+          this.BCHttpResponse = data as BCHttpResponse;
+        }
+        
+    }
+  }
+  export interface VersionObject{
+    major:number
+    minor:number
+    revision:number
+    date:DateObject
+    apiVersion:ApiVersionObject
+
+  }
+  export interface ApiVersionObject{
+    major:number
+    minor:number
+  }
+  export interface DateObject{
+    day:number
+    month:number
+    year:number
+  }
   export enum Endpoint{
     Devices             ="Devices",
     FirmwareVersion     ="FirmwareVersion",
