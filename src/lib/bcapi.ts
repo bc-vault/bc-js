@@ -380,7 +380,7 @@ export async function DisplayAddressOnDevice(device:number,type:WalletType,publi
   return true;
 
 }
-function showAuthPopup(id:number):Promise<void>{
+function showAuthPopup(id:string):Promise<void>{
   return new Promise<void>((res)=>{
     const isIE = (window as any).ActiveXObject || "ActiveXObject" in window;
     let target:Window|null;
@@ -401,10 +401,10 @@ function showAuthPopup(id:number):Promise<void>{
   });
 }
 
-function getSecureWindowResponse():Promise<number>{
-  return new Promise<number>(async (res)=>{
+function getSecureWindowResponse():Promise<string>{
+  return new Promise<string>(async (res)=>{
       const x = await getResponsePromised(Endpoint.GetAuthID);
-      const id = parseInt(x.body as string,10);
+      const id = x.body as string;
       await showAuthPopup(id);
       res(id);
   });
