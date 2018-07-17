@@ -9,21 +9,42 @@ export interface HttpResponse{
     readonly data:any;
   }
   export interface TransactionData{
-    // the public address from which to send
+    /**
+     * @description the public address from which to send
+     */
     from:string;
-    // the public address to which to send
+    /**
+     * @description the public address to which to send
+     */
     to:string;
-    // the transaction fee count (in eth this is the Gas Limit, btc and others, ignored field)
+    /**
+     * @description the transaction fee count (in eth this is the Gas Limit, btc and others, ignored field)
+     */
     feeCount?:number;
-    // the price to pay for each fee( in BTC this is the transaction fee, in eth this is gas price) capped to 2^64
-    // this field is in MINIMUM CURRENCY UNITS (sat for BTC, wei for ETH) and is an INTEGER, not a decimal
+    /**
+     * @description the price to pay for each fee( in BTC this is the transaction fee, in eth this is gas price) capped to 2^64.
+     * @description This field is in MINIMUM CURRENCY UNITS (sat for BTC, wei for ETH) and is an INTEGER AS A STRING, not a decimal
+     */
     feePrice:string;
-    // the amount to send
-    // this field is in MINIMUM CURRENCY UNITS (sat for BTC, wei for ETH) and is an INTEGER, not a decimal
+    /**
+     * @description the amount to send.
+     * @description This field is in MINIMUM CURRENCY UNITS (sat for BTC, wei for ETH) and is an INTEGER AS A STRING, not a decimal
+     */
     amount:string;
   }
+  /**
+   * @description The DaemonError class contains a BCHttpResponse and a HttpResponse, depending on where the failure was
+   * @description HttpResponse !== undefined if the response code was != 200 or if the request itself failed
+   * @description BCHttpResponse !== undefined if the request succeeded but the device returned an error code. 
+   */
   export class DaemonError extends Error {
+    /**
+     * @description HttpResponse !== undefined if the request succeeded but the device returned an error code. 
+     */
     HttpResponse:HttpResponse
+    /**
+     * @description BCHttpResponse !== undefined if the request succeeded but the device returned an error code. 
+     */
     BCHttpResponse:BCHttpResponse
     constructor(data:HttpResponse|BCHttpResponse,m:string="DaemonError") {
         super(m);
