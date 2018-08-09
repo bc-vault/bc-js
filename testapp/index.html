@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width"></meta>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.26.10/sweetalert2.all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <title>BC-Vault Demo</title>
+    <script src="../build/bc_js_ie.js"></script>
+    <script>
+        function isActiveWallet(device,wt){
+            var active =  bc.BCData.devices[device].activeTypes.find(function(x){return x==wt;}) != undefined;
+            return "tooltipable list-group-item "+(active?"list-group-item-success":"list-group-item-warning");
+        }
+        function getWalletTypeInfo(currency){
+            return bc.getWalletTypeInfo(currency)||{name:currency};
+        }
+        function createNewWallet(device,walletType){
+            bc.GenerateWallet(device,walletType).then(function(x){Swal("SUCCESS"," Your new Address is:"+x);bc.triggerManualUpdate();}).catch(function(e){Swal("Error",JSON.stringify(e),"error")});;
+        }
+        function getWalletBalance(walletType,wallet){
+            bc.getWalletBalance(walletType,wallet).then(function(newBalance){
+                const found = window.balances.find(function(x){return x.walletType == walletType && wallet == x.publicKey;});
+                if(found){
+                    found.balance=newBalance;
+                }else{
+                    window.balances.push({walletType:walletType,publicKey:wallet,balance:newBalance});
+                    console.log("Pushing:"+JSON.stringify({walletType:walletType,publicKey:wallet,balance:newBalance}))
+                }
+            }).catch(function(e){Swal("Error",JSON.stringify(e),"error")});
+        }
+        function createTransaction(device,walletType,wallet){
+            Swal({
+                title: 'Transaction',
+                html:
+                    '<input id="swal-input0" class="swal2-input" placeholder="Destination Address">' +
+                    '<input id="swal-input1" class="swal2-input" placeholder="Amount in &micro;Units">'+
+                    '<input id="swal-input2" class="swal2-input" placeholder="Fee(or FeePrice if applicable) in &micro;Units">'+
+                    '<input id="swal-input3" class="swal2-input" placeholder="FeeCount(if applicable) in &micro;Units">',
+                focusConfirm: false,
+                preConfirm: () => {
+                    return [
+                        document.getElementById('swal-input0').value,
+                        document.getElementById('swal-input1').value,
+                        document.getElementById('swal-input2').value,
+                        document.getElementById('swal-input3').value
+                    ]
+                }
+            }).then(function(values){
+                if(values && values.value && values.value[0] != "" && values.value[1] != "" && values.value[2] != ""){
+                    var input = values.value;
+                    var trxOptions = {from:wallet,to:input[0],feeCount:input[3],feePrice:input[2],amount:input[1]};
+                    bc.GenerateTransaction(device, walletType,trxOptions);
+                }else{
+                    Swal("Bad input!");
+                }
+            });
+        }
+
+        window.balances = [];//structure: {walletType:WalletType,publicKey:string,balance:string}
+        window.status=0;//0 == waiting for next update, 1 == updating, -1 == server connection lost
+        window.addEventListener("load",function(){
+            window.bc = _bcvault;
+            bc.startObjectPolling(5000,150);
+            window.vm = new Vue({
+                el:"#app",
+                data:{
+                    devices:bc.BCData.devices,
+                    getWalletTypeInfo,
+                    createNewWallet,
+                    getWalletBalance,
+                    isActiveWallet,
+                    balanceList:window.balances,
+                    createTransaction
+                }
+            });
+            window.statusVue = new Vue({
+                el:"#statusIndicatorBlock",
+                data:{
+                    status:window.status
+                }
+            })
+            
+            bc.AddBCDataChangedListener(function(response){
+                if(response == 0){//new data, refresh!
+                    Object.assign(vm,bc.BCData);
+                }
+                console.log(response);
+                window.statusVue.status = response;
+            })
+        })
+        
+    </script>
+  </head>
+  <body>
+    <div id="app" class="container row" style="width:100vw">
+        <div v-for="(device,index) in devices" class="col-md-6 boxContainer container" v-bind="{createTransaction,getWalletTypeInfo,isActiveWallet,createNewWallet,getWalletBalance,balanceList}">
+            <p class="infoRow">
+                Device #{{ device.id }}
+            </p>
+            <div class="seperator"></div>
+            <img src="bc-vault.png">
+            <ul class="list-group row list-group-flush">
+                <li class="list-group-item active">Supported Wallets:</li>
+                
+                <li v-for="currency in device.supportedTypes"  :class="isActiveWallet(index,currency)">{{getWalletTypeInfo(currency).name}}
+                    <div class="rightButtons">
+                        <i class="fas fa-plus-circle clickable" v-on:click="createNewWallet(device.id,currency)" title="Create new Wallet" ></i>
+                    </div>  
+                    <ul class="list-group row list-group">
+                        <li v-for="wallet in device.activeWallets" v-if="wallet.walletType == currency" class="list-group-item">
+                            {{wallet.publicKey}}
+                            <p class="balanceP" v-if="balanceList.find(function(x){return x.walletType ==  currency && x.publicKey == wallet.publicKey}) != undefined">({{balanceList.find(function(x){return x.walletType ==  currency && x.publicKey == wallet.publicKey}).balance}} &micro;Units)</p>
+                            <div class="rightButtons">
+                                    <i class="fas fa-sync-alt clickable" v-on:click="getWalletBalance(currency,wallet.publicKey)" title="Refresh Balance"></i>
+                                    <i class="fas fa-paper-plane clickable" v-on:click="createTransaction(device.id,currency,wallet.publicKey)" v-show="balanceList.find(function(x){return x.walletType ==  currency && x.publicKey == wallet.publicKey}) != undefined" title="Send a Transaction" ></i>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="seperator"></div>
+            <div class="progress row">
+                <div class="proglabel">{{Math.ceil((device.space.complete-device.space.available)/device.space.complete*100)}}% Full</div>
+                <div class="progress-bar" role="bn" v-bind:style="{width:Math.ceil((device.space.complete-device.space.available)/device.space.complete*100)+'%'}"></div>
+            </div>
+        </div>
+    </div>
+    <div id="statusIndicatorBlock" v-bind="{status}">
+        <i v-if="status == -1" title="Daemon not responding" class="fas fa-times-circle statusIndicator textRed"></i>
+        <i v-if="status == 0" title="Waiting for next update" class="far fa-thumbs-up statusIndicator textGreen"></i>
+        <i v-if="status == 1" title="Fetching new data" class="fas rotatus fa-cog statusIndicator textYellow"></i>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </body>
+</html>

@@ -94,6 +94,7 @@ export interface HttpResponse{
     DisplayAddress      ="DisplayAddress",
     PasswordInput       ="PasswordInput",
     GetAuthID           ="GetAuthID",
+    GetWalletBalance    ="WalletBalance",
 
   }
   export interface SpaceObject{
@@ -124,4 +125,49 @@ export interface HttpResponse{
     rippleTest      =(WalletTypeConstants.BTC+5)| WalletTypeConstants.TESTNET,
     ethereumTest    =(WalletTypeConstants.ETH)  | WalletTypeConstants.TESTNET,
     erc20BokkyTest  =(WalletTypeConstants.ETH|WalletTypeConstants.ERC20)| WalletTypeConstants.TESTNET
+  }
+  export interface WalletTypeInfo{
+    type:WalletType
+    name:string;
+    ticker:string;
+  }
+  export const typeInfoMap:WalletTypeInfo[] = [
+    	{type:WalletType.bitCoin				,name:"Bitcoin",ticker:"BTC"} ,
+    	{type:WalletType.bitCoinCash		,name:"Bitcoin Cash",ticker:"BCH"} ,
+    	{type:WalletType.liteCoin				,name:"Litecoin",ticker:"LTC"} ,
+      {type:WalletType.dash					  ,name:"Dash",ticker:"DASH"} ,
+      {type:WalletType.dogeCoin			  ,name:"Dogecoin",ticker:"DOGE"} ,
+      {type:WalletType.ripple				  ,name:"Ripple",ticker:"XRP"} ,
+      {type:WalletType.ethereum			  ,name:"Ethereum",ticker:"ETH"} ,
+      {type:WalletType.erc20Bokky		  ,name:"Bokky",ticker:"BOKKY"} ,
+    	{type:WalletType.bitCoinTest		,name:"Bitcoin Test",ticker:"BTC-T"} ,
+    	{type:WalletType.bitCoinCashTest,name:"Bitcoin Cash Test",ticker:"BCH-T"} ,
+    	{type:WalletType.liteCoinTest		,name:"Litecoin Test",ticker:"LTC-T"} ,
+    	{type:WalletType.dogeCoinTest		,name:"Dogecoin Test",ticker:"DOGE-T"} ,
+    	{type:WalletType.rippleTest			,name:"Ripple Test",ticker:"XRP-T"} ,
+    	{type:WalletType.ethereumTest		,name:"Ethereum Test",ticker:"ETH-T"} ,
+    	{type:WalletType.erc20BokkyTest	,name:"Bokky Test",ticker:"BOKKY-T"} ,
+  ];
+
+  export interface BCObject{
+    devices:BCDevice[];
+
+  }
+  export interface BCDevice{
+    id:number;
+    space:SpaceObject;
+    firmware:VersionObject;
+    supportedTypes:ReadonlyArray<WalletType>;
+    activeTypes:ReadonlyArray<WalletType>;
+    activeWallets:WalletData[];
+  }
+  export interface WalletData{
+    publicKey:string;
+    walletType:WalletType;
+    balance?:string;
+  }
+  export enum BCDataRefreshStatusCode{
+    ConnectionError=-1,
+    Ready=0,
+    Working=1
   }

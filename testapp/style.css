@@ -1,0 +1,91 @@
+.boxContainer{
+    border-radius:15px;
+    border:1px solid #c3c3c3;
+    margin:25px;
+    padding-top:15px;
+    padding-bottom:25px;
+}
+.infoRow{
+    width:100%;
+    text-align:center;
+}
+.container{
+    width: 100%;
+    height:100%;
+}
+.boxContainer >* {
+    margin-left:  15px;
+    margin-right: 15px;
+    margin-bottom:15px;
+}
+.seperator{
+    width:100%;
+    height:1px;
+    background-color:#c3c3c3;
+    margin-top:15px;
+    margin-bottom:15px;
+    margin-left:0;
+    margin-right:0;
+}
+.balanceP{
+    display: inline;
+    font-size: 0.75rem;
+}
+.boxContainer >*>  .list-group-item{
+    margin-left: 0 !important;
+    margin-right:0 !important;
+    padding-top:0.25rem !important;
+    padding-bottom:0.25rem !important;
+    float:left;
+}
+.rightButtons{
+    color:rgb(55, 150, 55) !important;
+    float:right;
+    position: relative;
+    top: 0.625rem;
+    transform: translateY(-50%);
+}
+.clickable{
+    cursor: pointer;
+}
+img{
+    width:75%;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    display: block;
+}
+.progress{
+    border-radius: 0 !important;
+}
+.proglabel{
+    width:100%;
+    height:100%;
+    text-align: center;
+}
+#statusIndicatorBlock{
+    width:3rem;
+    height:3rem;
+    border-radius: 5px;
+    position: fixed;
+    background-color:rgba(175, 175, 175, 0.726);
+    bottom:25px;
+    right:25px;
+}
+.statusIndicator{
+    text-align:center;
+    position: relative;
+    width:100%;
+    top: 50%;
+    font-size: 2rem;
+    transform: translateY(-50%);
+}
+.textRed{
+    color:#FF0000;
+
+}
+.textGreen{
+    color:#009900;
+}
+.textYellow{
+    color:#FFFF00;
+}

@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosError } from 'axios';
-import {BCHttpResponse,Endpoint,HttpResponse,SpaceObject,WalletType,DaemonError, VersionObject, TransactionData} from './types'
+import {BCHttpResponse,Endpoint,HttpResponse,SpaceObject,WalletType,DaemonError, VersionObject, TransactionData,BCDataRefreshStatusCode, BCObject,BCDevice,typeInfoMap, WalletTypeInfo, WalletData} from './types'
 
 import { polyfill } from 'es6-promise'; polyfill();
-export const Host:string="http://localhost:1991/"
+export const Host:string="http://127.0.0.1:1991/"
 function getResponsePromised(endpoint:Endpoint,data?:object):Promise<HttpResponse>{
   return new Promise((res,rej)=>{
     const options:AxiosRequestConfig = {
@@ -27,6 +27,198 @@ function assertIsBCHttpResponse(httpr:HttpResponse):void{
   
   if((httpr.body as BCHttpResponse).errorCode !== 0x9000) throw new DaemonError(httpr.body as BCHttpResponse);
 }
+//** Is BCData object polling already taking place? */
+export var isPolling = false;
+
+/**
+  Starts polling daemon for changes and updates BCData object
+  ### Example (es3)
+  ```js
+    var bc = _bcvault;
+    bc.startObjectPolling(150);
+    //=> bc.BCData will now be updated if the getDevices array changes
+  ```
+
+  ### Example (promise browser)
+  ```js
+    var bc = _bcvault;
+    bc.startObjectPolling(150);
+    //=> bc.BCData will now be updated if the getDevices array changes
+  ```
+
+  ### Example (nodejs)
+  ```js
+    var bc = require('bc-js');
+    bc.startObjectPolling(150);
+    //=> bc.BCData will now be updated if the getDevices array changes
+  ```
+@param deviceInterval how many milliseconds to wait between getDevices pings to daemon
+@throws        Will throw "Already polling" if polling is already taking place.
+ */
+export function startObjectPolling(deviceInterval:number=150):void{
+  if(isPolling) throw "Already polling!";
+  isPolling = true;
+  //pollBCObject(fullInterval);
+  pollDevicesChanged(deviceInterval);
+
+
+}
+async function getWallets(deviceID:number,activeTypes:ReadonlyArray<WalletType>):Promise<WalletData[]>{
+  let ret:WalletData[] = [];
+  for(const x of activeTypes){
+    const walletsOfXType = await getWalletsOfType(deviceID,x) as string[];
+    for(const wallet of walletsOfXType){
+      ret.push({publicKey:wallet,walletType:x});
+    }
+  }
+  return ret;
+}
+function arraysEqual<T>(a:ReadonlyArray<T>,b:ReadonlyArray<T>):boolean{
+  let equal = a.length === b.length;
+  for(let i =0;i<a.length && equal;i++){
+    equal = a[i] === b[i];
+  }
+  return equal;
+}
+let lastSeenDevices:ReadonlyArray<number>=[];
+/**
+  Triggers a manual update to BCData.
+  ### Example (es3)
+  ```js
+  var bc = _bcvault;
+  console.log(JSON.stringify(bc.BCData));//Old
+  bc.triggerManualUpdate().then(function(){
+    console.log(JSON.stringify(bc.BCData));//Updated
+  });
+  ```
+
+  ### Example (promise browser)
+  ```js
+    var bc = _bcvault;
+    console.log(JSON.stringify(bc.BCData));//Old
+    await bc.triggerManualUpdate();
+    console.log(JSON.stringify(bc.BCData));//Updated
+  ```
+
+  ### Example (nodejs)
+  ```js
+    var bc = require('bc-js');
+    console.log(JSON.stringify(bc.BCData));//Old
+    await bc.triggerManualUpdate();
+    console.log(JSON.stringify(bc.BCData));//Updated
+  ```
+@param fullUpdate Force an update or only update data if a new device connects or disconnects.
+@throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
+@throws        Will throw an AxiosError if the request itself failed or if status code != 200
+ */
+export async function triggerManualUpdate(fullUpdate:boolean=true):Promise<void>{
+  if(fullUpdate){
+    const devArray = await getDevices();
+    let devs:BCDevice[] = [];
+    FireAllListeners(1);
+    for (const deviceID of devArray) {
+      const activeTypes = await getActiveWalletTypes(deviceID);
+      devs.push(
+        {
+          id:deviceID,
+          space:await getAvailableSpace(deviceID),
+          firmware:await getFirmwareVersion(deviceID),
+          supportedTypes:await getSupportedWalletTypes(deviceID),
+          activeTypes,
+          activeWallets: await getWallets(deviceID,activeTypes)
+        });
+    }
+    BCData = {devices:devs};
+    FireAllListeners(0);
+  }else{
+    let devices;
+    devices = await getDevices();
+    if(!arraysEqual(devices,lastSeenDevices)){
+      lastSeenDevices = devices;
+      await triggerManualUpdate(true);
+    }
+  }
+}
+//async function pollBCObject(interval:number){ Todo fix this
+  //await triggerManualUpdate();
+  //setTimeout(()=>pollBCObject(interval),interval);
+//}
+async function pollDevicesChanged(interval:number){
+  try{
+    await triggerManualUpdate(false);
+  }catch(e){
+    FireAllListeners(-1);
+    console.error(e);
+  }
+  setTimeout(()=>pollDevicesChanged(interval),interval);
+}
+function FireAllListeners(...args:any[]){
+  for(const listener of listeners){
+    listener.call(null,...args);
+  }
+}
+/** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
+export var BCData:BCObject = {devices:[]};
+let listeners:Function[]=[]
+/**
+  Adds a status changed listener for updates to the BCData object
+  ### Example (es3)
+  ```js
+    var bc = _bcvault;
+    bc.AddBCDataChangedListener(console.log);
+    bc.triggerManualUpdate();
+    // => 1
+    // => 0
+  ```
+
+  ### Example (promise browser)
+  ```js
+    var bc = _bcvault;
+    bc.AddBCDataChangedListener(console.log);
+    bc.triggerManualUpdate();
+    // => 1
+    // => 0
+  ```
+
+  ### Example (nodejs)
+  ```js
+    var bc = require('bc-js');
+    bc.AddBCDataChangedListener(console.log);
+    bc.triggerManualUpdate();
+    // => 1
+    // => 0
+  ```
+ */
+export function AddBCDataChangedListener(func:(status:BCDataRefreshStatusCode)=>void):void{
+  listeners.push(func);
+}
+/**
+  Returns WalletTypeInfo(name, ticker, etc...) for a specified WalletType if it exists
+  ### Example (es3)
+  ```js
+    var bc = _bcvault;
+    console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
+    // => {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}
+  ```
+
+  ### Example (promise browser)
+  ```js
+    var bc = _bcvault;
+    console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
+    // => {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}
+  ```
+
+  ### Example (nodejs)
+  ```js
+    var bc = require('bc-js');
+    console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
+    // => {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}
+  ```
+ */
+export function getWalletTypeInfo(id:number):WalletTypeInfo|undefined{
+  return typeInfoMap.find(x=>x.type == id);
+}
+
 /**
   Gets the currently connected devices.
   ### Example (es3)
@@ -95,6 +287,40 @@ export async function getFirmwareVersion(device:number): Promise<VersionObject>{
   return httpr.body.data as VersionObject;
 }
 
+/**
+  Gets the balance in currency-specific minimum units for the specified wallet from a web-service.
+  ### Example (es3)
+  ```js
+  var bc = _bcvault;
+  bc.getWalletBalance(0,"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV").then(console.log)
+  // => {"errorCode": 36864,"data": "0"}
+  ```
+
+  ### Example (promise browser)
+  ```js
+  var bc = _bcvault;
+  console.log(await bc.getWalletBalance(0,"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
+  // => {"errorCode": 36864,"data": "0"}
+  ```
+
+  ### Example (nodejs)
+  ```js
+  var bc = require('bc-js');
+  console.log(await bc.getWalletBalance(0,"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
+  // => {"errorCode": 36864,"data": "0"}
+  ```
+  @param device  DeviceID obtained from getDevices
+  @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
+  @throws        Will throw an AxiosError if the request itself failed or if status code != 200
+  @returns       An object containing requested data
+ */
+export async function getWalletBalance(walletType:WalletType,sourcePublicID:string): Promise<string>{
+  let httpr;
+  httpr = await getResponsePromised(Endpoint.GetWalletBalance,{walletType,sourcePublicID});
+  assertIsBCHttpResponse(httpr);
+
+  return httpr.body.data as string;
+}
 /**
   Gets the available space on a specific device
   ### Example (es3)
@@ -507,6 +733,10 @@ export async function EnterGlobalPin(device:number):Promise<void>{
  */
 export async function GenerateTransaction(device:number, type:WalletType,data:TransactionData):Promise<void>{
   const id = await getSecureWindowResponse();
+  console.log("Got auth id:"+id);
+  console.log("Sending object:"+JSON.stringify({device,walletType:type,transaction:data,password:id}));
   const httpr = await getResponsePromised(Endpoint.GenerateTransaction,{device,walletType:type,transaction:data,password:id});
+
+  console.log(httpr.body);
   assertIsBCHttpResponse(httpr);
 }
