@@ -160,6 +160,7 @@ export interface HttpResponse{
     supportedTypes:ReadonlyArray<WalletType>;
     activeTypes:ReadonlyArray<WalletType>;
     activeWallets:WalletData[];
+    locked:boolean;
   }
   export interface WalletData{
     publicKey:string;

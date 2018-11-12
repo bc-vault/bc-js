@@ -94,7 +94,7 @@ Output files are in `build/docs`
 
 
 1. Make sure to cd to the project root
-1. Run `npm build`
+1. Run `npm run build`
 
 #### Output
 

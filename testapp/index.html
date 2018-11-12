@@ -36,6 +36,13 @@
                 }
             }).catch(function(e){Swal("Error",JSON.stringify(e),"error")});
         }
+        function enterGlobalPin(id){
+            bc.EnterGlobalPin(id).then(function(){
+                Swal("SUCCESS","Global PIN is correct");
+            }).catch(function(e){
+                Swal("Error",JSON.stringify(e),'error');
+            })
+        }
         function createTransaction(device,walletType,wallet){
             Swal({
                 title: 'Transaction',
@@ -77,6 +84,7 @@
                     createNewWallet,
                     getWalletBalance,
                     isActiveWallet,
+                    enterGlobalPin,
                     balanceList:window.balances,
                     createTransaction
                 }
@@ -103,11 +111,14 @@
     <div id="app" class="container row" style="width:100vw">
         <div v-for="(device,index) in devices" class="col-md-6 boxContainer container" v-bind="{createTransaction,getWalletTypeInfo,isActiveWallet,createNewWallet,getWalletBalance,balanceList}">
             <p class="infoRow">
-                Device #{{ device.id }}
+                {{ device.locked?"LOCKED":"" }} Device #{{ device.id }}
             </p>
+            <div class="boxOverlay" v-if="device.locked" v-on:click="enterGlobalPin(device.id)">
+                <div class="text">Unlock Device</div>
+            </div>
             <div class="seperator"></div>
             <img src="bc-vault.png">
-            <ul class="list-group row list-group-flush">
+            <ul class="list-group row list-group-flush" v-if="!device.locked">
                 <li class="list-group-item active">Supported Wallets:</li>
                 
                 <li v-for="currency in device.supportedTypes"  :class="isActiveWallet(index,currency)">{{getWalletTypeInfo(currency).name}}
@@ -138,6 +149,6 @@
         <i v-if="status == 0" title="Waiting for next update" class="far fa-thumbs-up statusIndicator textGreen"></i>
         <i v-if="status == 1" title="Fetching new data" class="fas rotatus fa-cog statusIndicator textYellow"></i>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="vue.min.js"></script>
   </body>
 </html>

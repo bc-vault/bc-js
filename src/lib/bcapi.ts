@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import {BCHttpResponse,Endpoint,HttpResponse,SpaceObject,WalletType,DaemonError, VersionObject, TransactionData,BCDataRefreshStatusCode, BCObject,BCDevice,typeInfoMap, WalletTypeInfo, WalletData} from './types'
 
 import { polyfill } from 'es6-promise'; polyfill();
-export const Host:string="http://127.0.0.1:1991/"
+export const Host:string="https://localhost.bc-vault.com:1991/"
 function getResponsePromised(endpoint:Endpoint,data?:object):Promise<HttpResponse>{
   return new Promise((res,rej)=>{
     const options:AxiosRequestConfig = {
@@ -117,7 +117,24 @@ export async function triggerManualUpdate(fullUpdate:boolean=true):Promise<void>
     let devs:BCDevice[] = [];
     FireAllListeners(1);
     for (const deviceID of devArray) {
-      const activeTypes = await getActiveWalletTypes(deviceID);
+      let activeTypes;
+      try{
+        activeTypes = await getActiveWalletTypes(deviceID);
+      }catch(e){
+        if(e.BCHttpResponse !== undefined){
+          devs.push({
+            id:deviceID,
+            space:{available:1,complete:1},
+            firmware:await getFirmwareVersion(deviceID),
+            supportedTypes:[],
+            activeTypes:[],
+            activeWallets:[],
+            locked:true
+          });
+          continue;
+        }
+        throw e;
+      }
       devs.push(
         {
           id:deviceID,
@@ -125,7 +142,8 @@ export async function triggerManualUpdate(fullUpdate:boolean=true):Promise<void>
           firmware:await getFirmwareVersion(deviceID),
           supportedTypes:await getSupportedWalletTypes(deviceID),
           activeTypes,
-          activeWallets: await getWallets(deviceID,activeTypes)
+          activeWallets: await getWallets(deviceID,activeTypes),
+          locked:false
         });
     }
     BCData = {devices:devs};
@@ -611,11 +629,11 @@ function showAuthPopup(id:string):Promise<void>{
     const isIE = (window as any).ActiveXObject || "ActiveXObject" in window;
     let target:Window|null;
     if(isIE){
-      (window as any).showModalDialog("http://localhost:1991/PasswordInput?channelID="+id);
+      (window as any).showModalDialog("https://localhost.bc-vault.com:1991/PasswordInput?channelID="+id);
       parent.postMessage("OKAY","*");
       res();
     }else{
-      target=window.open("http://localhost:1991/PasswordInput?channelID="+id,"_blank","location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500");
+      target=window.open("https://localhost.bc-vault.com:1991/PasswordInput?channelID="+id,"_blank","location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500");
       if(target === null) throw TypeError("Could not create popup!");
       const timer = setInterval(()=>{
         if((target as Window).closed){
@@ -696,8 +714,10 @@ export async function GenerateWallet(device:number,type:WalletType):Promise<stri
  */
 export async function EnterGlobalPin(device:number):Promise<void>{
   const id = await getSecureWindowResponse();
+  console.log("Got pin popup:"+id);
   const httpr = await getResponsePromised(Endpoint.EnterGlobalPin,{device,password:id});
   assertIsBCHttpResponse(httpr);
+  triggerManualUpdate();
 }
 
 /**

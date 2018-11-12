@@ -5,6 +5,35 @@
     padding-top:15px;
     padding-bottom:25px;
 }
+.boxOverlay{
+    position: absolute;
+    top: 0;
+    border-radius:15px;
+    bottom: 0;
+    left: -15px;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .25s ease;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+.boxOverlay > .text {
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    user-select: none;
+    -moz-user-select: none;
+  }
+.boxOverlay:hover{
+    opacity:1;
+}
 .infoRow{
     width:100%;
     text-align:center;
