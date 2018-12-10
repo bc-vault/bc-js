@@ -1,5 +1,5 @@
 {
-  "name": "bc-js",
+  "name": "bc-vault-js",
   "version": "1.0.0",
   "description": "Javascript library for interfacing with the BC VAULT daemon via HTTP.",
   "main": "build/main/index.js",
