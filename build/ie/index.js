@@ -4,3 +4,4 @@ function __export(m) {
 }
 exports.__esModule = true;
 __export(require("./lib/bcapi"));
+__export(require("./lib/types"));
