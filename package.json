@@ -5,7 +5,7 @@
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "repository": "https://gogs.real-sec.com/zan/bc-js.git",
+  "repository": "https://github.com/bc-vault/bc-js.git",
   "license": "MIT",
   "keywords": [],
   "scripts": {
