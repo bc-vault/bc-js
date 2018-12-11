@@ -750,8 +750,9 @@ export async function EnterGlobalPin(device:number):Promise<void>{
   @param data    Transaction data object
   @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
+  @returns       The raw transaction hex prefixed with '0x' if operation was successful, otherwise will throw
  */
-export async function GenerateTransaction(device:number, type:WalletType,data:TransactionData):Promise<void>{
+export async function GenerateTransaction(device:number, type:WalletType,data:TransactionData):Promise<string>{
   const id = await getSecureWindowResponse();
   console.log("Got auth id:"+id);
   console.log("Sending object:"+JSON.stringify({device,walletType:type,transaction:data,password:id}));
@@ -759,4 +760,5 @@ export async function GenerateTransaction(device:number, type:WalletType,data:Tr
 
   console.log(httpr.body);
   assertIsBCHttpResponse(httpr);
+  return httpr.body["data"] as string;
 }
