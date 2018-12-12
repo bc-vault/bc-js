@@ -53,6 +53,7 @@ var Endpoint;
     Endpoint["PasswordInput"] = "PasswordInput";
     Endpoint["GetAuthID"] = "GetAuthID";
     Endpoint["GetWalletBalance"] = "WalletBalance";
+    Endpoint["SignData"] = "SignData";
 })(Endpoint = exports.Endpoint || (exports.Endpoint = {}));
 var WalletTypeConstants = {
     BTC: 0,

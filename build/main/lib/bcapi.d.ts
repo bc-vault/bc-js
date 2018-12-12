@@ -517,3 +517,41 @@ export declare function EnterGlobalPin(device: number): Promise<void>;
   @returns       The raw transaction hex prefixed with '0x' if operation was successful, otherwise will throw
  */
 export declare function GenerateTransaction(device: number, type: WalletType, data: TransactionData): Promise<string>;
+/**
+  Signs data on the device
+  ### Example (es3)
+  ```js
+  var bc = _bcvault;
+  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
+  bc.GenerateTransaction(1,1,trxOptions).then(console.log)
+  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  ```
+
+  ### Example (promise browser)
+  ```js
+  var bc = _bcvault;
+  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
+  await bc.GenerateTransaction(1,1,trxOptions)
+  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  ```
+
+  ### Example (nodejs)
+  ```js
+  var bc = require('bc-js');
+  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
+  await bc.GenerateTransaction(1,1,trxOptions)
+  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  ```
+  @param device  DeviceID obtained from getDevices
+  @param type    WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
+  @param publicAddress publicAddress obtained from getWalletsOfType
+  @param data    Transaction data as a hex string prefixed with 0x
+  @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
+  @throws        Will throw an AxiosError if the request itself failed or if status code != 200
+  @returns       The raw transaction hex prefixed with '0x' if operation was successful, otherwise will throw
+ */
+export declare function SignData(device: number, type: WalletType, publicAddress: string, data: string): Promise<string>;
+export declare function web3_GetAccounts(cb: Function): Promise<void>;
+export declare function web3_signTransaction(txParams: any, cb: Function): Promise<void>;
+export declare function web3_processPersonalMessage(msgParams: any, cb: Function): Promise<void>;
+export declare function web3_Inject(web3Instance: any): void;

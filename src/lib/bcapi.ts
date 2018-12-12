@@ -762,3 +762,103 @@ export async function GenerateTransaction(device:number, type:WalletType,data:Tr
   assertIsBCHttpResponse(httpr);
   return httpr.body["data"] as string;
 }
+
+/**
+  Signs data on the device
+  ### Example (es3)
+  ```js
+  var bc = _bcvault;
+  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
+  bc.GenerateTransaction(1,1,trxOptions).then(console.log)
+  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  ```
+
+  ### Example (promise browser)
+  ```js
+  var bc = _bcvault;
+  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
+  await bc.GenerateTransaction(1,1,trxOptions)
+  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  ```
+
+  ### Example (nodejs)
+  ```js
+  var bc = require('bc-js');
+  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
+  await bc.GenerateTransaction(1,1,trxOptions)
+  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  ```
+  @param device  DeviceID obtained from getDevices
+  @param type    WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
+  @param publicAddress publicAddress obtained from getWalletsOfType
+  @param data    Transaction data as a hex string prefixed with 0x
+  @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
+  @throws        Will throw an AxiosError if the request itself failed or if status code != 200
+  @returns       The raw transaction hex prefixed with '0x' if operation was successful, otherwise will throw
+ */
+export async function SignData(device:number, type:WalletType,publicAddress:string,data:string):Promise<string>{
+  const id = await getSecureWindowResponse();
+  console.log("Got auth id:"+id);
+  console.log("Sending object:"+JSON.stringify({device,walletType:type,sourcePublicID:publicAddress,srcData:data,password:id}));
+  const httpr = await getResponsePromised(Endpoint.SignData,{device,walletType:type,sourcePublicID:publicAddress,srcData:data,password:id});
+
+  console.log(httpr.body);
+  assertIsBCHttpResponse(httpr);
+  return httpr.body["data"] as string;
+}
+
+
+
+
+export async function web3_GetAccounts(cb:Function):Promise<void>{
+  try{
+    const devices = await getDevices();
+    if(devices.length === 0) return cb("No BC Vault connected");
+    try{
+      const wallets = await getWalletsOfType(devices[0],WalletType.ethereum);
+      cb( null,wallets.map((x)=>"0x"+x) );
+    }catch(e){
+      if(e.BCHttpResponse !== undefined){
+        //unlock BC Vault!
+        await EnterGlobalPin(devices[0]);
+        const wallets = await getWalletsOfType(devices[0],WalletType.ethereum);
+        return cb( null,wallets.map((x)=>"0x"+x) );
+      }
+    }
+  }catch(e){
+    cb(e,null)
+  }
+}
+
+export async function web3_signTransaction(txParams:any,cb:Function):Promise<void>{
+  try{
+    const devices = await getDevices();
+    if(devices.length === 0) return cb("No BC Vault connected");
+    txParams.feePrice=txParams.gasPrice;
+    txParams.feeCount=txParams.gas;
+    txParams.amount=txParams.value;
+    
+    let txHex = await GenerateTransaction(devices[0],WalletType.ethereum,txParams)
+    cb(null,txHex);
+  }catch(e){
+    cb(e,null)
+  }
+}
+
+export async function web3_processPersonalMessage(msgParams:any,cb:Function):Promise<void>{
+  try{
+    const devices = await getDevices();
+    if(devices.length === 0) return cb("No BC Vault connected");
+    
+    let signedMessage = await SignData(devices[0],WalletType.ethereum,msgParams.from,msgParams.data);
+    cb(null,signedMessage);
+  }catch(e){
+    cb(e,null)
+  }
+}
+
+export function web3_Inject(web3Instance:any):void{
+  web3Instance.eth.signTransaction = web3_signTransaction;
+  web3Instance.eth.getAccounts = web3_GetAccounts;
+  web3Instance.personal.sign = web3_signTransaction;
+}

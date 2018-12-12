@@ -95,6 +95,7 @@ export interface HttpResponse{
     PasswordInput       ="PasswordInput",
     GetAuthID           ="GetAuthID",
     GetWalletBalance    ="WalletBalance",
+    SignData            ="SignData",
 
   }
   export interface SpaceObject{

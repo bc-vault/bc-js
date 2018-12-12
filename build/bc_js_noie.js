@@ -992,6 +992,115 @@ function GenerateTransaction(device, type, data) {
     });
 }
 exports.GenerateTransaction = GenerateTransaction;
+/**
+  Signs data on the device
+  ### Example (es3)
+  ```js
+  var bc = _bcvault;
+  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
+  bc.GenerateTransaction(1,1,trxOptions).then(console.log)
+  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  ```
+
+  ### Example (promise browser)
+  ```js
+  var bc = _bcvault;
+  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
+  await bc.GenerateTransaction(1,1,trxOptions)
+  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  ```
+
+  ### Example (nodejs)
+  ```js
+  var bc = require('bc-js');
+  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
+  await bc.GenerateTransaction(1,1,trxOptions)
+  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  ```
+  @param device  DeviceID obtained from getDevices
+  @param type    WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
+  @param publicAddress publicAddress obtained from getWalletsOfType
+  @param data    Transaction data as a hex string prefixed with 0x
+  @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
+  @throws        Will throw an AxiosError if the request itself failed or if status code != 200
+  @returns       The raw transaction hex prefixed with '0x' if operation was successful, otherwise will throw
+ */
+function SignData(device, type, publicAddress, data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const id = yield getSecureWindowResponse();
+        console.log("Got auth id:" + id);
+        console.log("Sending object:" + JSON.stringify({ device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id }));
+        const httpr = yield getResponsePromised(types_1.Endpoint.SignData, { device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id });
+        console.log(httpr.body);
+        assertIsBCHttpResponse(httpr);
+        return httpr.body["data"];
+    });
+}
+exports.SignData = SignData;
+function web3_GetAccounts(cb) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const devices = yield getDevices();
+            if (devices.length === 0)
+                return cb("No BC Vault connected");
+            try {
+                const wallets = yield getWalletsOfType(devices[0], types_1.WalletType.ethereum);
+                cb(null, wallets.map((x) => "0x" + x));
+            }
+            catch (e) {
+                if (e.BCHttpResponse !== undefined) {
+                    //unlock BC Vault!
+                    yield EnterGlobalPin(devices[0]);
+                    const wallets = yield getWalletsOfType(devices[0], types_1.WalletType.ethereum);
+                    return cb(null, wallets.map((x) => "0x" + x));
+                }
+            }
+        }
+        catch (e) {
+            cb(e, null);
+        }
+    });
+}
+exports.web3_GetAccounts = web3_GetAccounts;
+function web3_signTransaction(txParams, cb) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const devices = yield getDevices();
+            if (devices.length === 0)
+                return cb("No BC Vault connected");
+            txParams.feePrice = txParams.gasPrice;
+            txParams.feeCount = txParams.gas;
+            txParams.amount = txParams.value;
+            let txHex = yield GenerateTransaction(devices[0], types_1.WalletType.ethereum, txParams);
+            cb(null, txHex);
+        }
+        catch (e) {
+            cb(e, null);
+        }
+    });
+}
+exports.web3_signTransaction = web3_signTransaction;
+function web3_processPersonalMessage(msgParams, cb) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const devices = yield getDevices();
+            if (devices.length === 0)
+                return cb("No BC Vault connected");
+            let signedMessage = yield SignData(devices[0], types_1.WalletType.ethereum, msgParams.from, msgParams.data);
+            cb(null, signedMessage);
+        }
+        catch (e) {
+            cb(e, null);
+        }
+    });
+}
+exports.web3_processPersonalMessage = web3_processPersonalMessage;
+function web3_Inject(web3Instance) {
+    web3Instance.eth.signTransaction = web3_signTransaction;
+    web3Instance.eth.getAccounts = web3_GetAccounts;
+    web3Instance.personal.sign = web3_signTransaction;
+}
+exports.web3_Inject = web3_Inject;
 },{"./types":3,"axios":4,"es6-promise":29}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -1034,6 +1143,7 @@ var Endpoint;
     Endpoint["PasswordInput"] = "PasswordInput";
     Endpoint["GetAuthID"] = "GetAuthID";
     Endpoint["GetWalletBalance"] = "WalletBalance";
+    Endpoint["SignData"] = "SignData";
 })(Endpoint = exports.Endpoint || (exports.Endpoint = {}));
 const WalletTypeConstants = {
     BTC: 0,
@@ -2512,7 +2622,7 @@ module.exports = {
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
- * @version   v4.2.4+314e4831
+ * @version   v4.2.5+7f2b526d
  */
 
 (function (global, factory) {
@@ -3618,15 +3728,19 @@ var Promise$1 = function () {
     var promise = this;
     var constructor = promise.constructor;
 
-    return promise.then(function (value) {
-      return constructor.resolve(callback()).then(function () {
-        return value;
+    if (isFunction(callback)) {
+      return promise.then(function (value) {
+        return constructor.resolve(callback()).then(function () {
+          return value;
+        });
+      }, function (reason) {
+        return constructor.resolve(callback()).then(function () {
+          throw reason;
+        });
       });
-    }, function (reason) {
-      return constructor.resolve(callback()).then(function () {
-        throw reason;
-      });
-    });
+    }
+
+    return promise.then(callback, callback);
   };
 
   return Promise;

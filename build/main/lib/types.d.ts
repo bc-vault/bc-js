@@ -79,7 +79,8 @@ export declare enum Endpoint {
     DisplayAddress = "DisplayAddress",
     PasswordInput = "PasswordInput",
     GetAuthID = "GetAuthID",
-    GetWalletBalance = "WalletBalance"
+    GetWalletBalance = "WalletBalance",
+    SignData = "SignData"
 }
 export interface SpaceObject {
     readonly available: number;

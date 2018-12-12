@@ -34,6 +34,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __values = (this && this.__values) || function (o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spread = (this && this.__spread) || function () {
+    for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
+    return ar;
+};
 exports.__esModule = true;
 var axios_1 = require("axios");
 var types_1 = require("./types");
@@ -100,28 +130,51 @@ function startObjectPolling(deviceInterval) {
 exports.startObjectPolling = startObjectPolling;
 function getWallets(deviceID, activeTypes) {
     return __awaiter(this, void 0, void 0, function () {
-        var ret, _i, activeTypes_1, x, walletsOfXType, _a, walletsOfXType_1, wallet;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var e_1, _a, e_2, _b, ret, activeTypes_1, activeTypes_1_1, x, walletsOfXType, walletsOfXType_1, walletsOfXType_1_1, wallet, e_1_1;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
                     ret = [];
-                    _i = 0, activeTypes_1 = activeTypes;
-                    _b.label = 1;
+                    _c.label = 1;
                 case 1:
-                    if (!(_i < activeTypes_1.length)) return [3 /*break*/, 4];
-                    x = activeTypes_1[_i];
-                    return [4 /*yield*/, getWalletsOfType(deviceID, x)];
+                    _c.trys.push([1, 6, 7, 8]);
+                    activeTypes_1 = __values(activeTypes), activeTypes_1_1 = activeTypes_1.next();
+                    _c.label = 2;
                 case 2:
-                    walletsOfXType = _b.sent();
-                    for (_a = 0, walletsOfXType_1 = walletsOfXType; _a < walletsOfXType_1.length; _a++) {
-                        wallet = walletsOfXType_1[_a];
-                        ret.push({ publicKey: wallet, walletType: x });
-                    }
-                    _b.label = 3;
+                    if (!!activeTypes_1_1.done) return [3 /*break*/, 5];
+                    x = activeTypes_1_1.value;
+                    return [4 /*yield*/, getWalletsOfType(deviceID, x)];
                 case 3:
-                    _i++;
-                    return [3 /*break*/, 1];
-                case 4: return [2 /*return*/, ret];
+                    walletsOfXType = _c.sent();
+                    try {
+                        for (walletsOfXType_1 = __values(walletsOfXType), walletsOfXType_1_1 = walletsOfXType_1.next(); !walletsOfXType_1_1.done; walletsOfXType_1_1 = walletsOfXType_1.next()) {
+                            wallet = walletsOfXType_1_1.value;
+                            ret.push({ publicKey: wallet, walletType: x });
+                        }
+                    }
+                    catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                    finally {
+                        try {
+                            if (walletsOfXType_1_1 && !walletsOfXType_1_1.done && (_b = walletsOfXType_1["return"])) _b.call(walletsOfXType_1);
+                        }
+                        finally { if (e_2) throw e_2.error; }
+                    }
+                    _c.label = 4;
+                case 4:
+                    activeTypes_1_1 = activeTypes_1.next();
+                    return [3 /*break*/, 2];
+                case 5: return [3 /*break*/, 8];
+                case 6:
+                    e_1_1 = _c.sent();
+                    e_1 = { error: e_1_1 };
+                    return [3 /*break*/, 8];
+                case 7:
+                    try {
+                        if (activeTypes_1_1 && !activeTypes_1_1.done && (_a = activeTypes_1["return"])) _a.call(activeTypes_1);
+                    }
+                    finally { if (e_1) throw e_1.error; }
+                    return [7 /*endfinally*/];
+                case 8: return [2 /*return*/, ret];
             }
         });
     });
@@ -167,87 +220,101 @@ var lastSeenDevices = [];
 function triggerManualUpdate(fullUpdate) {
     if (fullUpdate === void 0) { fullUpdate = true; }
     return __awaiter(this, void 0, void 0, function () {
-        var devArray, devs, _i, devArray_1, deviceID, activeTypes, e_1, _a, _b, _c, _d, _e, _f, devices;
-        return __generator(this, function (_g) {
-            switch (_g.label) {
+        var e_3, _a, devArray, devs, devArray_1, devArray_1_1, deviceID, activeTypes, e_4, _b, _c, _d, _e, _f, _g, e_3_1, devices;
+        return __generator(this, function (_h) {
+            switch (_h.label) {
                 case 0:
-                    if (!fullUpdate) return [3 /*break*/, 15];
+                    if (!fullUpdate) return [3 /*break*/, 19];
                     return [4 /*yield*/, getDevices()];
                 case 1:
-                    devArray = _g.sent();
+                    devArray = _h.sent();
                     devs = [];
                     FireAllListeners(1);
-                    _i = 0, devArray_1 = devArray;
-                    _g.label = 2;
+                    _h.label = 2;
                 case 2:
-                    if (!(_i < devArray_1.length)) return [3 /*break*/, 14];
-                    deviceID = devArray_1[_i];
-                    activeTypes = void 0;
-                    _g.label = 3;
+                    _h.trys.push([2, 16, 17, 18]);
+                    devArray_1 = __values(devArray), devArray_1_1 = devArray_1.next();
+                    _h.label = 3;
                 case 3:
-                    _g.trys.push([3, 5, , 8]);
-                    return [4 /*yield*/, getActiveWalletTypes(deviceID)];
+                    if (!!devArray_1_1.done) return [3 /*break*/, 15];
+                    deviceID = devArray_1_1.value;
+                    activeTypes = void 0;
+                    _h.label = 4;
                 case 4:
-                    activeTypes = _g.sent();
-                    return [3 /*break*/, 8];
+                    _h.trys.push([4, 6, , 9]);
+                    return [4 /*yield*/, getActiveWalletTypes(deviceID)];
                 case 5:
-                    e_1 = _g.sent();
-                    if (!(e_1.BCHttpResponse !== undefined)) return [3 /*break*/, 7];
-                    _b = (_a = devs).push;
-                    _c = {
+                    activeTypes = _h.sent();
+                    return [3 /*break*/, 9];
+                case 6:
+                    e_4 = _h.sent();
+                    if (!(e_4.BCHttpResponse !== undefined)) return [3 /*break*/, 8];
+                    _c = (_b = devs).push;
+                    _d = {
                         id: deviceID,
                         space: { available: 1, complete: 1 }
                     };
                     return [4 /*yield*/, getFirmwareVersion(deviceID)];
-                case 6:
-                    _b.apply(_a, [(_c.firmware = _g.sent(),
-                            _c.supportedTypes = [],
-                            _c.activeTypes = [],
-                            _c.activeWallets = [],
-                            _c.locked = true,
-                            _c)]);
-                    return [3 /*break*/, 13];
-                case 7: throw e_1;
-                case 8:
-                    _e = (_d = devs).push;
-                    _f = {
+                case 7:
+                    _c.apply(_b, [(_d.firmware = _h.sent(),
+                            _d.supportedTypes = [],
+                            _d.activeTypes = [],
+                            _d.activeWallets = [],
+                            _d.locked = true,
+                            _d)]);
+                    return [3 /*break*/, 14];
+                case 8: throw e_4;
+                case 9:
+                    _f = (_e = devs).push;
+                    _g = {
                         id: deviceID
                     };
                     return [4 /*yield*/, getAvailableSpace(deviceID)];
-                case 9:
-                    _f.space = _g.sent();
-                    return [4 /*yield*/, getFirmwareVersion(deviceID)];
                 case 10:
-                    _f.firmware = _g.sent();
-                    return [4 /*yield*/, getSupportedWalletTypes(deviceID)];
+                    _g.space = _h.sent();
+                    return [4 /*yield*/, getFirmwareVersion(deviceID)];
                 case 11:
-                    _f.supportedTypes = _g.sent(),
-                        _f.activeTypes = activeTypes;
-                    return [4 /*yield*/, getWallets(deviceID, activeTypes)];
+                    _g.firmware = _h.sent();
+                    return [4 /*yield*/, getSupportedWalletTypes(deviceID)];
                 case 12:
-                    _e.apply(_d, [(_f.activeWallets = _g.sent(),
-                            _f.locked = false,
-                            _f)]);
-                    _g.label = 13;
+                    _g.supportedTypes = _h.sent(),
+                        _g.activeTypes = activeTypes;
+                    return [4 /*yield*/, getWallets(deviceID, activeTypes)];
                 case 13:
-                    _i++;
-                    return [3 /*break*/, 2];
+                    _f.apply(_e, [(_g.activeWallets = _h.sent(),
+                            _g.locked = false,
+                            _g)]);
+                    _h.label = 14;
                 case 14:
+                    devArray_1_1 = devArray_1.next();
+                    return [3 /*break*/, 3];
+                case 15: return [3 /*break*/, 18];
+                case 16:
+                    e_3_1 = _h.sent();
+                    e_3 = { error: e_3_1 };
+                    return [3 /*break*/, 18];
+                case 17:
+                    try {
+                        if (devArray_1_1 && !devArray_1_1.done && (_a = devArray_1["return"])) _a.call(devArray_1);
+                    }
+                    finally { if (e_3) throw e_3.error; }
+                    return [7 /*endfinally*/];
+                case 18:
                     exports.BCData = { devices: devs };
                     FireAllListeners(0);
-                    return [3 /*break*/, 18];
-                case 15:
+                    return [3 /*break*/, 22];
+                case 19:
                     devices = void 0;
                     return [4 /*yield*/, getDevices()];
-                case 16:
-                    devices = _g.sent();
-                    if (!!arraysEqual(devices, lastSeenDevices)) return [3 /*break*/, 18];
+                case 20:
+                    devices = _h.sent();
+                    if (!!arraysEqual(devices, lastSeenDevices)) return [3 /*break*/, 22];
                     lastSeenDevices = devices;
                     return [4 /*yield*/, triggerManualUpdate(true)];
-                case 17:
-                    _g.sent();
-                    _g.label = 18;
-                case 18: return [2 /*return*/];
+                case 21:
+                    _h.sent();
+                    _h.label = 22;
+                case 22: return [2 /*return*/];
             }
         });
     });
@@ -259,7 +326,7 @@ exports.triggerManualUpdate = triggerManualUpdate;
 //}
 function pollDevicesChanged(interval) {
     return __awaiter(this, void 0, void 0, function () {
-        var e_2;
+        var e_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -269,9 +336,9 @@ function pollDevicesChanged(interval) {
                     _a.sent();
                     return [3 /*break*/, 3];
                 case 2:
-                    e_2 = _a.sent();
+                    e_5 = _a.sent();
                     FireAllListeners(-1);
-                    console.error(e_2);
+                    console.error(e_5);
                     return [3 /*break*/, 3];
                 case 3:
                     setTimeout(function () { return pollDevicesChanged(interval); }, interval);
@@ -285,9 +352,19 @@ function FireAllListeners() {
     for (var _i = 0; _i < arguments.length; _i++) {
         args[_i] = arguments[_i];
     }
-    for (var _a = 0, listeners_1 = listeners; _a < listeners_1.length; _a++) {
-        var listener = listeners_1[_a];
-        listener.call.apply(listener, [null].concat(args));
+    var e_6, _a;
+    try {
+        for (var listeners_1 = __values(listeners), listeners_1_1 = listeners_1.next(); !listeners_1_1.done; listeners_1_1 = listeners_1.next()) {
+            var listener = listeners_1_1.value;
+            listener.call.apply(listener, __spread([null], args));
+        }
+    }
+    catch (e_6_1) { e_6 = { error: e_6_1 }; }
+    finally {
+        try {
+            if (listeners_1_1 && !listeners_1_1.done && (_a = listeners_1["return"])) _a.call(listeners_1);
+        }
+        finally { if (e_6) throw e_6.error; }
     }
 }
 /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
@@ -1006,3 +1083,164 @@ function GenerateTransaction(device, type, data) {
     });
 }
 exports.GenerateTransaction = GenerateTransaction;
+/**
+  Signs data on the device
+  ### Example (es3)
+  ```js
+  var bc = _bcvault;
+  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
+  bc.GenerateTransaction(1,1,trxOptions).then(console.log)
+  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  ```
+
+  ### Example (promise browser)
+  ```js
+  var bc = _bcvault;
+  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
+  await bc.GenerateTransaction(1,1,trxOptions)
+  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  ```
+
+  ### Example (nodejs)
+  ```js
+  var bc = require('bc-js');
+  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
+  await bc.GenerateTransaction(1,1,trxOptions)
+  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  ```
+  @param device  DeviceID obtained from getDevices
+  @param type    WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
+  @param publicAddress publicAddress obtained from getWalletsOfType
+  @param data    Transaction data as a hex string prefixed with 0x
+  @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
+  @throws        Will throw an AxiosError if the request itself failed or if status code != 200
+  @returns       The raw transaction hex prefixed with '0x' if operation was successful, otherwise will throw
+ */
+function SignData(device, type, publicAddress, data) {
+    return __awaiter(this, void 0, void 0, function () {
+        var id, httpr;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getSecureWindowResponse()];
+                case 1:
+                    id = _a.sent();
+                    console.log("Got auth id:" + id);
+                    console.log("Sending object:" + JSON.stringify({ device: device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id }));
+                    return [4 /*yield*/, getResponsePromised(types_1.Endpoint.SignData, { device: device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id })];
+                case 2:
+                    httpr = _a.sent();
+                    console.log(httpr.body);
+                    assertIsBCHttpResponse(httpr);
+                    return [2 /*return*/, httpr.body["data"]];
+            }
+        });
+    });
+}
+exports.SignData = SignData;
+function web3_GetAccounts(cb) {
+    return __awaiter(this, void 0, void 0, function () {
+        var devices, wallets, e_7, wallets, e_8;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 9, , 10]);
+                    return [4 /*yield*/, getDevices()];
+                case 1:
+                    devices = _a.sent();
+                    if (devices.length === 0)
+                        return [2 /*return*/, cb("No BC Vault connected")];
+                    _a.label = 2;
+                case 2:
+                    _a.trys.push([2, 4, , 8]);
+                    return [4 /*yield*/, getWalletsOfType(devices[0], types_1.WalletType.ethereum)];
+                case 3:
+                    wallets = _a.sent();
+                    cb(null, wallets.map(function (x) { return "0x" + x; }));
+                    return [3 /*break*/, 8];
+                case 4:
+                    e_7 = _a.sent();
+                    if (!(e_7.BCHttpResponse !== undefined)) return [3 /*break*/, 7];
+                    //unlock BC Vault!
+                    return [4 /*yield*/, EnterGlobalPin(devices[0])];
+                case 5:
+                    //unlock BC Vault!
+                    _a.sent();
+                    return [4 /*yield*/, getWalletsOfType(devices[0], types_1.WalletType.ethereum)];
+                case 6:
+                    wallets = _a.sent();
+                    return [2 /*return*/, cb(null, wallets.map(function (x) { return "0x" + x; }))];
+                case 7: return [3 /*break*/, 8];
+                case 8: return [3 /*break*/, 10];
+                case 9:
+                    e_8 = _a.sent();
+                    cb(e_8, null);
+                    return [3 /*break*/, 10];
+                case 10: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.web3_GetAccounts = web3_GetAccounts;
+function web3_signTransaction(txParams, cb) {
+    return __awaiter(this, void 0, void 0, function () {
+        var devices, txHex, e_9;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, getDevices()];
+                case 1:
+                    devices = _a.sent();
+                    if (devices.length === 0)
+                        return [2 /*return*/, cb("No BC Vault connected")];
+                    txParams.feePrice = txParams.gasPrice;
+                    txParams.feeCount = txParams.gas;
+                    txParams.amount = txParams.value;
+                    return [4 /*yield*/, GenerateTransaction(devices[0], types_1.WalletType.ethereum, txParams)];
+                case 2:
+                    txHex = _a.sent();
+                    cb(null, txHex);
+                    return [3 /*break*/, 4];
+                case 3:
+                    e_9 = _a.sent();
+                    cb(e_9, null);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.web3_signTransaction = web3_signTransaction;
+function web3_processPersonalMessage(msgParams, cb) {
+    return __awaiter(this, void 0, void 0, function () {
+        var devices, signedMessage, e_10;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, getDevices()];
+                case 1:
+                    devices = _a.sent();
+                    if (devices.length === 0)
+                        return [2 /*return*/, cb("No BC Vault connected")];
+                    return [4 /*yield*/, SignData(devices[0], types_1.WalletType.ethereum, msgParams.from, msgParams.data)];
+                case 2:
+                    signedMessage = _a.sent();
+                    cb(null, signedMessage);
+                    return [3 /*break*/, 4];
+                case 3:
+                    e_10 = _a.sent();
+                    cb(e_10, null);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.web3_processPersonalMessage = web3_processPersonalMessage;
+function web3_Inject(web3Instance) {
+    web3Instance.eth.signTransaction = web3_signTransaction;
+    web3Instance.eth.getAccounts = web3_GetAccounts;
+    web3Instance.personal.sign = web3_signTransaction;
+}
+exports.web3_Inject = web3_Inject;

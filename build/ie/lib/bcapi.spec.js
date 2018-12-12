@@ -34,6 +34,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __values = (this && this.__values) || function (o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+};
 var _this = this;
 exports.__esModule = true;
 // tslint:disable:no-expression-statement
@@ -46,62 +56,90 @@ var testStruct;
 /* tslint:enable:prefer-const */
 function getDeviceObjectAsync(t, deviceID) {
     return __awaiter(this, void 0, void 0, function () {
-        var DeviceObject, wallets, active, _i, active_1, activeWallet, signature;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var e_1, _a, DeviceObject, wallets, active, active_1, active_1_1, activeWallet, signature, e_1_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     DeviceObject = { deviceID: deviceID, supportedWallets: [], activeWallets: [] };
                     return [4 /*yield*/, bc.getSupportedWalletTypes(deviceID)];
                 case 1:
-                    wallets = _a.sent();
+                    wallets = _b.sent();
                     t["true"](wallets.length > 0);
                     DeviceObject.supportedWallets = wallets;
                     return [4 /*yield*/, bc.getActiveWalletTypes(deviceID)];
                 case 2:
-                    active = _a.sent();
+                    active = _b.sent();
                     t["true"](active.length !== undefined);
-                    _i = 0, active_1 = active;
-                    _a.label = 3;
+                    _b.label = 3;
                 case 3:
-                    if (!(_i < active_1.length)) return [3 /*break*/, 6];
-                    activeWallet = active_1[_i];
-                    return [4 /*yield*/, bc.getWalletsOfType(deviceID, activeWallet)];
+                    _b.trys.push([3, 8, 9, 10]);
+                    active_1 = __values(active), active_1_1 = active_1.next();
+                    _b.label = 4;
                 case 4:
-                    signature = _a.sent();
+                    if (!!active_1_1.done) return [3 /*break*/, 7];
+                    activeWallet = active_1_1.value;
+                    return [4 /*yield*/, bc.getWalletsOfType(deviceID, activeWallet)];
+                case 5:
+                    signature = _b.sent();
                     t["true"](signature.length !== undefined);
                     DeviceObject.activeWallets.push({ type: activeWallet, signature: signature.length > 0 ? signature[0] : undefined });
-                    _a.label = 5;
-                case 5:
-                    _i++;
-                    return [3 /*break*/, 3];
-                case 6: return [2 /*return*/, DeviceObject];
+                    _b.label = 6;
+                case 6:
+                    active_1_1 = active_1.next();
+                    return [3 /*break*/, 4];
+                case 7: return [3 /*break*/, 10];
+                case 8:
+                    e_1_1 = _b.sent();
+                    e_1 = { error: e_1_1 };
+                    return [3 /*break*/, 10];
+                case 9:
+                    try {
+                        if (active_1_1 && !active_1_1.done && (_a = active_1["return"])) _a.call(active_1);
+                    }
+                    finally { if (e_1) throw e_1.error; }
+                    return [7 /*endfinally*/];
+                case 10: return [2 /*return*/, DeviceObject];
             }
         });
     });
 }
 ava_1.test.before(function (t) { return __awaiter(_this, void 0, void 0, function () {
-    var dev, struct, _i, dev_1, currentDevice, _a, _b;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var e_2, _a, dev, struct, dev_1, dev_1_1, currentDevice, _b, _c, e_2_1;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
             case 0: return [4 /*yield*/, bc.getDevices()];
             case 1:
-                dev = _c.sent();
+                dev = _d.sent();
                 t["true"](dev.length > 0);
                 struct = { devices: [] };
-                _i = 0, dev_1 = dev;
-                _c.label = 2;
+                _d.label = 2;
             case 2:
-                if (!(_i < dev_1.length)) return [3 /*break*/, 5];
-                currentDevice = dev_1[_i];
-                _b = (_a = struct.devices).push;
-                return [4 /*yield*/, getDeviceObjectAsync(t, currentDevice)];
+                _d.trys.push([2, 7, 8, 9]);
+                dev_1 = __values(dev), dev_1_1 = dev_1.next();
+                _d.label = 3;
             case 3:
-                _b.apply(_a, [_c.sent()]);
-                _c.label = 4;
+                if (!!dev_1_1.done) return [3 /*break*/, 6];
+                currentDevice = dev_1_1.value;
+                _c = (_b = struct.devices).push;
+                return [4 /*yield*/, getDeviceObjectAsync(t, currentDevice)];
             case 4:
-                _i++;
-                return [3 /*break*/, 2];
+                _c.apply(_b, [_d.sent()]);
+                _d.label = 5;
             case 5:
+                dev_1_1 = dev_1.next();
+                return [3 /*break*/, 3];
+            case 6: return [3 /*break*/, 9];
+            case 7:
+                e_2_1 = _d.sent();
+                e_2 = { error: e_2_1 };
+                return [3 /*break*/, 9];
+            case 8:
+                try {
+                    if (dev_1_1 && !dev_1_1.done && (_a = dev_1["return"])) _a.call(dev_1);
+                }
+                finally { if (e_2) throw e_2.error; }
+                return [7 /*endfinally*/];
+            case 9:
                 ;
                 testStruct = struct;
                 return [2 /*return*/];
@@ -110,48 +148,72 @@ ava_1.test.before(function (t) { return __awaiter(_this, void 0, void 0, functio
 }); });
 function generateTestForAllDevices(t, func) {
     return __awaiter(this, void 0, void 0, function () {
-        var _i, _a, dev;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var e_3, _a, _b, _c, dev, e_3_1;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
                 case 0:
-                    _i = 0, _a = testStruct.devices;
-                    _b.label = 1;
+                    _d.trys.push([0, 5, 6, 7]);
+                    _b = __values(testStruct.devices), _c = _b.next();
+                    _d.label = 1;
                 case 1:
-                    if (!(_i < _a.length)) return [3 /*break*/, 4];
-                    dev = _a[_i];
+                    if (!!_c.done) return [3 /*break*/, 4];
+                    dev = _c.value;
                     return [4 /*yield*/, func(dev.deviceID, t)];
                 case 2:
-                    _b.sent();
-                    _b.label = 3;
+                    _d.sent();
+                    _d.label = 3;
                 case 3:
-                    _i++;
+                    _c = _b.next();
                     return [3 /*break*/, 1];
-                case 4: return [2 /*return*/];
+                case 4: return [3 /*break*/, 7];
+                case 5:
+                    e_3_1 = _d.sent();
+                    e_3 = { error: e_3_1 };
+                    return [3 /*break*/, 7];
+                case 6:
+                    try {
+                        if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
+                    }
+                    finally { if (e_3) throw e_3.error; }
+                    return [7 /*endfinally*/];
+                case 7: return [2 /*return*/];
             }
         });
     });
 }
 function generateTestForAllWalletTypes(t, currentDevice, func) {
     return __awaiter(this, void 0, void 0, function () {
-        var _i, _a, wt;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var e_4, _a, _b, _c, wt, e_4_1;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
                 case 0:
-                    _i = 0, _a = testStruct.devices.find(function (x) { return x.deviceID === currentDevice; }).activeWallets;
-                    _b.label = 1;
+                    _d.trys.push([0, 5, 6, 7]);
+                    _b = __values(testStruct.devices.find(function (x) { return x.deviceID === currentDevice; }).activeWallets), _c = _b.next();
+                    _d.label = 1;
                 case 1:
-                    if (!(_i < _a.length)) return [3 /*break*/, 4];
-                    wt = _a[_i];
+                    if (!!_c.done) return [3 /*break*/, 4];
+                    wt = _c.value;
                     if (wt.signature === undefined)
                         return [3 /*break*/, 3];
                     return [4 /*yield*/, func(wt, currentDevice, t)];
                 case 2:
-                    _b.sent();
-                    _b.label = 3;
+                    _d.sent();
+                    _d.label = 3;
                 case 3:
-                    _i++;
+                    _c = _b.next();
                     return [3 /*break*/, 1];
-                case 4: return [2 /*return*/];
+                case 4: return [3 /*break*/, 7];
+                case 5:
+                    e_4_1 = _d.sent();
+                    e_4 = { error: e_4_1 };
+                    return [3 /*break*/, 7];
+                case 6:
+                    try {
+                        if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
+                    }
+                    finally { if (e_4) throw e_4.error; }
+                    return [7 /*endfinally*/];
+                case 7: return [2 /*return*/];
             }
         });
     });
@@ -264,7 +326,7 @@ ava_1.test("IsAddressValid - Incorrect", function (t) { return __awaiter(_this, 
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0: return [4 /*yield*/, generateTestForAllWalletTypes(t, currentDevice, function (currentWallet) { return __awaiter(_this, void 0, void 0, function () {
-                                    var e_1;
+                                    var e_5;
                                     return __generator(this, function (_a) {
                                         switch (_a.label) {
                                             case 0:
@@ -274,8 +336,8 @@ ava_1.test("IsAddressValid - Incorrect", function (t) { return __awaiter(_this, 
                                                 _a.sent();
                                                 return [3 /*break*/, 3];
                                             case 2:
-                                                e_1 = _a.sent();
-                                                t["true"](e_1.errorCode !== undefined);
+                                                e_5 = _a.sent();
+                                                t["true"](e_5.errorCode !== undefined);
                                                 return [3 /*break*/, 3];
                                             case 3: return [2 /*return*/];
                                         }
