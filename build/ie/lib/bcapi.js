@@ -1211,7 +1211,7 @@ function web3_signTransaction(txParams, cb) {
     });
 }
 exports.web3_signTransaction = web3_signTransaction;
-function web3_processPersonalMessage(msgParams, cb) {
+function web3_signPersonalMessage(msgParams, cb) {
     return __awaiter(this, void 0, void 0, function () {
         var devices, signedMessage, e_10;
         return __generator(this, function (_a) {
@@ -1237,10 +1237,10 @@ function web3_processPersonalMessage(msgParams, cb) {
         });
     });
 }
-exports.web3_processPersonalMessage = web3_processPersonalMessage;
+exports.web3_signPersonalMessage = web3_signPersonalMessage;
 function web3_Inject(web3Instance) {
     web3Instance.eth.signTransaction = web3_signTransaction;
     web3Instance.eth.getAccounts = web3_GetAccounts;
-    web3Instance.personal.sign = web3_processPersonalMessage;
+    web3Instance.personal.sign = web3_signPersonalMessage;
 }
 exports.web3_Inject = web3_Inject;

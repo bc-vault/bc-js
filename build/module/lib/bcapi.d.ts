@@ -553,5 +553,5 @@ export declare function GenerateTransaction(device: number, type: WalletType, da
 export declare function SignData(device: number, type: WalletType, publicAddress: string, data: string): Promise<string>;
 export declare function web3_GetAccounts(cb: Function): Promise<void>;
 export declare function web3_signTransaction(txParams: any, cb: Function): Promise<void>;
-export declare function web3_processPersonalMessage(msgParams: any, cb: Function): Promise<void>;
+export declare function web3_signPersonalMessage(msgParams: any, cb: Function): Promise<void>;
 export declare function web3_Inject(web3Instance: any): void;

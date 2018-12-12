@@ -845,7 +845,7 @@ export async function web3_signTransaction(txParams:any,cb:Function):Promise<voi
   }
 }
 
-export async function web3_processPersonalMessage(msgParams:any,cb:Function):Promise<void>{
+export async function web3_signPersonalMessage(msgParams:any,cb:Function):Promise<void>{
   try{
     const devices = await getDevices();
     if(devices.length === 0) return cb("No BC Vault connected");
@@ -860,5 +860,5 @@ export async function web3_processPersonalMessage(msgParams:any,cb:Function):Pro
 export function web3_Inject(web3Instance:any):void{
   web3Instance.eth.signTransaction = web3_signTransaction;
   web3Instance.eth.getAccounts = web3_GetAccounts;
-  web3Instance.personal.sign = web3_processPersonalMessage;
+  web3Instance.personal.sign = web3_signPersonalMessage;
 }
