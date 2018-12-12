@@ -1098,7 +1098,7 @@ exports.web3_processPersonalMessage = web3_processPersonalMessage;
 function web3_Inject(web3Instance) {
     web3Instance.eth.signTransaction = web3_signTransaction;
     web3Instance.eth.getAccounts = web3_GetAccounts;
-    web3Instance.personal.sign = web3_signTransaction;
+    web3Instance.personal.sign = web3_processPersonalMessage;
 }
 exports.web3_Inject = web3_Inject;
 },{"./types":3,"axios":4,"es6-promise":29}],3:[function(require,module,exports){

@@ -860,5 +860,5 @@ export async function web3_processPersonalMessage(msgParams:any,cb:Function):Pro
 export function web3_Inject(web3Instance:any):void{
   web3Instance.eth.signTransaction = web3_signTransaction;
   web3Instance.eth.getAccounts = web3_GetAccounts;
-  web3Instance.personal.sign = web3_signTransaction;
+  web3Instance.personal.sign = web3_processPersonalMessage;
 }
