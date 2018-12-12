@@ -768,33 +768,30 @@ export async function GenerateTransaction(device:number, type:WalletType,data:Tr
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
-  bc.GenerateTransaction(1,1,trxOptions).then(console.log)
-  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  bc.SignData(1,bc.WalletType.ethereum,"0x9283099a29556fcf8fff5b2cea2d4f67cb7a7a8b","0x4920616d20627574206120737461636b2065786368616e676520706f7374").then(console.log)
+  // => "0x..."
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
-  await bc.GenerateTransaction(1,1,trxOptions)
-  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  await bc.SignData(1,bc.WalletType.ethereum,"0x9283099a29556fcf8fff5b2cea2d4f67cb7a7a8b","0x4920616d20627574206120737461636b2065786368616e676520706f7374")
+  // => "0x..."
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
-  await bc.GenerateTransaction(1,1,trxOptions)
-  // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
+  await bc.SignData(1,bc.WalletType.ethereum,"0x9283099a29556fcf8fff5b2cea2d4f67cb7a7a8b","0x4920616d20627574206120737461636b2065786368616e676520706f7374")
+  // => "0x..."
   ```
   @param device  DeviceID obtained from getDevices
   @param type    WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
   @param publicAddress publicAddress obtained from getWalletsOfType
-  @param data    Transaction data as a hex string prefixed with 0x
+  @param data    Message data as a hex string prefixed with 0x
   @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
-  @returns       The raw transaction hex prefixed with '0x' if operation was successful, otherwise will throw
+  @returns       The raw signed message hex prefixed with '0x' if operation was successful, otherwise will throw
  */
 export async function SignData(device:number, type:WalletType,publicAddress:string,data:string):Promise<string>{
   const id = await getSecureWindowResponse();
