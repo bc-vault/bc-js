@@ -634,7 +634,7 @@ function showAuthPopup(id:string,passwordType:PasswordType):Promise<void>{
       parent.postMessage("OKAY","*");
       res();
     }else{
-      target=window.open("https://localhost.bc-vault.com:1991/PasswordInput?channelID="+id,"_blank","location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500");
+      target=window.open("https://localhost.bc-vault.com:1991/PasswordInput?channelID="+id+"&channelPasswordType="+passwordType,"_blank","location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500");
       if(target === null) throw TypeError("Could not create popup!");
       const timer = setInterval(()=>{
         if((target as Window).closed){
