@@ -173,3 +173,7 @@ export interface HttpResponse{
     Ready=0,
     Working=1
   }
+  export enum PasswordType{
+    WalletPassword='wallet',
+    GlobalPassword='global'
+  }

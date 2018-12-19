@@ -132,3 +132,7 @@ export declare enum BCDataRefreshStatusCode {
     Ready = 0,
     Working = 1
 }
+export declare enum PasswordType {
+    WalletPassword = "wallet",
+    GlobalPassword = "global"
+}

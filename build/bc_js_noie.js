@@ -767,7 +767,7 @@ exports.getWalletUserData = getWalletUserData;
 function CopyWalletToType(device, oldType, newType, publicAddress) {
     return __awaiter(this, void 0, void 0, function* () {
         let httpr;
-        const id = yield getSecureWindowResponse();
+        const id = yield getSecureWindowResponse(types_1.PasswordType.WalletPassword);
         httpr = yield getResponsePromised(types_1.Endpoint.CopyWalletToType, { device, walletType: oldType, newWalletType: newType, sourcePublicID: publicAddress, password: id });
         assertIsBCHttpResponse(httpr);
         return true;
@@ -849,12 +849,12 @@ function DisplayAddressOnDevice(device, type, publicAddress) {
     });
 }
 exports.DisplayAddressOnDevice = DisplayAddressOnDevice;
-function showAuthPopup(id) {
+function showAuthPopup(id, passwordType) {
     return new Promise((res) => {
         const isIE = window.ActiveXObject || "ActiveXObject" in window;
         let target;
         if (isIE) {
-            window.showModalDialog("https://localhost.bc-vault.com:1991/PasswordInput?channelID=" + id);
+            window.showModalDialog("https://localhost.bc-vault.com:1991/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType);
             parent.postMessage("OKAY", "*");
             res();
         }
@@ -871,11 +871,11 @@ function showAuthPopup(id) {
         }
     });
 }
-function getSecureWindowResponse() {
+function getSecureWindowResponse(passwordType) {
     return new Promise((res) => __awaiter(this, void 0, void 0, function* () {
         const x = yield getResponsePromised(types_1.Endpoint.GetAuthID);
         const id = x.body;
-        yield showAuthPopup(id);
+        yield showAuthPopup(id, passwordType);
         res(id);
     }));
 }
@@ -909,7 +909,7 @@ function getSecureWindowResponse() {
  */
 function GenerateWallet(device, type) {
     return __awaiter(this, void 0, void 0, function* () {
-        const id = yield getSecureWindowResponse();
+        const id = yield getSecureWindowResponse(types_1.PasswordType.WalletPassword);
         const httpr = yield getResponsePromised(types_1.Endpoint.GenerateWallet, { device, walletType: type, password: id });
         assertIsBCHttpResponse(httpr);
         return httpr.body.data;
@@ -939,9 +939,9 @@ exports.GenerateWallet = GenerateWallet;
   @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
  */
-function EnterGlobalPin(device) {
+function EnterGlobalPin(device, passwordType = types_1.PasswordType.GlobalPassword) {
     return __awaiter(this, void 0, void 0, function* () {
-        const id = yield getSecureWindowResponse();
+        const id = yield getSecureWindowResponse(passwordType);
         console.log("Got pin popup:" + id);
         const httpr = yield getResponsePromised(types_1.Endpoint.EnterGlobalPin, { device, password: id });
         assertIsBCHttpResponse(httpr);
@@ -983,7 +983,7 @@ exports.EnterGlobalPin = EnterGlobalPin;
  */
 function GenerateTransaction(device, type, data) {
     return __awaiter(this, void 0, void 0, function* () {
-        const id = yield getSecureWindowResponse();
+        const id = yield getSecureWindowResponse(types_1.PasswordType.WalletPassword);
         console.log("Got auth id:" + id);
         console.log("Sending object:" + JSON.stringify({ device, walletType: type, transaction: data, password: id }));
         const httpr = yield getResponsePromised(types_1.Endpoint.GenerateTransaction, { device, walletType: type, transaction: data, password: id });
@@ -1025,7 +1025,7 @@ exports.GenerateTransaction = GenerateTransaction;
  */
 function SignData(device, type, publicAddress, data) {
     return __awaiter(this, void 0, void 0, function* () {
-        const id = yield getSecureWindowResponse();
+        const id = yield getSecureWindowResponse(types_1.PasswordType.WalletPassword);
         console.log("Got auth id:" + id);
         console.log("Sending object:" + JSON.stringify({ device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id }));
         const httpr = yield getResponsePromised(types_1.Endpoint.SignData, { device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id });
@@ -1050,7 +1050,7 @@ function web3_GetAccounts(cb) {
             catch (e) {
                 if (e.BCHttpResponse !== undefined) {
                     //unlock BC Vault!
-                    yield EnterGlobalPin(devices[0]);
+                    yield EnterGlobalPin(devices[0], types_1.PasswordType.GlobalPassword);
                     const wallets = yield getWalletsOfType(devices[0], types_1.WalletType.ethereum);
                     return cb(null, wallets.map((x) => "0x" + x));
                 }
@@ -1197,6 +1197,11 @@ var BCDataRefreshStatusCode;
     BCDataRefreshStatusCode[BCDataRefreshStatusCode["Ready"] = 0] = "Ready";
     BCDataRefreshStatusCode[BCDataRefreshStatusCode["Working"] = 1] = "Working";
 })(BCDataRefreshStatusCode = exports.BCDataRefreshStatusCode || (exports.BCDataRefreshStatusCode = {}));
+var PasswordType;
+(function (PasswordType) {
+    PasswordType["WalletPassword"] = "wallet";
+    PasswordType["GlobalPassword"] = "global";
+})(PasswordType = exports.PasswordType || (exports.PasswordType = {}));
 },{}],4:[function(require,module,exports){
 module.exports = require('./lib/axios');
 },{"./lib/axios":6}],5:[function(require,module,exports){

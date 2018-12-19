@@ -103,3 +103,8 @@ var BCDataRefreshStatusCode;
     BCDataRefreshStatusCode[BCDataRefreshStatusCode["Ready"] = 0] = "Ready";
     BCDataRefreshStatusCode[BCDataRefreshStatusCode["Working"] = 1] = "Working";
 })(BCDataRefreshStatusCode = exports.BCDataRefreshStatusCode || (exports.BCDataRefreshStatusCode = {}));
+var PasswordType;
+(function (PasswordType) {
+    PasswordType["WalletPassword"] = "wallet";
+    PasswordType["GlobalPassword"] = "global";
+})(PasswordType = exports.PasswordType || (exports.PasswordType = {}));

@@ -1,4 +1,4 @@
-import { SpaceObject, WalletType, VersionObject, TransactionData, BCDataRefreshStatusCode, BCObject, WalletTypeInfo } from './types';
+import { SpaceObject, PasswordType, WalletType, VersionObject, TransactionData, BCDataRefreshStatusCode, BCObject, WalletTypeInfo } from './types';
 export declare const Host: string;
 export declare var isPolling: boolean;
 /**
@@ -483,7 +483,7 @@ export declare function GenerateWallet(device: number, type: WalletType): Promis
   @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
  */
-export declare function EnterGlobalPin(device: number): Promise<void>;
+export declare function EnterGlobalPin(device: number, passwordType?: PasswordType): Promise<void>;
 /**
   Generates a new transaction on the device
   ### Example (es3)

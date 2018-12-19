@@ -803,7 +803,7 @@ function CopyWalletToType(device, oldType, newType, publicAddress) {
         var httpr, id;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getSecureWindowResponse()];
+                case 0: return [4 /*yield*/, getSecureWindowResponse(types_1.PasswordType.WalletPassword)];
                 case 1:
                     id = _a.sent();
                     return [4 /*yield*/, getResponsePromised(types_1.Endpoint.CopyWalletToType, { device: device, walletType: oldType, newWalletType: newType, sourcePublicID: publicAddress, password: id })];
@@ -903,12 +903,12 @@ function DisplayAddressOnDevice(device, type, publicAddress) {
     });
 }
 exports.DisplayAddressOnDevice = DisplayAddressOnDevice;
-function showAuthPopup(id) {
+function showAuthPopup(id, passwordType) {
     return new Promise(function (res) {
         var isIE = window.ActiveXObject || "ActiveXObject" in window;
         var target;
         if (isIE) {
-            window.showModalDialog("https://localhost.bc-vault.com:1991/PasswordInput?channelID=" + id);
+            window.showModalDialog("https://localhost.bc-vault.com:1991/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType);
             parent.postMessage("OKAY", "*");
             res();
         }
@@ -925,7 +925,7 @@ function showAuthPopup(id) {
         }
     });
 }
-function getSecureWindowResponse() {
+function getSecureWindowResponse(passwordType) {
     var _this = this;
     return new Promise(function (res) { return __awaiter(_this, void 0, void 0, function () {
         var x, id;
@@ -935,7 +935,7 @@ function getSecureWindowResponse() {
                 case 1:
                     x = _a.sent();
                     id = x.body;
-                    return [4 /*yield*/, showAuthPopup(id)];
+                    return [4 /*yield*/, showAuthPopup(id, passwordType)];
                 case 2:
                     _a.sent();
                     res(id);
@@ -977,7 +977,7 @@ function GenerateWallet(device, type) {
         var id, httpr;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getSecureWindowResponse()];
+                case 0: return [4 /*yield*/, getSecureWindowResponse(types_1.PasswordType.WalletPassword)];
                 case 1:
                     id = _a.sent();
                     return [4 /*yield*/, getResponsePromised(types_1.Endpoint.GenerateWallet, { device: device, walletType: type, password: id })];
@@ -1013,12 +1013,13 @@ exports.GenerateWallet = GenerateWallet;
   @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
  */
-function EnterGlobalPin(device) {
+function EnterGlobalPin(device, passwordType) {
+    if (passwordType === void 0) { passwordType = types_1.PasswordType.GlobalPassword; }
     return __awaiter(this, void 0, void 0, function () {
         var id, httpr;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getSecureWindowResponse()];
+                case 0: return [4 /*yield*/, getSecureWindowResponse(passwordType)];
                 case 1:
                     id = _a.sent();
                     console.log("Got pin popup:" + id);
@@ -1070,7 +1071,7 @@ function GenerateTransaction(device, type, data) {
         var id, httpr;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getSecureWindowResponse()];
+                case 0: return [4 /*yield*/, getSecureWindowResponse(types_1.PasswordType.WalletPassword)];
                 case 1:
                     id = _a.sent();
                     console.log("Got auth id:" + id);
@@ -1121,7 +1122,7 @@ function SignData(device, type, publicAddress, data) {
         var id, httpr;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getSecureWindowResponse()];
+                case 0: return [4 /*yield*/, getSecureWindowResponse(types_1.PasswordType.WalletPassword)];
                 case 1:
                     id = _a.sent();
                     console.log("Got auth id:" + id);
@@ -1163,7 +1164,7 @@ function web3_GetAccounts(cb) {
                     e_7 = _a.sent();
                     if (!(e_7.BCHttpResponse !== undefined)) return [3 /*break*/, 7];
                     //unlock BC Vault!
-                    return [4 /*yield*/, EnterGlobalPin(devices[0])];
+                    return [4 /*yield*/, EnterGlobalPin(devices[0], types_1.PasswordType.GlobalPassword)];
                 case 5:
                     //unlock BC Vault!
                     _a.sent();
