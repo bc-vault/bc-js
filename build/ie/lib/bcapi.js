@@ -800,11 +800,14 @@ exports.getWalletUserData = getWalletUserData;
  */
 function CopyWalletToType(device, oldType, newType, publicAddress) {
     return __awaiter(this, void 0, void 0, function () {
-        var httpr;
+        var httpr, id;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getResponsePromised(types_1.Endpoint.CopyWalletToType, { device: device, walletType: oldType, newWalletType: newType, sourcePublicID: publicAddress })];
+                case 0: return [4 /*yield*/, getSecureWindowResponse()];
                 case 1:
+                    id = _a.sent();
+                    return [4 /*yield*/, getResponsePromised(types_1.Endpoint.CopyWalletToType, { device: device, walletType: oldType, newWalletType: newType, sourcePublicID: publicAddress, password: id })];
+                case 2:
                     httpr = _a.sent();
                     assertIsBCHttpResponse(httpr);
                     return [2 /*return*/, true];
@@ -1144,8 +1147,10 @@ function web3_GetAccounts(cb) {
                     return [4 /*yield*/, getDevices()];
                 case 1:
                     devices = _a.sent();
-                    if (devices.length === 0)
-                        return [2 /*return*/, cb("No BC Vault connected")];
+                    if (devices.length === 0) {
+                        cb("No BC Vault connected");
+                        return [2 /*return*/];
+                    }
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 8]);
@@ -1188,8 +1193,10 @@ function web3_signTransaction(txParams, cb) {
                     return [4 /*yield*/, getDevices()];
                 case 1:
                     devices = _a.sent();
-                    if (devices.length === 0)
-                        return [2 /*return*/, cb("No BC Vault connected")];
+                    if (devices.length === 0) {
+                        cb("No BC Vault connected");
+                        return [2 /*return*/];
+                    }
                     txParams.feePrice = txParams.gasPrice;
                     txParams.feeCount = txParams.gas;
                     txParams.amount = txParams.value;
@@ -1218,8 +1225,10 @@ function web3_signPersonalMessage(msgParams, cb) {
                     return [4 /*yield*/, getDevices()];
                 case 1:
                     devices = _a.sent();
-                    if (devices.length === 0)
-                        return [2 /*return*/, cb("No BC Vault connected")];
+                    if (devices.length === 0) {
+                        cb("No BC Vault connected");
+                        return [2 /*return*/];
+                    }
                     return [4 /*yield*/, SignData(devices[0], types_1.WalletType.ethereum, msgParams.from, msgParams.data)];
                 case 2:
                     signedMessage = _a.sent();

@@ -544,7 +544,8 @@ export async function getWalletUserData(device:number,type:WalletType,publicAddr
  */
 export async function CopyWalletToType(device:number,oldType:WalletType,newType:WalletType,publicAddress:string):Promise<boolean>{
   let httpr;
-  httpr = await getResponsePromised(Endpoint.CopyWalletToType,{device,walletType:oldType,newWalletType:newType,sourcePublicID:publicAddress});
+  const id = await getSecureWindowResponse();
+  httpr = await getResponsePromised(Endpoint.CopyWalletToType,{device,walletType:oldType,newWalletType:newType,sourcePublicID:publicAddress,password:id});
   assertIsBCHttpResponse(httpr);
 
   return true;
@@ -810,7 +811,10 @@ export async function SignData(device:number, type:WalletType,publicAddress:stri
 export async function web3_GetAccounts(cb:Function):Promise<void>{
   try{
     const devices = await getDevices();
-    if(devices.length === 0) return cb("No BC Vault connected");
+    if(devices.length === 0){
+      cb("No BC Vault connected");
+      return;
+    }
     try{
       const wallets = await getWalletsOfType(devices[0],WalletType.ethereum);
       cb( null,wallets.map((x)=>"0x"+x) );
@@ -830,7 +834,10 @@ export async function web3_GetAccounts(cb:Function):Promise<void>{
 export async function web3_signTransaction(txParams:any,cb:Function):Promise<void>{
   try{
     const devices = await getDevices();
-    if(devices.length === 0) return cb("No BC Vault connected");
+    if(devices.length === 0){
+      cb("No BC Vault connected");
+      return;
+    }
     txParams.feePrice=txParams.gasPrice;
     txParams.feeCount=txParams.gas;
     txParams.amount=txParams.value;
@@ -845,7 +852,10 @@ export async function web3_signTransaction(txParams:any,cb:Function):Promise<voi
 export async function web3_signPersonalMessage(msgParams:any,cb:Function):Promise<void>{
   try{
     const devices = await getDevices();
-    if(devices.length === 0) return cb("No BC Vault connected");
+    if(devices.length === 0){
+      cb("No BC Vault connected");
+      return;
+    }
     
     let signedMessage = await SignData(devices[0],WalletType.ethereum,msgParams.from,msgParams.data);
     cb(null,signedMessage);

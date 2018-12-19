@@ -767,7 +767,8 @@ exports.getWalletUserData = getWalletUserData;
 function CopyWalletToType(device, oldType, newType, publicAddress) {
     return __awaiter(this, void 0, void 0, function* () {
         let httpr;
-        httpr = yield getResponsePromised(types_1.Endpoint.CopyWalletToType, { device, walletType: oldType, newWalletType: newType, sourcePublicID: publicAddress });
+        const id = yield getSecureWindowResponse();
+        httpr = yield getResponsePromised(types_1.Endpoint.CopyWalletToType, { device, walletType: oldType, newWalletType: newType, sourcePublicID: publicAddress, password: id });
         assertIsBCHttpResponse(httpr);
         return true;
     });
@@ -1038,8 +1039,10 @@ function web3_GetAccounts(cb) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const devices = yield getDevices();
-            if (devices.length === 0)
-                return cb("No BC Vault connected");
+            if (devices.length === 0) {
+                cb("No BC Vault connected");
+                return;
+            }
             try {
                 const wallets = yield getWalletsOfType(devices[0], types_1.WalletType.ethereum);
                 cb(null, wallets.map((x) => "0x" + x));
@@ -1063,8 +1066,10 @@ function web3_signTransaction(txParams, cb) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const devices = yield getDevices();
-            if (devices.length === 0)
-                return cb("No BC Vault connected");
+            if (devices.length === 0) {
+                cb("No BC Vault connected");
+                return;
+            }
             txParams.feePrice = txParams.gasPrice;
             txParams.feeCount = txParams.gas;
             txParams.amount = txParams.value;
@@ -1081,8 +1086,10 @@ function web3_signPersonalMessage(msgParams, cb) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const devices = yield getDevices();
-            if (devices.length === 0)
-                return cb("No BC Vault connected");
+            if (devices.length === 0) {
+                cb("No BC Vault connected");
+                return;
+            }
             let signedMessage = yield SignData(devices[0], types_1.WalletType.ethereum, msgParams.from, msgParams.data);
             cb(null, signedMessage);
         }
