@@ -1059,14 +1059,15 @@ exports.EnterGlobalPin = EnterGlobalPin;
   await bc.GenerateTransaction(1,1,trxOptions)
   // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
   ```
-  @param device  DeviceID obtained from getDevices
-  @param type    WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
-  @param data    Transaction data object
-  @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
-  @throws        Will throw an AxiosError if the request itself failed or if status code != 200
-  @returns       The raw transaction hex prefixed with '0x' if operation was successful, otherwise will throw
+  @param device    DeviceID obtained from getDevices
+  @param type      WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
+  @param data      Transaction data object
+  @param broadcast Whether to broadcast the transaction to the blockchain automatically
+  @throws          Will throw a DaemonError if the status code of the request was rejected by the server for any reason
+  @throws          Will throw an AxiosError if the request itself failed or if status code != 200
+  @returns         The raw transaction hex prefixed with '0x' if operation was successful, otherwise will throw
  */
-function GenerateTransaction(device, type, data) {
+function GenerateTransaction(device, type, data, broadcast) {
     return __awaiter(this, void 0, void 0, function () {
         var id, httpr;
         return __generator(this, function (_a) {
@@ -1076,7 +1077,7 @@ function GenerateTransaction(device, type, data) {
                     id = _a.sent();
                     console.log("Got auth id:" + id);
                     console.log("Sending object:" + JSON.stringify({ device: device, walletType: type, transaction: data, password: id }));
-                    return [4 /*yield*/, getResponsePromised(types_1.Endpoint.GenerateTransaction, { device: device, walletType: type, transaction: data, password: id })];
+                    return [4 /*yield*/, getResponsePromised(types_1.Endpoint.GenerateTransaction, { device: device, walletType: type, transaction: data, password: id, broadcast: broadcast })];
                 case 2:
                     httpr = _a.sent();
                     console.log(httpr.body);

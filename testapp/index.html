@@ -64,7 +64,7 @@
                 if(values && values.value && values.value[0] != "" && values.value[1] != "" && values.value[2] != ""){
                     var input = values.value;
                     var trxOptions = {from:wallet,to:input[0],feeCount:input[3],feePrice:input[2],amount:input[1]};
-                    bc.GenerateTransaction(device, walletType,trxOptions);
+                    bc.GenerateTransaction(device, walletType,trxOptions,true);
                 }else{
                     Swal("Bad input!");
                 }

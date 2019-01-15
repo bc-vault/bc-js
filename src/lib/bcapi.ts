@@ -746,18 +746,19 @@ export async function EnterGlobalPin(device:number,passwordType:PasswordType=Pas
   await bc.GenerateTransaction(1,1,trxOptions)
   // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
   ```
-  @param device  DeviceID obtained from getDevices
-  @param type    WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
-  @param data    Transaction data object
-  @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
-  @throws        Will throw an AxiosError if the request itself failed or if status code != 200
-  @returns       The raw transaction hex prefixed with '0x' if operation was successful, otherwise will throw
+  @param device    DeviceID obtained from getDevices
+  @param type      WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
+  @param data      Transaction data object
+  @param broadcast Whether to broadcast the transaction to the blockchain automatically   
+  @throws          Will throw a DaemonError if the status code of the request was rejected by the server for any reason
+  @throws          Will throw an AxiosError if the request itself failed or if status code != 200
+  @returns         The raw transaction hex prefixed with '0x' if operation was successful, otherwise will throw
  */
-export async function GenerateTransaction(device:number, type:WalletType,data:TransactionData):Promise<string>{
+export async function GenerateTransaction(device:number, type:WalletType,data:TransactionData,broadcast?:boolean):Promise<string>{
   const id = await getSecureWindowResponse(PasswordType.WalletPassword);
   console.log("Got auth id:"+id);
   console.log("Sending object:"+JSON.stringify({device,walletType:type,transaction:data,password:id}));
-  const httpr = await getResponsePromised(Endpoint.GenerateTransaction,{device,walletType:type,transaction:data,password:id});
+  const httpr = await getResponsePromised(Endpoint.GenerateTransaction,{device,walletType:type,transaction:data,password:id,broadcast});
 
   console.log(httpr.body);
   assertIsBCHttpResponse(httpr);
