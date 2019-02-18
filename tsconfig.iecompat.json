@@ -6,12 +6,13 @@
     "moduleResolution": "node",
     "module": "commonjs",
     "downlevelIteration":true,
+    "skipLibCheck": true,
 
     "lib": ["es6", "dom"],
     "types": [],
     "typeRoots": ["node_modules/@types", "src/types"]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules/**"],
+  "exclude": ["node_modules","**/*.spec.ts"],
   "compileOnSave": false
 }

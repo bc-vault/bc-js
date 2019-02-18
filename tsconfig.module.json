@@ -4,9 +4,8 @@
     "target": "esnext",
     "outDir": "build/module",
     "downlevelIteration":true,
+    "skipLibCheck": true,
     "module": "esnext"
   },
-  "exclude": [
-    "node_modules/**"
-  ]
+  "exclude": ["node_modules","**/*.spec.ts"],
 }

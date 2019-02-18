@@ -67,6 +67,7 @@ var __spread = (this && this.__spread) || function () {
 exports.__esModule = true;
 var axios_1 = require("axios");
 var types_1 = require("./types");
+var sha3_1 = require("sha3");
 var es6_promise_1 = require("es6-promise");
 es6_promise_1.polyfill();
 exports.Host = "https://localhost.bc-vault.com:1991/";
@@ -1185,6 +1186,23 @@ function web3_GetAccounts(cb) {
     });
 }
 exports.web3_GetAccounts = web3_GetAccounts;
+function strip0x(str) {
+    if (str.startsWith('0x')) {
+        return str.substr(2);
+    }
+    return str;
+}
+function toEtherCase(inputString) {
+    var kec = new sha3_1.Keccak(256);
+    kec.update(inputString.toLowerCase());
+    var keccakArray = kec.digest('hex').split('');
+    var upperCase = '89abcdef';
+    return inputString.toLowerCase().split('').map(function (x, idx) {
+        if (upperCase.indexOf(keccakArray[idx]) !== -1)
+            return x.toUpperCase();
+        return x;
+    }).join('');
+}
 function web3_signTransaction(txParams, cb) {
     return __awaiter(this, void 0, void 0, function () {
         var devices, txHex, e_9;
@@ -1202,7 +1220,8 @@ function web3_signTransaction(txParams, cb) {
                     txParams.feePrice = txParams.gasPrice;
                     txParams.feeCount = txParams.gas;
                     txParams.amount = txParams.value;
-                    return [4 /*yield*/, GenerateTransaction(devices[0], types_1.WalletType.ethereum, txParams)];
+                    txParams.from = toEtherCase(strip0x(txParams.from));
+                    return [4 /*yield*/, GenerateTransaction(devices[1], types_1.WalletType.ethereum, txParams)];
                 case 2:
                     txHex = _a.sent();
                     cb(null, txHex);
@@ -1231,7 +1250,8 @@ function web3_signPersonalMessage(msgParams, cb) {
                         cb("No BC Vault connected");
                         return [2 /*return*/];
                     }
-                    return [4 /*yield*/, SignData(devices[0], types_1.WalletType.ethereum, msgParams.from, msgParams.data)];
+                    msgParams.from = toEtherCase(strip0x(msgParams.from));
+                    return [4 /*yield*/, SignData(devices[1], types_1.WalletType.ethereum, msgParams.from, msgParams.data)];
                 case 2:
                     signedMessage = _a.sent();
                     cb(null, signedMessage);

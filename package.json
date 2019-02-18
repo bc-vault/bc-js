@@ -1,6 +1,6 @@
 {
   "name": "bc-vault-js",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "Javascript library for interfacing with the BC VAULT daemon via HTTP.",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -54,19 +54,19 @@
     "node": ">=8.9"
   },
   "dependencies": {
+    "ava": "^1.2.1",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "bluebird": "^3.5.3",
-    "es6-promise": "^4.2.5"
+    "es6-promise": "^4.2.5",
+    "sha3": "^2.0.0"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.24",
-    "ava": "^1.0.0-beta.5.1",
     "codecov": "^3.1.0",
     "cz-conventional-changelog": "^2.1.0",
     "gh-pages": "^1.2.0",
     "npm-run-all": "^4.1.5",
-    "nyc": "^12.0.2",
     "opn-cli": "^3.1.0",
     "prettier": "^1.15.3",
     "standard-version": "^4.4.0",
@@ -74,7 +74,7 @@
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-immutable": "^4.9.1",
-    "typedoc": "^0.11.1",
+    "typedoc": "^0.14.2",
     "typescript": "^2.9.1",
     "uglifyify": "^5.0.1"
   },
