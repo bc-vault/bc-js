@@ -67,6 +67,9 @@
     padding-bottom:0.25rem !important;
     float:left;
 }
+.list-group-item > *{
+    font-size:0.78rem;
+}
 .rightButtons{
     color:rgb(55, 150, 55) !important;
     float:right;

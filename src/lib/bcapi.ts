@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import {BCHttpResponse,Endpoint,HttpResponse,SpaceObject,PasswordType,WalletType,DaemonError, VersionObject, TransactionData,BCDataRefreshStatusCode, BCObject,BCDevice,typeInfoMap, WalletTypeInfo, WalletData} from './types'
 import { Keccak } from 'sha3';
 import { polyfill } from 'es6-promise'; polyfill();
+//import { Buffer } from 'buffer';
 export const Host:string="https://localhost.bc-vault.com:1991/"
 function getResponsePromised(endpoint:Endpoint,data?:object):Promise<HttpResponse>{
   return new Promise((res,rej)=>{
@@ -860,7 +861,7 @@ export async function web3_signTransaction(txParams:any,cb:Function):Promise<voi
     txParams.amount=txParams.value;
     txParams.from=toEtherCase(strip0x(txParams.from))
     
-    let txHex = await GenerateTransaction(devices[1],WalletType.ethereum,txParams)
+    let txHex = await GenerateTransaction(devices[devices.length-1],WalletType.ethereum,txParams)
     cb(null,txHex);
   }catch(e){
     cb(e,null)
@@ -876,7 +877,8 @@ export async function web3_signPersonalMessage(msgParams:any,cb:Function):Promis
     }
     msgParams.from=toEtherCase(strip0x(msgParams.from))
     
-    let signedMessage = await SignData(devices[1],WalletType.ethereum,msgParams.from,msgParams.data);
+    
+    let signedMessage = await SignData(devices[devices.length-1],WalletType.ethereum,msgParams.from,msgParams.data);
     cb(null,signedMessage);
   }catch(e){
     cb(e,null)

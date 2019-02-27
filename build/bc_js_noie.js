@@ -2221,6 +2221,7 @@ const types_1 = require("./types");
 const sha3_1 = require("sha3");
 const es6_promise_1 = require("es6-promise");
 es6_promise_1.polyfill();
+//import { Buffer } from 'buffer';
 exports.Host = "https://localhost.bc-vault.com:1991/";
 function getResponsePromised(endpoint, data) {
     return new Promise((res, rej) => {
@@ -3111,7 +3112,7 @@ function web3_signTransaction(txParams, cb) {
             txParams.feeCount = txParams.gas;
             txParams.amount = txParams.value;
             txParams.from = toEtherCase(strip0x(txParams.from));
-            let txHex = yield GenerateTransaction(devices[1], types_1.WalletType.ethereum, txParams);
+            let txHex = yield GenerateTransaction(devices[devices.length - 1], types_1.WalletType.ethereum, txParams);
             cb(null, txHex);
         }
         catch (e) {
@@ -3129,7 +3130,7 @@ function web3_signPersonalMessage(msgParams, cb) {
                 return;
             }
             msgParams.from = toEtherCase(strip0x(msgParams.from));
-            let signedMessage = yield SignData(devices[1], types_1.WalletType.ethereum, msgParams.from, msgParams.data);
+            let signedMessage = yield SignData(devices[devices.length - 1], types_1.WalletType.ethereum, msgParams.from, msgParams.data);
             cb(null, signedMessage);
         }
         catch (e) {
@@ -3198,10 +3199,12 @@ var WalletType;
 (function (WalletType) {
     WalletType[WalletType["bitCoin"] = WalletTypeConstants.BTC] = "bitCoin";
     WalletType[WalletType["bitCoinCash"] = WalletTypeConstants.BTC + 1] = "bitCoinCash";
-    WalletType[WalletType["liteCoin"] = WalletTypeConstants.BTC + 2] = "liteCoin";
-    WalletType[WalletType["dash"] = WalletTypeConstants.BTC + 3] = "dash";
-    WalletType[WalletType["dogeCoin"] = WalletTypeConstants.BTC + 4] = "dogeCoin";
-    WalletType[WalletType["ripple"] = WalletTypeConstants.BTC + 5] = "ripple";
+    WalletType[WalletType["bitCoinGold"] = WalletTypeConstants.BTC + 2] = "bitCoinGold";
+    WalletType[WalletType["liteCoin"] = WalletTypeConstants.BTC + 3] = "liteCoin";
+    WalletType[WalletType["dash"] = WalletTypeConstants.BTC + 4] = "dash";
+    WalletType[WalletType["dogeCoin"] = WalletTypeConstants.BTC + 5] = "dogeCoin";
+    WalletType[WalletType["ripple"] = WalletTypeConstants.BTC + 6] = "ripple";
+    WalletType[WalletType["stellar"] = WalletTypeConstants.BTC + 7] = "stellar";
     WalletType[WalletType["ethereum"] = WalletTypeConstants.ETH] = "ethereum";
     WalletType[WalletType["erc20Bokky"] = WalletTypeConstants.ETH | WalletTypeConstants.ERC20] = "erc20Bokky";
     WalletType[WalletType["erc20Salt"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 1] = "erc20Salt";
@@ -3223,10 +3226,12 @@ var WalletType;
     WalletType[WalletType["erc20WaltonChain"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 17] = "erc20WaltonChain";
     WalletType[WalletType["bitCoinTest"] = (WalletTypeConstants.BTC) | WalletTypeConstants.TESTNET] = "bitCoinTest";
     WalletType[WalletType["bitCoinCashTest"] = (WalletTypeConstants.BTC + 1) | WalletTypeConstants.TESTNET] = "bitCoinCashTest";
-    WalletType[WalletType["liteCoinTest"] = (WalletTypeConstants.BTC + 2) | WalletTypeConstants.TESTNET] = "liteCoinTest";
-    WalletType[WalletType["dashTest"] = (WalletTypeConstants.BTC + 3) | WalletTypeConstants.TESTNET] = "dashTest";
-    WalletType[WalletType["dogeCoinTest"] = (WalletTypeConstants.BTC + 4) | WalletTypeConstants.TESTNET] = "dogeCoinTest";
-    WalletType[WalletType["rippleTest"] = (WalletTypeConstants.BTC + 5) | WalletTypeConstants.TESTNET] = "rippleTest";
+    WalletType[WalletType["bitCoinGoldTest"] = (WalletTypeConstants.BTC + 2) | WalletTypeConstants.TESTNET] = "bitCoinGoldTest";
+    WalletType[WalletType["liteCoinTest"] = (WalletTypeConstants.BTC + 3) | WalletTypeConstants.TESTNET] = "liteCoinTest";
+    WalletType[WalletType["dashTest"] = (WalletTypeConstants.BTC + 4) | WalletTypeConstants.TESTNET] = "dashTest";
+    WalletType[WalletType["dogeCoinTest"] = (WalletTypeConstants.BTC + 5) | WalletTypeConstants.TESTNET] = "dogeCoinTest";
+    WalletType[WalletType["rippleTest"] = (WalletTypeConstants.BTC + 6) | WalletTypeConstants.TESTNET] = "rippleTest";
+    WalletType[WalletType["stellarTest"] = (WalletTypeConstants.BTC + 7) | WalletTypeConstants.TESTNET] = "stellarTest";
     WalletType[WalletType["ethereumTest"] = (WalletTypeConstants.ETH) | WalletTypeConstants.TESTNET] = "ethereumTest";
     WalletType[WalletType["erc20BokkyTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) | WalletTypeConstants.TESTNET] = "erc20BokkyTest";
     WalletType[WalletType["erc20SaltTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 1] = "erc20SaltTest";
@@ -3295,6 +3300,10 @@ exports.typeInfoMap = [
     { type: WalletType.erc20IconTest, name: "Icon Test", ticker: "ICX-T" },
     { type: WalletType.erc20OmiseGoTest, name: "OmiseGo Test", ticker: "OMG-T" },
     { type: WalletType.erc20WaltonChainTest, name: "WaltonChain Test", ticker: "WTC-T" },
+    { type: WalletType.ripple, name: "Ripple", ticker: "XRP" },
+    { type: WalletType.rippleTest, name: "Ripple Test", ticker: "XRP-T" },
+    { type: WalletType.stellar, name: "Stellar", ticker: "XLM" },
+    { type: WalletType.stellarTest, name: "Stellar Test", ticker: "XLM-T" },
 ];
 var BCDataRefreshStatusCode;
 (function (BCDataRefreshStatusCode) {

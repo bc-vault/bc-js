@@ -1,5 +1,6 @@
 // tslint:disable:no-expression-statement
-import { ExecutionContext, test } from 'ava';
+import { ExecutionContext} from 'ava';
+import * as ava from 'ava';
 import { polyfill } from 'es6-promise'; polyfill();
 import * as bc from './bcapi';
 import {BCHttpResponse, WalletType} from './types';
@@ -15,9 +16,10 @@ interface TestWalletType{
   type:WalletType
   signature:string|undefined
 }
-    /* tslint:disable:prefer-const */
-    let testStruct:TestStruct
-    /* tslint:enable:prefer-const */
+/* tslint:disable:prefer-const */
+let testStruct:TestStruct
+const test = ava.default;
+/* tslint:enable:prefer-const */
 async function getDeviceObjectAsync(t:ExecutionContext,deviceID:number):Promise<Device>{
 
   const DeviceObject:Device = {deviceID,supportedWallets:[],activeWallets:[]};

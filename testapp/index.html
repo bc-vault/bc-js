@@ -43,6 +43,25 @@
                 Swal("Error",JSON.stringify(e),'error');
             })
         }
+		
+		function signTestMessage(device,walletType,wallet){
+			
+			bc.SignData(device,walletType,wallet,'TESTING BCVAULT SIGNATURE').then(function(data){
+                Swal("SUCCESS",JSON.stringify({
+					address:wallet,
+					msg:'TESTING BCVAULT SIGNATURE',
+					sig:data,
+					version:3,
+					signer:"BCVAULT"
+				}));
+			
+			}).catch(function(e){
+                Swal("Error",JSON.stringify(e),'error');
+			
+			})
+		
+		
+		}
         function createTransaction(device,walletType,wallet){
             Swal({
                 title: 'Transaction',
@@ -86,7 +105,8 @@
                     isActiveWallet,
                     enterGlobalPin,
                     balanceList:window.balances,
-                    createTransaction
+                    createTransaction,
+					signTestMessage
                 }
             });
             window.statusVue = new Vue({
@@ -132,6 +152,7 @@
                             <div class="rightButtons">
                                     <i class="fas fa-sync-alt clickable" v-on:click="getWalletBalance(currency,wallet.publicKey)" title="Refresh Balance"></i>
                                     <i class="fas fa-paper-plane clickable" v-on:click="createTransaction(device.id,currency,wallet.publicKey)" v-show="balanceList.find(function(x){return x.walletType ==  currency && x.publicKey == wallet.publicKey}) != undefined" title="Send a Transaction" ></i>
+                                    <i class="fas fa-signature clickable" v-on:click="signTestMessage(device.id,currency,wallet.publicKey)" v-show="currency == 0x01000000" title="Sign Test Message" ></i>
                             </div>
                         </li>
                     </ul>

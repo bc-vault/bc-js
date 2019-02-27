@@ -70,6 +70,7 @@ var types_1 = require("./types");
 var sha3_1 = require("sha3");
 var es6_promise_1 = require("es6-promise");
 es6_promise_1.polyfill();
+//import { Buffer } from 'buffer';
 exports.Host = "https://localhost.bc-vault.com:1991/";
 function getResponsePromised(endpoint, data) {
     return new Promise(function (res, rej) {
@@ -1221,7 +1222,7 @@ function web3_signTransaction(txParams, cb) {
                     txParams.feeCount = txParams.gas;
                     txParams.amount = txParams.value;
                     txParams.from = toEtherCase(strip0x(txParams.from));
-                    return [4 /*yield*/, GenerateTransaction(devices[1], types_1.WalletType.ethereum, txParams)];
+                    return [4 /*yield*/, GenerateTransaction(devices[devices.length - 1], types_1.WalletType.ethereum, txParams)];
                 case 2:
                     txHex = _a.sent();
                     cb(null, txHex);
@@ -1251,7 +1252,7 @@ function web3_signPersonalMessage(msgParams, cb) {
                         return [2 /*return*/];
                     }
                     msgParams.from = toEtherCase(strip0x(msgParams.from));
-                    return [4 /*yield*/, SignData(devices[1], types_1.WalletType.ethereum, msgParams.from, msgParams.data)];
+                    return [4 /*yield*/, SignData(devices[devices.length - 1], types_1.WalletType.ethereum, msgParams.from, msgParams.data)];
                 case 2:
                     signedMessage = _a.sent();
                     cb(null, signedMessage);
