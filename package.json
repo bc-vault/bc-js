@@ -16,39 +16,24 @@
     "build:main": "tsc -p tsconfig.json",
     "build:module": "tsc -p tsconfig.module.json",
     "build:ie": "tsc -p tsconfig.iecompat.json",
-    "fix": "run-s fix:*",
-    "fix:prettier": "prettier \"src/**/*.ts\" --write",
-    "fix:tslint": "tslint --fix --project .",
     "test": "run-s build test:*",
     "test:lint": "tslint --project . ",
     "test:unit": "nyc ava",
-    "watch": "run-s clean build:main && run-p \"build:main -- -w\" \"test:unit -- --watch\"",
-    "cov": "run-s build test:unit cov:html && opn coverage/index.html",
-    "cov:html": "nyc report --reporter=html",
-    "cov:send": "nyc report --reporter=lcov > coverage.lcov && codecov",
-    "cov:check": "nyc report && nyc check-coverage --lines 100 --functions 100 --branches 100",
     "doc": "run-s doc:html && opn build/docs/index.html",
     "doc:html": "typedoc --mode file --excludeNotExported --excludePrivate --gaID UA-118197678-1 --name bc-js --out build/docs",
     "doc:json": "typedoc --mode file --excludeNotExported --excludePrivate --gaID UA-118197678-1 --name bc-js --json build/docs/typedoc.json",
     "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d build/docs",
     "version": "standard-version",
     "reset": "git clean -dfx && git reset --hard && npm i",
-    "clean": "trash build test",
-    "all": "run-s reset test cov:check doc:html",
-    "prepare-release": "run-s all version doc:publish"
+    "clean": "trash build test"
   },
   "scripts-info": {
     "info": "Display information about the package scripts",
     "build": "Clean and rebuild the project",
-    "fix": "Try to automatically fix any linting problems",
     "test": "Lint and unit test the project",
-    "watch": "Watch and rebuild the project on save, then rerun relevant tests",
-    "cov": "Rebuild, run tests, then create and open the coverage report",
     "doc": "Generate HTML API documentation and open it in a browser",
     "doc:json": "Generate API documentation in typedoc JSON format",
-    "version": "Bump package.json version, update CHANGELOG.md, tag release",
-    "reset": "Delete all untracked files and reset the repo to the last commit",
-    "prepare-release": "One-step: clean, build, test, publish docs, and prep a release"
+    "version": "Bump package.json version, update CHANGELOG.md, tag release"
   },
   "engines": {
     "node": ">=8.9"
@@ -59,18 +44,15 @@
     "babel-polyfill": "^6.26.0",
     "bluebird": "^3.5.3",
     "es6-promise": "^4.2.6",
-    "sha3": "^2.0.0"
+    "npm-run-all": "^4.1.5",
+    "opn-cli": "^4.0.0",
+    "sha3": "^2.0.0",
+    "trash-cli": "^1.4.0"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.26",
-    "codecov": "^3.2.0",
-    "cz-conventional-changelog": "^2.1.0",
-    "gh-pages": "^1.2.0",
-    "npm-run-all": "^4.1.5",
-    "opn-cli": "^3.1.0",
     "prettier": "^1.16.4",
     "standard-version": "^4.4.0",
-    "trash-cli": "^1.4.0",
     "tslint": "^5.13.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-immutable": "^4.9.1",
@@ -87,11 +69,6 @@
     "sources": [
       "build/main/**/*.js"
     ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
   },
   "prettier": {
     "singleQuote": true
