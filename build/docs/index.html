@@ -1,0 +1,360 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>bc-js</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">bc-js</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> bc-js</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<h1 id="bc-js">bc-js</h1>
+				<p>Javascript library for interfacing with the BC VAULT daemon via HTTP.</p>
+				<h2 id="description">Description</h2>
+				<p>BC-JS is a clientside library which makes integrating support for BC VAULT as easy as possible. When reading this documentation keep in mind that some functions that require user input will display a popup to the user for confirmation. No extra work is required on your part but keep that in mind. </p>
+				<p>All functions are defined as Promises, which means that in <a href="https://caniuse.com/#feat=async-functions">supported environments</a> you can use the native await syntax to resolve actions.</p>
+				<h2 id="quick-start-in-browser">Quick start in browser</h2>
+				<p>To get started download <a href="#">bc-js</a> and place it somewhere where it can be found from a HTML file. This will register the object <code>_bcvault</code> in the global <code>window</code> object.</p>
+				<p>Include it where needed:</p>
+				<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/path/to/bc-js.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></code></pre>
+				<p>For example, to query currently connected devices:</p>
+				<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/path/to/bc-js.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+    <span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">"load"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        _bcvault.getDevices().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resultArray</span>)</span>{
+            <span class="hljs-built_in">console</span>.log(resultArray);
+        });
+    }
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+</code></pre>
+				<p>or, if your target browsers support async/await:</p>
+				<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/path/to/bc-js.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+    <span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">"load"</span>,<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-keyword">var</span> result = <span class="hljs-keyword">await</span> _bcvault.getDevices();
+        <span class="hljs-built_in">console</span>.log(result);
+    }
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+</code></pre>
+				<h3 id="ie-workarounds">IE workarounds</h3>
+				<p>To support Internet Explorer which doesn&#39;t allow communication cross-domain-area between popups, we had to use showModalDialog internally. This means that if a popup is shown in IE, it will block the entire browser until it is either completed or closed. Other browsers are unaffected.</p>
+				<h2 id="build-instructions">Build Instructions</h2>
+				<h3 id="generate-documentation">Generate Documentation</h3>
+				<h4 id="global-dependencies">Global Dependencies</h4>
+				<ul>
+					<li>TypeDoc</li>
+				</ul>
+				<h4 id="instructions">Instructions</h4>
+				<ol>
+					<li>Make sure to cd to the project root</li>
+					<li>Run <code>npm run doc</code></li>
+				</ol>
+				<p>Alternatively, run typedoc directly:</p>
+				<p><code>typedoc --mode file --excludeNotExported --excludePrivate --name bc-js --out build/docs</code></p>
+				<h4 id="output">Output</h4>
+				<p>Output files are in <code>build/docs</code></p>
+				<h3 id="build">Build</h3>
+				<h4 id="global-dependencies">Global Dependencies</h4>
+				<ol>
+					<li>Typescript</li>
+					<li>Browserify</li>
+				</ol>
+				<h4 id="instructions">Instructions</h4>
+				<ol>
+					<li>Make sure to cd to the project root</li>
+					<li>Run <code>npm run build</code></li>
+				</ol>
+				<h4 id="output">Output</h4>
+				<p>Output files are in</p>
+				<ul>
+					<li><code>build/module</code> - ES6 with esnext modules (Future)</li>
+					<li><code>build/ie</code> - ES3 Polyfills for IE, used in bc_js_*.js</li>
+					<li><code>build/main</code> - ES6 with commonJS modules (NodeJS)</li>
+					<li><code>build/bc_js_*.js</code> - Browserified output for use in browsers (obviously)</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum">
+						<a href="enums/bcdatarefreshstatuscode.html" class="tsd-kind-icon">BCData<wbr>Refresh<wbr>Status<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/endpoint.html" class="tsd-kind-icon">Endpoint</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/passwordtype.html" class="tsd-kind-icon">Password<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/wallettype.html" class="tsd-kind-icon">Wallet<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/daemonerror.html" class="tsd-kind-icon">Daemon<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/apiversionobject.html" class="tsd-kind-icon">Api<wbr>Version<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bcdevice.html" class="tsd-kind-icon">BCDevice</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bchttpresponse.html" class="tsd-kind-icon">BCHttp<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bcobject.html" class="tsd-kind-icon">BCObject</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/dateobject.html" class="tsd-kind-icon">Date<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/httpresponse.html" class="tsd-kind-icon">Http<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/spaceobject.html" class="tsd-kind-icon">Space<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/transactiondata.html" class="tsd-kind-icon">Transaction<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/versionobject.html" class="tsd-kind-icon">Version<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/walletdata.html" class="tsd-kind-icon">Wallet<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/wallettypeinfo.html" class="tsd-kind-icon">Wallet<wbr>Type<wbr>Info</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#host" class="tsd-kind-icon">Host</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#ispolling" class="tsd-kind-icon">is<wbr>Polling</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#typeinfomap" class="tsd-kind-icon">type<wbr>Info<wbr>Map</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#addbcdatachangedlistener" class="tsd-kind-icon">AddBCData<wbr>Changed<wbr>Listener</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#copywallettotype" class="tsd-kind-icon">Copy<wbr>Wallet<wbr>ToType</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#displayaddressondevice" class="tsd-kind-icon">Display<wbr>Address<wbr>OnDevice</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#enterglobalpin" class="tsd-kind-icon">Enter<wbr>Global<wbr>Pin</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#generatetransaction" class="tsd-kind-icon">Generate<wbr>Transaction</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#generatewallet" class="tsd-kind-icon">Generate<wbr>Wallet</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#signdata" class="tsd-kind-icon">Sign<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getactivewallettypes" class="tsd-kind-icon">get<wbr>Active<wbr>Wallet<wbr>Types</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getavailablespace" class="tsd-kind-icon">get<wbr>Available<wbr>Space</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getdevices" class="tsd-kind-icon">get<wbr>Devices</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getfirmwareversion" class="tsd-kind-icon">get<wbr>Firmware<wbr>Version</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getisaddressvalid" class="tsd-kind-icon">get<wbr>IsAddress<wbr>Valid</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getsupportedwallettypes" class="tsd-kind-icon">get<wbr>Supported<wbr>Wallet<wbr>Types</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getwalletbalance" class="tsd-kind-icon">get<wbr>Wallet<wbr>Balance</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getwallettypeinfo" class="tsd-kind-icon">get<wbr>Wallet<wbr>Type<wbr>Info</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getwalletuserdata" class="tsd-kind-icon">get<wbr>Wallet<wbr>User<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getwalletsoftype" class="tsd-kind-icon">get<wbr>Wallets<wbr>OfType</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#startobjectpolling" class="tsd-kind-icon">start<wbr>Object<wbr>Polling</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#triggermanualupdate" class="tsd-kind-icon">trigger<wbr>Manual<wbr>Update</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#web3_getaccounts" class="tsd-kind-icon">web3_<wbr><wbr>Get<wbr>Accounts</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#web3_inject" class="tsd-kind-icon">web3_<wbr><wbr>Inject</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#web3_signpersonalmessage" class="tsd-kind-icon">web3_<wbr>sign<wbr>Personal<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#web3_signtransaction" class="tsd-kind-icon">web3_<wbr>sign<wbr>Transaction</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#bcdata" class="tsd-kind-icon">BCData</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-118197678-1', '');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>
