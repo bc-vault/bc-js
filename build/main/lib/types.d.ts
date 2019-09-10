@@ -6,6 +6,12 @@ export interface BCHttpResponse {
     readonly errorCode: number;
     readonly data: any;
 }
+export declare enum LogLevel {
+    verbose = 1,
+    debug = 2,
+    warning = 3,
+    error = 4
+}
 export interface TransactionData {
     /**
      * @description the public address from which to send

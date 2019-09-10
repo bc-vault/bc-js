@@ -8,6 +8,12 @@ export interface HttpResponse{
     readonly errorCode:number;
     readonly data:any;
   }
+  export enum LogLevel{
+    verbose=1,
+    debug=2,
+    warning=3,
+    error=4
+  }
   export interface TransactionData{
     /**
      * @description the public address from which to send

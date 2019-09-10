@@ -152,6 +152,7 @@ function fromByteArray (uint8) {
 }
 
 },{}],2:[function(require,module,exports){
+(function (Buffer){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -1930,7 +1931,8 @@ function numberIsNaN (obj) {
   return obj !== obj // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":1,"ieee754":3}],3:[function(require,module,exports){
+}).call(this,require("buffer").Buffer)
+},{"base64-js":1,"buffer":2,"ieee754":3}],3:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = (nBytes * 8) - mLen - 1
@@ -2245,8 +2247,15 @@ function assertIsBCHttpResponse(httpr) {
     if (httpr.body.errorCode !== 0x9000)
         throw new types_1.DaemonError(httpr.body);
 }
+function log(msg, level = types_1.LogLevel.verbose) {
+    if (exports.logLevel <= level) {
+        console.log('[' + new Date(Date.now()).toLocaleTimeString() + ']: ' + msg);
+    }
+}
 //** Is BCData object polling already taking place? */
 exports.isPolling = false;
+/** Set Logging verbosity */
+exports.logLevel = types_1.LogLevel.warning;
 /**
   Starts polling daemon for changes and updates BCData object
   ### Example (es3)
@@ -2962,7 +2971,7 @@ exports.GenerateWallet = GenerateWallet;
 function EnterGlobalPin(device, passwordType = types_1.PasswordType.GlobalPassword) {
     return __awaiter(this, void 0, void 0, function* () {
         const id = yield getSecureWindowResponse(passwordType);
-        console.log("Got pin popup:" + id);
+        log("Got pin popup:" + id);
         const httpr = yield getResponsePromised(types_1.Endpoint.EnterGlobalPin, { device, password: id });
         assertIsBCHttpResponse(httpr);
         triggerManualUpdate();
@@ -3005,10 +3014,10 @@ exports.EnterGlobalPin = EnterGlobalPin;
 function GenerateTransaction(device, type, data, broadcast) {
     return __awaiter(this, void 0, void 0, function* () {
         const id = yield getSecureWindowResponse(types_1.PasswordType.WalletPassword);
-        console.log("Got auth id:" + id);
-        console.log("Sending object:" + JSON.stringify({ device, walletType: type, transaction: data, password: id }));
+        log("Got auth id:" + id, types_1.LogLevel.debug);
+        log("Sending object:" + JSON.stringify({ device, walletType: type, transaction: data, password: id }), types_1.LogLevel.debug);
         const httpr = yield getResponsePromised(types_1.Endpoint.GenerateTransaction, { device, walletType: type, transaction: data, password: id, broadcast });
-        console.log(httpr.body);
+        log(httpr.body, types_1.LogLevel.debug);
         assertIsBCHttpResponse(httpr);
         return httpr.body["data"];
     });
@@ -3047,10 +3056,10 @@ exports.GenerateTransaction = GenerateTransaction;
 function SignData(device, type, publicAddress, data) {
     return __awaiter(this, void 0, void 0, function* () {
         const id = yield getSecureWindowResponse(types_1.PasswordType.WalletPassword);
-        console.log("Got auth id:" + id);
-        console.log("Sending object:" + JSON.stringify({ device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id }));
+        log("Got auth id:" + id, types_1.LogLevel.debug);
+        log("Sending object:" + JSON.stringify({ device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id }), types_1.LogLevel.debug);
         const httpr = yield getResponsePromised(types_1.Endpoint.SignData, { device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id });
-        console.log(httpr.body);
+        log("Response body:" + httpr.body, types_1.LogLevel.debug);
         assertIsBCHttpResponse(httpr);
         return httpr.body["data"];
     });
@@ -3145,9 +3154,16 @@ function web3_Inject(web3Instance) {
     web3Instance.personal.sign = web3_signPersonalMessage;
 }
 exports.web3_Inject = web3_Inject;
-},{"./types":6,"axios":7,"es6-promise":32,"sha3":34}],6:[function(require,module,exports){
+},{"./types":6,"axios":7,"es6-promise":32,"sha3":33}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var LogLevel;
+(function (LogLevel) {
+    LogLevel[LogLevel["verbose"] = 1] = "verbose";
+    LogLevel[LogLevel["debug"] = 2] = "debug";
+    LogLevel[LogLevel["warning"] = 3] = "warning";
+    LogLevel[LogLevel["error"] = 4] = "error";
+})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
 /**
  * @description The DaemonError class contains a BCHttpResponse and a HttpResponse, depending on where the failure was
  * @description HttpResponse !== undefined if the response code was != 200 or if the request itself failed
@@ -3319,7 +3335,6 @@ var PasswordType;
 },{}],7:[function(require,module,exports){
 module.exports = require('./lib/axios');
 },{"./lib/axios":9}],8:[function(require,module,exports){
-(function (process){
 'use strict';
 
 var utils = require('./../utils');
@@ -3328,7 +3343,6 @@ var buildURL = require('./../helpers/buildURL');
 var parseHeaders = require('./../helpers/parseHeaders');
 var isURLSameOrigin = require('./../helpers/isURLSameOrigin');
 var createError = require('../core/createError');
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || require('./../helpers/btoa');
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -3340,22 +3354,6 @@ module.exports = function xhrAdapter(config) {
     }
 
     var request = new XMLHttpRequest();
-    var loadEvent = 'onreadystatechange';
-    var xDomain = false;
-
-    // For IE 8/9 CORS support
-    // Only supports POST and GET calls and doesn't returns the response headers.
-    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
-    if (process.env.NODE_ENV !== 'test' &&
-        typeof window !== 'undefined' &&
-        window.XDomainRequest && !('withCredentials' in request) &&
-        !isURLSameOrigin(config.url)) {
-      request = new window.XDomainRequest();
-      loadEvent = 'onload';
-      xDomain = true;
-      request.onprogress = function handleProgress() {};
-      request.ontimeout = function handleTimeout() {};
-    }
 
     // HTTP basic authentication
     if (config.auth) {
@@ -3370,8 +3368,8 @@ module.exports = function xhrAdapter(config) {
     request.timeout = config.timeout;
 
     // Listen for ready state
-    request[loadEvent] = function handleLoad() {
-      if (!request || (request.readyState !== 4 && !xDomain)) {
+    request.onreadystatechange = function handleLoad() {
+      if (!request || request.readyState !== 4) {
         return;
       }
 
@@ -3388,9 +3386,8 @@ module.exports = function xhrAdapter(config) {
       var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
       var response = {
         data: responseData,
-        // IE sends 1223 instead of 204 (https://github.com/axios/axios/issues/201)
-        status: request.status === 1223 ? 204 : request.status,
-        statusText: request.status === 1223 ? 'No Content' : request.statusText,
+        status: request.status,
+        statusText: request.statusText,
         headers: responseHeaders,
         config: config,
         request: request
@@ -3501,8 +3498,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-}).call(this,require('_process'))
-},{"../core/createError":15,"./../core/settle":18,"./../helpers/btoa":22,"./../helpers/buildURL":23,"./../helpers/cookies":25,"./../helpers/isURLSameOrigin":27,"./../helpers/parseHeaders":29,"./../utils":31,"_process":4}],9:[function(require,module,exports){
+},{"../core/createError":15,"./../core/settle":18,"./../helpers/buildURL":22,"./../helpers/cookies":24,"./../helpers/isURLSameOrigin":26,"./../helpers/parseHeaders":28,"./../utils":30}],9:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -3556,7 +3552,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":10,"./cancel/CancelToken":11,"./cancel/isCancel":12,"./core/Axios":13,"./defaults":20,"./helpers/bind":21,"./helpers/spread":30,"./utils":31}],10:[function(require,module,exports){
+},{"./cancel/Cancel":10,"./cancel/CancelToken":11,"./cancel/isCancel":12,"./core/Axios":13,"./defaults":20,"./helpers/bind":21,"./helpers/spread":29,"./utils":30}],10:[function(require,module,exports){
 'use strict';
 
 /**
@@ -3724,7 +3720,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":20,"./../utils":31,"./InterceptorManager":14,"./dispatchRequest":16}],14:[function(require,module,exports){
+},{"./../defaults":20,"./../utils":30,"./InterceptorManager":14,"./dispatchRequest":16}],14:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -3778,7 +3774,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":31}],15:[function(require,module,exports){
+},{"./../utils":30}],15:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -3886,7 +3882,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":12,"../defaults":20,"./../helpers/combineURLs":24,"./../helpers/isAbsoluteURL":26,"./../utils":31,"./transformData":19}],17:[function(require,module,exports){
+},{"../cancel/isCancel":12,"../defaults":20,"./../helpers/combineURLs":23,"./../helpers/isAbsoluteURL":25,"./../utils":30,"./transformData":19}],17:[function(require,module,exports){
 'use strict';
 
 /**
@@ -3959,7 +3955,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":31}],20:[function(require,module,exports){
+},{"./../utils":30}],20:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -4059,7 +4055,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this,require('_process'))
-},{"./adapters/http":8,"./adapters/xhr":8,"./helpers/normalizeHeaderName":28,"./utils":31,"_process":4}],21:[function(require,module,exports){
+},{"./adapters/http":8,"./adapters/xhr":8,"./helpers/normalizeHeaderName":27,"./utils":30,"_process":4}],21:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -4073,44 +4069,6 @@ module.exports = function bind(fn, thisArg) {
 };
 
 },{}],22:[function(require,module,exports){
-'use strict';
-
-// btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
-
-var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-function E() {
-  this.message = 'String contains an invalid character';
-}
-E.prototype = new Error;
-E.prototype.code = 5;
-E.prototype.name = 'InvalidCharacterError';
-
-function btoa(input) {
-  var str = String(input);
-  var output = '';
-  for (
-    // initialize result and counter
-    var block, charCode, idx = 0, map = chars;
-    // if the next str index does not exist:
-    //   change the mapping table to "="
-    //   check if d has no fractional digits
-    str.charAt(idx | 0) || (map = '=', idx % 1);
-    // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
-    output += map.charAt(63 & block >> 8 - idx % 1 * 8)
-  ) {
-    charCode = str.charCodeAt(idx += 3 / 4);
-    if (charCode > 0xFF) {
-      throw new E();
-    }
-    block = block << 8 | charCode;
-  }
-  return output;
-}
-
-module.exports = btoa;
-
-},{}],23:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -4178,7 +4136,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":31}],24:[function(require,module,exports){
+},{"./../utils":30}],23:[function(require,module,exports){
 'use strict';
 
 /**
@@ -4194,7 +4152,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],25:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -4249,7 +4207,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":31}],26:[function(require,module,exports){
+},{"./../utils":30}],25:[function(require,module,exports){
 'use strict';
 
 /**
@@ -4265,7 +4223,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -4335,7 +4293,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":31}],28:[function(require,module,exports){
+},{"./../utils":30}],27:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -4349,7 +4307,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":31}],29:[function(require,module,exports){
+},{"../utils":30}],28:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -4404,7 +4362,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":31}],30:[function(require,module,exports){
+},{"./../utils":30}],29:[function(require,module,exports){
 'use strict';
 
 /**
@@ -4433,7 +4391,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],31:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -4738,14 +4696,27 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":21,"is-buffer":33}],32:[function(require,module,exports){
+},{"./helpers/bind":21,"is-buffer":31}],31:[function(require,module,exports){
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+module.exports = function isBuffer (obj) {
+  return obj != null && obj.constructor != null &&
+    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+},{}],32:[function(require,module,exports){
 (function (process,global){
 /*!
  * @overview es6-promise - a tiny implementation of Promises/A+.
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
- * @version   v4.2.6+9869a4bc
+ * @version   v4.2.8+1e68dce6
  */
 
 (function (global, factory) {
@@ -4976,23 +4947,12 @@ var PENDING = void 0;
 var FULFILLED = 1;
 var REJECTED = 2;
 
-var TRY_CATCH_ERROR = { error: null };
-
 function selfFulfillment() {
   return new TypeError("You cannot resolve a promise with itself");
 }
 
 function cannotReturnOwn() {
   return new TypeError('A promises callback cannot return that same promise.');
-}
-
-function getThen(promise) {
-  try {
-    return promise.then;
-  } catch (error) {
-    TRY_CATCH_ERROR.error = error;
-    return TRY_CATCH_ERROR;
-  }
 }
 
 function tryThen(then$$1, value, fulfillmentHandler, rejectionHandler) {
@@ -5050,10 +5010,7 @@ function handleMaybeThenable(promise, maybeThenable, then$$1) {
   if (maybeThenable.constructor === promise.constructor && then$$1 === then && maybeThenable.constructor.resolve === resolve$1) {
     handleOwnThenable(promise, maybeThenable);
   } else {
-    if (then$$1 === TRY_CATCH_ERROR) {
-      reject(promise, TRY_CATCH_ERROR.error);
-      TRY_CATCH_ERROR.error = null;
-    } else if (then$$1 === undefined) {
+    if (then$$1 === undefined) {
       fulfill(promise, maybeThenable);
     } else if (isFunction(then$$1)) {
       handleForeignThenable(promise, maybeThenable, then$$1);
@@ -5067,7 +5024,14 @@ function resolve(promise, value) {
   if (promise === value) {
     reject(promise, selfFulfillment());
   } else if (objectOrFunction(value)) {
-    handleMaybeThenable(promise, value, getThen(value));
+    var then$$1 = void 0;
+    try {
+      then$$1 = value.then;
+    } catch (error) {
+      reject(promise, error);
+      return;
+    }
+    handleMaybeThenable(promise, value, then$$1);
   } else {
     fulfill(promise, value);
   }
@@ -5146,31 +5110,18 @@ function publish(promise) {
   promise._subscribers.length = 0;
 }
 
-function tryCatch(callback, detail) {
-  try {
-    return callback(detail);
-  } catch (e) {
-    TRY_CATCH_ERROR.error = e;
-    return TRY_CATCH_ERROR;
-  }
-}
-
 function invokeCallback(settled, promise, callback, detail) {
   var hasCallback = isFunction(callback),
       value = void 0,
       error = void 0,
-      succeeded = void 0,
-      failed = void 0;
+      succeeded = true;
 
   if (hasCallback) {
-    value = tryCatch(callback, detail);
-
-    if (value === TRY_CATCH_ERROR) {
-      failed = true;
-      error = value.error;
-      value.error = null;
-    } else {
-      succeeded = true;
+    try {
+      value = callback(detail);
+    } catch (e) {
+      succeeded = false;
+      error = e;
     }
 
     if (promise === value) {
@@ -5179,14 +5130,13 @@ function invokeCallback(settled, promise, callback, detail) {
     }
   } else {
     value = detail;
-    succeeded = true;
   }
 
   if (promise._state !== PENDING) {
     // noop
   } else if (hasCallback && succeeded) {
     resolve(promise, value);
-  } else if (failed) {
+  } else if (succeeded === false) {
     reject(promise, error);
   } else if (settled === FULFILLED) {
     fulfill(promise, value);
@@ -5264,7 +5214,15 @@ var Enumerator = function () {
 
 
     if (resolve$$1 === resolve$1) {
-      var _then = getThen(entry);
+      var _then = void 0;
+      var error = void 0;
+      var didError = false;
+      try {
+        _then = entry.then;
+      } catch (e) {
+        didError = true;
+        error = e;
+      }
 
       if (_then === then && entry._state !== PENDING) {
         this._settledAt(entry._state, i, entry._result);
@@ -5273,7 +5231,11 @@ var Enumerator = function () {
         this._result[i] = entry;
       } else if (c === Promise$1) {
         var promise = new c(noop);
-        handleMaybeThenable(promise, entry, _then);
+        if (didError) {
+          reject(promise, error);
+        } else {
+          handleMaybeThenable(promise, entry, _then);
+        }
         this._willSettleAt(promise, i);
       } else {
         this._willSettleAt(new c(function (resolve$$1) {
@@ -5926,53 +5888,26 @@ return Promise$1;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"_process":4}],33:[function(require,module,exports){
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-
-// The _isBuffer check is for Safari 5-7 support, because it's missing
-// Object.prototype.constructor. Remove this eventually
-module.exports = function (obj) {
-  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
-}
-
-function isBuffer (obj) {
-  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
-// For Node v0.10 support. Remove this eventually.
-function isSlowBuffer (obj) {
-  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
-}
-
-},{}],34:[function(require,module,exports){
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports.default=exports.SHA3Hash=exports.SHA3=exports.Keccak=void 0;var _buffer=require("buffer");var _sponge=_interopRequireDefault(require("./sponge"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var createHash=function createHash(_ref){var padding=_ref.padding;return function Hash(){var _this=this;var size=arguments.length>0&&arguments[0]!==undefined?arguments[0]:512;if(!this||this.constructor!==Hash){return new Hash(size)}var sponge=new _sponge.default({capacity:size,padding:padding});this.update=function(input){if(_buffer.Buffer.isBuffer(input)){sponge.absorb(input);return _this}if(typeof input==="string"){return _this.update(_buffer.Buffer.from(input,"utf8"))}throw new TypeError("Not a string or buffer")};this.digest=function(){var format=arguments.length>0&&arguments[0]!==undefined?arguments[0]:"binary";var buffer=sponge.squeeze();if(format&&format!=="binary"){return buffer.toString(format)}return buffer};this.reset=function(){sponge.reset();return _this};return this}};var Keccak=createHash({padding:1});exports.Keccak=Keccak;var SHA3=createHash({padding:6});exports.SHA3=SHA3;var SHA3Hash=Keccak;exports.SHA3Hash=SHA3Hash;SHA3.SHA3Hash=SHA3Hash;var _default=SHA3;exports.default=_default;
-},{"./sponge":35,"buffer":2}],35:[function(require,module,exports){
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _buffer=require("buffer");var _permute=_interopRequireDefault(require("./permute"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var allowedCapacityValues=[224,256,384,512];var writeState=function writeState(I,O){for(var i=0;i<I.length;i+=8){var o=i/4;O[o]^=I[i+7]<<24|I[i+6]<<16|I[i+5]<<8|I[i+4];O[o+1]^=I[i+3]<<24|I[i+2]<<16|I[i+1]<<8|I[i]}};var readHash=function readHash(I,n){var O=_buffer.Buffer.allocUnsafe(n);for(var o=0;o<n;o+=8){var i=o/4;O[o]=I[i+1];O[o+1]=I[i+1]>>>8;O[o+2]=I[i+1]>>>16;O[o+3]=I[i+1]>>>24;O[o+4]=I[i];O[o+5]=I[i]>>>8;O[o+6]=I[i]>>>16;O[o+7]=I[i]>>>24}return O};var Sponge=function Sponge(_ref){var _this=this;var capacity=_ref.capacity,padding=_ref.padding;if(!allowedCapacityValues.includes(capacity)){throw new Error("Unsupported hash length")}var keccak=(0,_permute.default)();var stateSize=200;var hashSize=capacity/8;var queueSize=stateSize-hashSize*2;var queueOffset=0;var state=new Uint32Array(stateSize/4);var queue=_buffer.Buffer.allocUnsafe(queueSize);this.absorb=function(buffer){for(var i=0;i<buffer.length;i++){queue[queueOffset]=buffer[i];queueOffset+=1;if(queueOffset>=queueSize){writeState(queue,state);keccak(state);queueOffset=0}}return _this};this.squeeze=function(){var output={queue:_buffer.Buffer.allocUnsafe(queueSize),state:new Uint32Array(stateSize/4)};queue.copy(output.queue);for(var i=0;i<state.length;i++){output.state[i]=state[i]}output.queue.fill(0,queueOffset);output.queue[queueOffset]|=padding;output.queue[queueSize-1]|=128;writeState(output.queue,output.state);keccak(output.state);return readHash(output.state,hashSize)};this.reset=function(){queue.fill(0);state.fill(0);queueOffset=0;return _this};return this};var _default=Sponge;exports.default=_default;
-},{"./permute":38,"buffer":2}],36:[function(require,module,exports){
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _copy=_interopRequireDefault(require("../copy"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var chi=function chi(_ref){var A=_ref.A,C=_ref.C;for(var y=0;y<25;y+=5){for(var x=0;x<5;x++){(0,_copy.default)(A,y+x)(C,x)}for(var _x=0;_x<5;_x++){var xy=(y+_x)*2;var x1=(_x+1)%5*2;var x2=(_x+2)%5*2;A[xy]^=~C[x1]&C[x2];A[xy+1]^=~C[x1+1]&C[x2+1]}}};var _default=chi;exports.default=_default;
-},{"../copy":37}],37:[function(require,module,exports){
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=exports.SHA3Hash=exports.SHA3=exports.Keccak=void 0;var _buffer=require("buffer");var _sponge=_interopRequireDefault(require("./sponge"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var createHash=function createHash(_ref){var padding=_ref.padding;return function Hash(){var _this=this;var size=arguments.length>0&&arguments[0]!==undefined?arguments[0]:512;if(!this||this.constructor!==Hash){return new Hash(size)}var sponge=new _sponge["default"]({capacity:size,padding:padding});this.update=function(input){var encoding=arguments.length>1&&arguments[1]!==undefined?arguments[1]:"utf8";if(_buffer.Buffer.isBuffer(input)){sponge.absorb(input);return _this}if(typeof input==="string"){return _this.update(_buffer.Buffer.from(input,encoding))}throw new TypeError("Not a string or buffer")};this.digest=function(){var format=arguments.length>0&&arguments[0]!==undefined?arguments[0]:"binary";var buffer=sponge.squeeze();if(format&&format!=="binary"){return buffer.toString(format)}return buffer};this.reset=function(){sponge.reset();return _this};return this}};var Keccak=createHash({padding:1});exports.Keccak=Keccak;var SHA3=createHash({padding:6});exports.SHA3=SHA3;var SHA3Hash=Keccak;exports.SHA3Hash=SHA3Hash;SHA3.SHA3Hash=SHA3Hash;var _default=SHA3;exports["default"]=_default;
+},{"./sponge":34,"buffer":2}],34:[function(require,module,exports){
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _buffer=require("buffer");var _permute=_interopRequireDefault(require("./permute"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var allowedCapacityValues=[224,256,384,512];var writeState=function writeState(I,O){for(var i=0;i<I.length;i+=8){var o=i/4;O[o]^=I[i+7]<<24|I[i+6]<<16|I[i+5]<<8|I[i+4];O[o+1]^=I[i+3]<<24|I[i+2]<<16|I[i+1]<<8|I[i]}};var readHash=function readHash(I,n){var O=_buffer.Buffer.allocUnsafe(n);for(var o=0;o<n;o+=8){var i=o/4;O[o]=I[i+1];O[o+1]=I[i+1]>>>8;O[o+2]=I[i+1]>>>16;O[o+3]=I[i+1]>>>24;O[o+4]=I[i];O[o+5]=I[i]>>>8;O[o+6]=I[i]>>>16;O[o+7]=I[i]>>>24}return O};var Sponge=function Sponge(_ref){var _this=this;var capacity=_ref.capacity,padding=_ref.padding;if(!allowedCapacityValues.includes(capacity)){throw new Error("Unsupported hash length")}var keccak=(0,_permute["default"])();var stateSize=200;var hashSize=capacity/8;var queueSize=stateSize-hashSize*2;var queueOffset=0;var state=new Uint32Array(stateSize/4);var queue=_buffer.Buffer.allocUnsafe(queueSize);this.absorb=function(buffer){for(var i=0;i<buffer.length;i++){queue[queueOffset]=buffer[i];queueOffset+=1;if(queueOffset>=queueSize){writeState(queue,state);keccak(state);queueOffset=0}}return _this};this.squeeze=function(){var output={queue:_buffer.Buffer.allocUnsafe(queueSize),state:new Uint32Array(stateSize/4)};queue.copy(output.queue);for(var i=0;i<state.length;i++){output.state[i]=state[i]}output.queue.fill(0,queueOffset);output.queue[queueOffset]|=padding;output.queue[queueSize-1]|=128;writeState(output.queue,output.state);keccak(output.state);return readHash(output.state,hashSize)};this.reset=function(){queue.fill(0);state.fill(0);queueOffset=0;return _this};return this};var _default=Sponge;exports["default"]=_default;
+},{"./permute":37,"buffer":2}],35:[function(require,module,exports){
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _copy=_interopRequireDefault(require("../copy"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var chi=function chi(_ref){var A=_ref.A,C=_ref.C;for(var y=0;y<25;y+=5){for(var x=0;x<5;x++){(0,_copy["default"])(A,y+x)(C,x)}for(var _x=0;_x<5;_x++){var xy=(y+_x)*2;var x1=(_x+1)%5*2;var x2=(_x+2)%5*2;A[xy]^=~C[x1]&C[x2];A[xy+1]^=~C[x1+1]&C[x2+1]}}};var _default=chi;exports["default"]=_default;
+},{"../copy":36}],36:[function(require,module,exports){
 "use strict";var copy=function copy(I,i){return function(O,o){var oi=o*2;var ii=i*2;O[oi]=I[ii];O[oi+1]=I[ii+1]}};module.exports=copy;
-},{}],38:[function(require,module,exports){
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _chi=_interopRequireDefault(require("./chi"));var _iota=_interopRequireDefault(require("./iota"));var _rhoPi=_interopRequireDefault(require("./rho-pi"));var _theta=_interopRequireDefault(require("./theta"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var reset=function reset(){for(var _len=arguments.length,arrays=new Array(_len),_key=0;_key<_len;_key++){arrays[_key]=arguments[_key]}for(var _i=0;_i<arrays.length;_i++){var array=arrays[_i];array.fill(0)}};var permute=function permute(){var C=new Uint32Array(10);var D=new Uint32Array(10);var W=new Uint32Array(2);return function(A){for(var roundIndex=0;roundIndex<24;roundIndex++){(0,_theta.default)({A:A,C:C,D:D,W:W});(0,_rhoPi.default)({A:A,C:C,W:W});(0,_chi.default)({A:A,C:C});(0,_iota.default)({A:A,roundIndex:roundIndex})}reset(C,D,W)}};var _default=permute;exports.default=_default;
-},{"./chi":36,"./iota":39,"./rho-pi":41,"./theta":45}],39:[function(require,module,exports){
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _roundConstants=_interopRequireDefault(require("./round-constants"));var _xor=_interopRequireDefault(require("../xor"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var iota=function iota(_ref){var A=_ref.A,roundIndex=_ref.roundIndex;(0,_xor.default)(A,0)(A,0,_roundConstants.default,roundIndex)};var _default=iota;exports.default=_default;
-},{"../xor":46,"./round-constants":40}],40:[function(require,module,exports){
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var ROUND_CONSTANTS=new Uint32Array([0,1,0,32898,2147483648,32906,2147483648,2147516416,0,32907,0,2147483649,2147483648,2147516545,2147483648,32777,0,138,0,136,0,2147516425,0,2147483658,0,2147516555,2147483648,139,2147483648,32905,2147483648,32771,2147483648,32770,2147483648,128,0,32778,2147483648,2147483658,2147483648,2147516545,2147483648,32896,0,2147483649,2147483648,2147516424]);var _default=ROUND_CONSTANTS;exports.default=_default;
-},{}],41:[function(require,module,exports){
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _piShuffles=_interopRequireDefault(require("./pi-shuffles"));var _rhoOffsets=_interopRequireDefault(require("./rho-offsets"));var _copy=_interopRequireDefault(require("../copy"));var _rotate=_interopRequireDefault(require("../rotate"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var rhoPi=function rhoPi(_ref){var A=_ref.A,C=_ref.C,W=_ref.W;(0,_copy.default)(A,1)(W,0);for(var i=0;i<24;i++){var j=_piShuffles.default[i];var r=_rhoOffsets.default[i];(0,_copy.default)(A,j)(C,0);(0,_copy.default)((0,_rotate.default)(W,r),0)(A,j);(0,_copy.default)(C,0)(W,0)}};var _default=rhoPi;exports.default=_default;
-},{"../copy":37,"../rotate":44,"./pi-shuffles":42,"./rho-offsets":43}],42:[function(require,module,exports){
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var PI_SHUFFLES=[10,7,11,17,18,3,5,16,8,21,24,4,15,23,19,13,12,2,20,14,22,9,6,1];var _default=PI_SHUFFLES;exports.default=_default;
+},{}],37:[function(require,module,exports){
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _chi=_interopRequireDefault(require("./chi"));var _iota=_interopRequireDefault(require("./iota"));var _rhoPi=_interopRequireDefault(require("./rho-pi"));var _theta=_interopRequireDefault(require("./theta"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var permute=function permute(){var C=new Uint32Array(10);var D=new Uint32Array(10);var W=new Uint32Array(2);return function(A){for(var roundIndex=0;roundIndex<24;roundIndex++){(0,_theta["default"])({A:A,C:C,D:D,W:W});(0,_rhoPi["default"])({A:A,C:C,W:W});(0,_chi["default"])({A:A,C:C});(0,_iota["default"])({A:A,roundIndex:roundIndex})}C.fill(0);D.fill(0);W.fill(0)}};var _default=permute;exports["default"]=_default;
+},{"./chi":35,"./iota":38,"./rho-pi":40,"./theta":43}],38:[function(require,module,exports){
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _roundConstants=_interopRequireDefault(require("./round-constants"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var iota=function iota(_ref){var A=_ref.A,roundIndex=_ref.roundIndex;var i=roundIndex*2;A[0]^=_roundConstants["default"][i];A[1]^=_roundConstants["default"][i+1]};var _default=iota;exports["default"]=_default;
+},{"./round-constants":39}],39:[function(require,module,exports){
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var ROUND_CONSTANTS=new Uint32Array([0,1,0,32898,2147483648,32906,2147483648,2147516416,0,32907,0,2147483649,2147483648,2147516545,2147483648,32777,0,138,0,136,0,2147516425,0,2147483658,0,2147516555,2147483648,139,2147483648,32905,2147483648,32771,2147483648,32770,2147483648,128,0,32778,2147483648,2147483658,2147483648,2147516545,2147483648,32896,0,2147483649,2147483648,2147516424]);var _default=ROUND_CONSTANTS;exports["default"]=_default;
+},{}],40:[function(require,module,exports){
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _piShuffles=_interopRequireDefault(require("./pi-shuffles"));var _rhoOffsets=_interopRequireDefault(require("./rho-offsets"));var _copy=_interopRequireDefault(require("../copy"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var rhoPi=function rhoPi(_ref){var A=_ref.A,C=_ref.C,W=_ref.W;(0,_copy["default"])(A,1)(W,0);var H=0;var L=0;var Wi=0;var ri=32;for(var i=0;i<24;i++){var j=_piShuffles["default"][i];var r=_rhoOffsets["default"][i];(0,_copy["default"])(A,j)(C,0);H=W[0];L=W[1];ri=32-r;Wi=r<32?0:1;W[Wi]=H<<r|L>>>ri;W[(Wi+1)%2]=L<<r|H>>>ri;(0,_copy["default"])(W,0)(A,j);(0,_copy["default"])(C,0)(W,0)}};var _default=rhoPi;exports["default"]=_default;
+},{"../copy":36,"./pi-shuffles":41,"./rho-offsets":42}],41:[function(require,module,exports){
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var PI_SHUFFLES=[10,7,11,17,18,3,5,16,8,21,24,4,15,23,19,13,12,2,20,14,22,9,6,1];var _default=PI_SHUFFLES;exports["default"]=_default;
+},{}],42:[function(require,module,exports){
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var RHO_OFFSETS=[1,3,6,10,15,21,28,36,45,55,2,14,27,41,56,8,25,43,62,18,39,61,20,44];var _default=RHO_OFFSETS;exports["default"]=_default;
 },{}],43:[function(require,module,exports){
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var RHO_OFFSETS=[1,3,6,10,15,21,28,36,45,55,2,14,27,41,56,8,25,43,62,18,39,61,20,44];var _default=RHO_OFFSETS;exports.default=_default;
-},{}],44:[function(require,module,exports){
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;function _slicedToArray(arr,i){return _arrayWithHoles(arr)||_iterableToArrayLimit(arr,i)||_nonIterableRest()}function _nonIterableRest(){throw new TypeError("Invalid attempt to destructure non-iterable instance")}function _iterableToArrayLimit(arr,i){var _arr=[];var _n=true;var _d=false;var _e=undefined;try{for(var _i=arr[Symbol.iterator](),_s;!(_n=(_s=_i.next()).done);_n=true){_arr.push(_s.value);if(i&&_arr.length===i)break}}catch(err){_d=true;_e=err}finally{try{if(!_n&&_i["return"]!=null)_i["return"]()}finally{if(_d)throw _e}}return _arr}function _arrayWithHoles(arr){if(Array.isArray(arr))return arr}var M=32;var rotate=function rotate(W,r){var _W=_slicedToArray(W,2),H=_W[0],L=_W[1];var i=r<32?0:1;var j=(i+1)%2;W[i]=H<<r|L>>>M-r;W[j]=L<<r|H>>>M-r;return W};var _default=rotate;exports.default=_default;
-},{}],45:[function(require,module,exports){
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _copy=_interopRequireDefault(require("../copy"));var _rotate=_interopRequireDefault(require("../rotate"));var _xor=_interopRequireDefault(require("../xor"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var theta0=function theta0(_ref){var A=_ref.A,C=_ref.C;for(var x=0;x<5;x++){(0,_xor.default)(C,x)(A,x,A,x+5,A,x+10,A,x+15,A,x+20)}};var theta1=function theta1(_ref2){var A=_ref2.A,C=_ref2.C,D=_ref2.D,W=_ref2.W;for(var x=0;x<5;x++){(0,_copy.default)(C,(x+1)%5)(W,0);(0,_xor.default)(D,x)(C,(x+4)%5,(0,_rotate.default)(W,1),0);for(var y=0;y<25;y+=5){(0,_xor.default)(A,y+x)(A,y+x,D,x)}}};var theta=function theta(_ref3){var A=_ref3.A,C=_ref3.C,D=_ref3.D,W=_ref3.W;theta0({A:A,C:C});theta1({A:A,C:C,D:D,W:W})};var _default=theta;exports.default=_default;
-},{"../copy":37,"../rotate":44,"../xor":46}],46:[function(require,module,exports){
-"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var xor=function xor(O,o){return function(){var oi=o*2;for(var _len=arguments.length,I=new Array(_len),_key=0;_key<_len;_key++){I[_key]=arguments[_key]}if(I.length>=2){var ii=I[1]*2;O[oi]=I[0][ii];O[oi+1]=I[0][ii+1]}for(var i=2;i<I.length;i+=2){var _ii=I[i+1]*2;O[oi]^=I[i][_ii];O[oi+1]^=I[i][_ii+1]}}};var _default=xor;exports.default=_default;
-},{}]},{},[5])(5)
+"use strict";Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _copy=_interopRequireDefault(require("../copy"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var theta=function theta(_ref){var A=_ref.A,C=_ref.C,D=_ref.D,W=_ref.W;var H=0;var L=0;for(var x=0;x<5;x++){var x20=x*2;var x21=(x+5)*2;var x22=(x+10)*2;var x23=(x+15)*2;var x24=(x+20)*2;C[x20]=A[x20]^A[x21]^A[x22]^A[x23]^A[x24];C[x20+1]=A[x20+1]^A[x21+1]^A[x22+1]^A[x23+1]^A[x24+1]}for(var _x=0;_x<5;_x++){(0,_copy["default"])(C,(_x+1)%5)(W,0);H=W[0];L=W[1];W[0]=H<<1|L>>>31;W[1]=L<<1|H>>>31;D[_x*2]=C[(_x+4)%5*2]^W[0];D[_x*2+1]=C[(_x+4)%5*2+1]^W[1];for(var y=0;y<25;y+=5){A[(y+_x)*2]^=D[_x*2];A[(y+_x)*2+1]^=D[_x*2+1]}}};var _default=theta;exports["default"]=_default;
+},{"../copy":36}]},{},[5])(5)
 });

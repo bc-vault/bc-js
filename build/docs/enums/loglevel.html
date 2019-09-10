@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>BCDataRefreshStatusCode | bc-js</title>
+	<title>LogLevel | bc-js</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="bcdatarefreshstatuscode.html">BCDataRefreshStatusCode</a>
+					<a href="loglevel.html">LogLevel</a>
 				</li>
 			</ul>
-			<h1>Enumeration BCDataRefreshStatusCode</h1>
+			<h1>Enumeration LogLevel</h1>
 		</div>
 	</div>
 </header>
@@ -71,9 +71,10 @@
 						<section class="tsd-index-section ">
 							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="bcdatarefreshstatuscode.html#connectionerror" class="tsd-kind-icon">Connection<wbr>Error</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="bcdatarefreshstatuscode.html#ready" class="tsd-kind-icon">Ready</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="bcdatarefreshstatuscode.html#working" class="tsd-kind-icon">Working</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="loglevel.html#debug" class="tsd-kind-icon">debug</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="loglevel.html#error" class="tsd-kind-icon">error</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="loglevel.html#verbose" class="tsd-kind-icon">verbose</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="loglevel.html#warning" class="tsd-kind-icon">warning</a></li>
 							</ul>
 						</section>
 					</div>
@@ -82,32 +83,42 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Enumeration members</h2>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="connectionerror" class="tsd-anchor"></a>
-					<h3>Connection<wbr>Error</h3>
-					<div class="tsd-signature tsd-kind-icon">Connection<wbr>Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;-1</span></div>
+					<a name="debug" class="tsd-anchor"></a>
+					<h3>debug</h3>
+					<div class="tsd-signature tsd-kind-icon">debug<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;2</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:252</li>
+							<li>Defined in lib/types.ts:13</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="ready" class="tsd-anchor"></a>
-					<h3>Ready</h3>
-					<div class="tsd-signature tsd-kind-icon">Ready<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<a name="error" class="tsd-anchor"></a>
+					<h3>error</h3>
+					<div class="tsd-signature tsd-kind-icon">error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;4</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:253</li>
+							<li>Defined in lib/types.ts:15</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="working" class="tsd-anchor"></a>
-					<h3>Working</h3>
-					<div class="tsd-signature tsd-kind-icon">Working<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;1</span></div>
+					<a name="verbose" class="tsd-anchor"></a>
+					<h3>verbose</h3>
+					<div class="tsd-signature tsd-kind-icon">verbose<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:254</li>
+							<li>Defined in lib/types.ts:12</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="warning" class="tsd-anchor"></a>
+					<h3>warning</h3>
+					<div class="tsd-signature tsd-kind-icon">warning<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;3</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in lib/types.ts:14</li>
 						</ul>
 					</aside>
 				</section>
@@ -126,16 +137,19 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-enum">
-						<a href="bcdatarefreshstatuscode.html" class="tsd-kind-icon">BCData<wbr>Refresh<wbr>Status<wbr>Code</a>
+						<a href="loglevel.html" class="tsd-kind-icon">Log<wbr>Level</a>
 						<ul>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="bcdatarefreshstatuscode.html#connectionerror" class="tsd-kind-icon">Connection<wbr>Error</a>
+								<a href="loglevel.html#debug" class="tsd-kind-icon">debug</a>
 							</li>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="bcdatarefreshstatuscode.html#ready" class="tsd-kind-icon">Ready</a>
+								<a href="loglevel.html#error" class="tsd-kind-icon">error</a>
 							</li>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="bcdatarefreshstatuscode.html#working" class="tsd-kind-icon">Working</a>
+								<a href="loglevel.html#verbose" class="tsd-kind-icon">verbose</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="loglevel.html#warning" class="tsd-kind-icon">warning</a>
 							</li>
 						</ul>
 					</li>

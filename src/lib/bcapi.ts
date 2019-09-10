@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosError } from 'axios';
-import {BCHttpResponse,Endpoint,HttpResponse,SpaceObject,PasswordType,WalletType,DaemonError, VersionObject, TransactionData,BCDataRefreshStatusCode, BCObject,BCDevice,typeInfoMap, WalletTypeInfo, WalletData} from './types'
+import {BCHttpResponse,Endpoint,HttpResponse,SpaceObject,PasswordType,WalletType,DaemonError, VersionObject, TransactionData,BCDataRefreshStatusCode, BCObject,BCDevice,typeInfoMap, WalletTypeInfo, WalletData, LogLevel} from './types'
 import { Keccak } from 'sha3';
 import { polyfill } from 'es6-promise'; polyfill();
 //import { Buffer } from 'buffer';
@@ -28,8 +28,15 @@ function assertIsBCHttpResponse(httpr:HttpResponse):void{
   
   if((httpr.body as BCHttpResponse).errorCode !== 0x9000) throw new DaemonError(httpr.body as BCHttpResponse);
 }
+function log(msg,level=LogLevel.verbose){
+  if(logLevel <= level){
+    console.log('['+new Date(Date.now()).toLocaleTimeString()+']: '+msg);
+  }
+}
 //** Is BCData object polling already taking place? */
 export var isPolling = false;
+/** Set Logging verbosity */
+export var logLevel:LogLevel=LogLevel.warning;
 
 /**
   Starts polling daemon for changes and updates BCData object
@@ -716,7 +723,7 @@ export async function GenerateWallet(device:number,type:WalletType):Promise<stri
  */
 export async function EnterGlobalPin(device:number,passwordType:PasswordType=PasswordType.GlobalPassword):Promise<void>{
   const id = await getSecureWindowResponse(passwordType);
-  console.log("Got pin popup:"+id);
+  log("Got pin popup:"+id);
   const httpr = await getResponsePromised(Endpoint.EnterGlobalPin,{device,password:id});
   assertIsBCHttpResponse(httpr);
   triggerManualUpdate();
@@ -757,11 +764,11 @@ export async function EnterGlobalPin(device:number,passwordType:PasswordType=Pas
  */
 export async function GenerateTransaction(device:number, type:WalletType,data:TransactionData,broadcast?:boolean):Promise<string>{
   const id = await getSecureWindowResponse(PasswordType.WalletPassword);
-  console.log("Got auth id:"+id);
-  console.log("Sending object:"+JSON.stringify({device,walletType:type,transaction:data,password:id}));
+  log("Got auth id:"+id,LogLevel.debug);
+  log("Sending object:"+JSON.stringify({device,walletType:type,transaction:data,password:id}),LogLevel.debug);
   const httpr = await getResponsePromised(Endpoint.GenerateTransaction,{device,walletType:type,transaction:data,password:id,broadcast});
 
-  console.log(httpr.body);
+  log(httpr.body,LogLevel.debug);
   assertIsBCHttpResponse(httpr);
   return httpr.body["data"] as string;
 }
@@ -798,11 +805,11 @@ export async function GenerateTransaction(device:number, type:WalletType,data:Tr
  */
 export async function SignData(device:number, type:WalletType,publicAddress:string,data:string):Promise<string>{
   const id = await getSecureWindowResponse(PasswordType.WalletPassword);
-  console.log("Got auth id:"+id);
-  console.log("Sending object:"+JSON.stringify({device,walletType:type,sourcePublicID:publicAddress,srcData:data,password:id}));
+  log("Got auth id:"+id,LogLevel.debug);
+  log("Sending object:"+JSON.stringify({device,walletType:type,sourcePublicID:publicAddress,srcData:data,password:id}),LogLevel.debug);
   const httpr = await getResponsePromised(Endpoint.SignData,{device,walletType:type,sourcePublicID:publicAddress,srcData:data,password:id});
 
-  console.log(httpr.body);
+  log("Response body:"+httpr.body,LogLevel.debug);
   assertIsBCHttpResponse(httpr);
   return httpr.body["data"] as string;
 }

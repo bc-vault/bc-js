@@ -94,8 +94,16 @@ function assertIsBCHttpResponse(httpr) {
     if (httpr.body.errorCode !== 0x9000)
         throw new types_1.DaemonError(httpr.body);
 }
+function log(msg, level) {
+    if (level === void 0) { level = types_1.LogLevel.verbose; }
+    if (exports.logLevel <= level) {
+        console.log('[' + new Date(Date.now()).toLocaleTimeString() + ']: ' + msg);
+    }
+}
 //** Is BCData object polling already taking place? */
 exports.isPolling = false;
+/** Set Logging verbosity */
+exports.logLevel = types_1.LogLevel.warning;
 /**
   Starts polling daemon for changes and updates BCData object
   ### Example (es3)
@@ -1024,7 +1032,7 @@ function EnterGlobalPin(device, passwordType) {
                 case 0: return [4 /*yield*/, getSecureWindowResponse(passwordType)];
                 case 1:
                     id = _a.sent();
-                    console.log("Got pin popup:" + id);
+                    log("Got pin popup:" + id);
                     return [4 /*yield*/, getResponsePromised(types_1.Endpoint.EnterGlobalPin, { device: device, password: id })];
                 case 2:
                     httpr = _a.sent();
@@ -1077,12 +1085,12 @@ function GenerateTransaction(device, type, data, broadcast) {
                 case 0: return [4 /*yield*/, getSecureWindowResponse(types_1.PasswordType.WalletPassword)];
                 case 1:
                     id = _a.sent();
-                    console.log("Got auth id:" + id);
-                    console.log("Sending object:" + JSON.stringify({ device: device, walletType: type, transaction: data, password: id }));
+                    log("Got auth id:" + id, types_1.LogLevel.debug);
+                    log("Sending object:" + JSON.stringify({ device: device, walletType: type, transaction: data, password: id }), types_1.LogLevel.debug);
                     return [4 /*yield*/, getResponsePromised(types_1.Endpoint.GenerateTransaction, { device: device, walletType: type, transaction: data, password: id, broadcast: broadcast })];
                 case 2:
                     httpr = _a.sent();
-                    console.log(httpr.body);
+                    log(httpr.body, types_1.LogLevel.debug);
                     assertIsBCHttpResponse(httpr);
                     return [2 /*return*/, httpr.body["data"]];
             }
@@ -1128,12 +1136,12 @@ function SignData(device, type, publicAddress, data) {
                 case 0: return [4 /*yield*/, getSecureWindowResponse(types_1.PasswordType.WalletPassword)];
                 case 1:
                     id = _a.sent();
-                    console.log("Got auth id:" + id);
-                    console.log("Sending object:" + JSON.stringify({ device: device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id }));
+                    log("Got auth id:" + id, types_1.LogLevel.debug);
+                    log("Sending object:" + JSON.stringify({ device: device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id }), types_1.LogLevel.debug);
                     return [4 /*yield*/, getResponsePromised(types_1.Endpoint.SignData, { device: device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id })];
                 case 2:
                     httpr = _a.sent();
-                    console.log(httpr.body);
+                    log("Response body:" + httpr.body, types_1.LogLevel.debug);
                     assertIsBCHttpResponse(httpr);
                     return [2 /*return*/, httpr.body["data"]];
             }

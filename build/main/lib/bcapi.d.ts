@@ -1,6 +1,8 @@
-import { SpaceObject, PasswordType, WalletType, VersionObject, TransactionData, BCDataRefreshStatusCode, BCObject, WalletTypeInfo } from './types';
+import { SpaceObject, PasswordType, WalletType, VersionObject, TransactionData, BCDataRefreshStatusCode, BCObject, WalletTypeInfo, LogLevel } from './types';
 export declare const Host: string;
 export declare var isPolling: boolean;
+/** Set Logging verbosity */
+export declare var logLevel: LogLevel;
 /**
   Starts polling daemon for changes and updates BCData object
   ### Example (es3)

@@ -10,6 +10,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
+var LogLevel;
+(function (LogLevel) {
+    LogLevel[LogLevel["verbose"] = 1] = "verbose";
+    LogLevel[LogLevel["debug"] = 2] = "debug";
+    LogLevel[LogLevel["warning"] = 3] = "warning";
+    LogLevel[LogLevel["error"] = 4] = "error";
+})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
 /**
  * @description The DaemonError class contains a BCHttpResponse and a HttpResponse, depending on where the failure was
  * @description HttpResponse !== undefined if the response code was != 200 or if the request itself failed

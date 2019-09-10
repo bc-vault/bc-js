@@ -70,6 +70,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-enum"><a href="enums/bcdatarefreshstatuscode.html" class="tsd-kind-icon">BCData<wbr>Refresh<wbr>Status<wbr>Code</a></li>
 								<li class="tsd-kind-enum"><a href="enums/endpoint.html" class="tsd-kind-icon">Endpoint</a></li>
+								<li class="tsd-kind-enum"><a href="enums/loglevel.html" class="tsd-kind-icon">Log<wbr>Level</a></li>
 								<li class="tsd-kind-enum"><a href="enums/passwordtype.html" class="tsd-kind-icon">Password<wbr>Type</a></li>
 								<li class="tsd-kind-enum"><a href="enums/wallettype.html" class="tsd-kind-icon">Wallet<wbr>Type</a></li>
 							</ul>
@@ -101,6 +102,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable"><a href="globals.html#host" class="tsd-kind-icon">Host</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#ispolling" class="tsd-kind-icon">is<wbr>Polling</a></li>
+								<li class="tsd-kind-variable"><a href="globals.html#loglevel" class="tsd-kind-icon">log<wbr>Level</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#typeinfomap" class="tsd-kind-icon">type<wbr>Info<wbr>Map</a></li>
 							</ul>
 						</section>
@@ -159,9 +161,24 @@
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Polling<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:32</li>
+							<li>Defined in lib/bcapi.ts:37</li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
+					<a name="loglevel" class="tsd-anchor"></a>
+					<h3>log<wbr>Level</h3>
+					<div class="tsd-signature tsd-kind-icon">log<wbr>Level<span class="tsd-signature-symbol">:</span> <a href="enums/loglevel.html" class="tsd-signature-type">LogLevel</a><span class="tsd-signature-symbol"> =&nbsp;LogLevel.warning</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in lib/bcapi.ts:39</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Set Logging verbosity</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="typeinfomap" class="tsd-anchor"></a>
@@ -169,7 +186,7 @@
 					<div class="tsd-signature tsd-kind-icon">type<wbr>Info<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="interfaces/wallettypeinfo.html" class="tsd-signature-type">WalletTypeInfo</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[{type:WalletType.bitCoin,name:&quot;Bitcoin&quot;, ticker:&quot;BTC&quot;},{type:WalletType.ethereum,name:&quot;Ethereum&quot;, ticker:&quot;ETH&quot;},{type:WalletType.bitCoinCash,name:&quot;Bitcoin Cash&quot;, ticker:&quot;BCH&quot;},{type:WalletType.liteCoin,name:&quot;Litecoin&quot;, ticker:&quot;LTC&quot;},{type:WalletType.dash,name:&quot;Dash&quot;, ticker:&quot;DASH&quot;},{type:WalletType.dogeCoin,name:&quot;Dogecoin&quot;, ticker:&quot;DOGE&quot;},{type:WalletType.erc20Salt,name:&quot;Salt&quot; ,ticker:&quot;SALT&quot;},{type:WalletType.erc20Polymath,name:&quot;Polymath&quot; ,ticker:&quot;POLY&quot;},{type:WalletType.erc200x,name:&quot;0X&quot; ,ticker:&quot;ZRX&quot;},{type:WalletType.erc20Cindicator,name:&quot;Cindicator&quot; ,ticker:&quot;CND&quot;},{type:WalletType.erc20CargoX,name:&quot;CargoX&quot; ,ticker:&quot;CXO&quot;},{type:WalletType.erc20Viberate,name:&quot;Viberate&quot; ,ticker:&quot;VIB&quot;},{type:WalletType.erc20Iconomi,name:&quot;Iconomi&quot; ,ticker:&quot;ICN&quot;},{type:WalletType.erc20DTR,name:&quot;Dynamic Trading Rights&quot; ,ticker:&quot;DTR&quot;},{type:WalletType.erc20OriginTrail,name:&quot;OriginTrail&quot; ,ticker:&quot;TRAC&quot;},{type:WalletType.erc20InsurePal,name:&quot;InsurePal&quot; ,ticker:&quot;IPL&quot;},{type:WalletType.erc20Xaurum,name:&quot;Xaurum&quot; ,ticker:&quot;XAURUM&quot;},{type:WalletType.erc20Tron,name:&quot;Tron&quot; ,ticker:&quot;TRX&quot;},{type:WalletType.erc20VeChain,name:&quot;VeChain&quot; ,ticker:&quot;VEN&quot;},{type:WalletType.erc20Binance,name:&quot;Binance&quot; ,ticker:&quot;BNB&quot;},{type:WalletType.erc20Icon,name:&quot;Icon&quot; ,ticker:&quot;ICX&quot;},{type:WalletType.erc20OmiseGo,name:&quot;OmiseGo&quot; ,ticker:&quot;OMG&quot;},{type:WalletType.erc20WaltonChain,name:&quot;WaltonChain&quot; ,ticker:&quot;WTC&quot;},{type:WalletType.bitCoinTest,name:&quot;Bitcoin Test&quot;, ticker:&quot;BTC-T&quot;},{type:WalletType.ethereumTest,name:&quot;Ethereum Test&quot; ,ticker:&quot;ETH-T&quot;},{type:WalletType.bitCoinCashTest,name:&quot;Bitcoin Cash Test&quot;, ticker:&quot;BCH-T&quot;},{type:WalletType.liteCoinTest,name:&quot;Litecoin Test&quot;, ticker:&quot;LTC-T&quot;},{type:WalletType.dashTest,name:&quot;Dash Test&quot;, ticker:&quot;DASH-T&quot;},{type:WalletType.dogeCoinTest,name:&quot;Dogecoin Test&quot;, ticker:&quot;DOGE-T&quot;},{type:WalletType.erc20BokkyTest,name:&quot;Bokky ERC 20 Test&quot; ,ticker:&quot;BOKKY-T&quot;},{type:WalletType.erc20SaltTest,name:&quot;Salt Test&quot; ,ticker:&quot;SALT-T&quot;},{type:WalletType.erc20PolymathTest,name:&quot;Polymath Test&quot; ,ticker:&quot;POLY-T&quot;},{type:WalletType.erc200xTest,name:&quot;0X Test&quot; ,ticker:&quot;ZRX-T&quot;},{type:WalletType.erc20CindicatorTest,name:&quot;Cindicator Test&quot; ,ticker:&quot;CND-T&quot;},{type:WalletType.erc20CargoXTest,name:&quot;CargoX Test&quot; ,ticker:&quot;CXO-T&quot;},{type:WalletType.erc20ViberateTest,name:&quot;Viberate Test&quot; ,ticker:&quot;VIB-T&quot;},{type:WalletType.erc20IconomiTest,name:&quot;Iconomi Test&quot; ,ticker:&quot;ICN-T&quot;},{type:WalletType.erc20DTRTest,name:&quot;Dynamic Trading Rights Test&quot; ,ticker:&quot;DTR-T&quot;},{type:WalletType.erc20OriginTrailTest,name:&quot;OriginTrail Test&quot; ,ticker:&quot;TRAC-T&quot;},{type:WalletType.erc20InsurePalTest,name:&quot;InsurePal Test&quot; ,ticker:&quot;IPL-T&quot;},{type:WalletType.erc20XaurumTest,name:&quot;Xaurum Test&quot; ,ticker:&quot;XAURUM-T&quot;},{type:WalletType.erc20TronTest,name:&quot;Tron Test&quot; ,ticker:&quot;TRX-T&quot;},{type:WalletType.erc20VeChainTest,name:&quot;VeChain Test&quot; ,ticker:&quot;VEN-T&quot;},{type:WalletType.erc20BinanceTest,name:&quot;Binance Test&quot; ,ticker:&quot;BNB-T&quot;},{type:WalletType.erc20IconTest,name:&quot;Icon Test&quot; ,ticker:&quot;ICX-T&quot;},{type:WalletType.erc20OmiseGoTest,name:&quot;OmiseGo Test&quot; ,ticker:&quot;OMG-T&quot;},{type:WalletType.erc20WaltonChainTest,name:&quot;WaltonChain Test&quot; ,ticker:&quot;WTC-T&quot;},{type:WalletType.ripple,name:&quot;Ripple&quot;, ticker:&quot;XRP&quot;},{type:WalletType.rippleTest,name:&quot;Ripple Test&quot;, ticker:&quot;XRP-T&quot;},{type:WalletType.stellar,name:&quot;Stellar&quot;, ticker:&quot;XLM&quot;},{type:WalletType.stellarTest,name:&quot;Stellar Test&quot;, ticker:&quot;XLM-T&quot;},]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:173</li>
+							<li>Defined in lib/types.ts:179</li>
 						</ul>
 					</aside>
 				</section>
@@ -186,7 +203,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:211</li>
+									<li>Defined in lib/bcapi.ts:218</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -250,7 +267,7 @@ bc.triggerManualUpdate();
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:546</li>
+									<li>Defined in lib/bcapi.ts:553</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -317,7 +334,7 @@ bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-number"
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:621</li>
+									<li>Defined in lib/bcapi.ts:628</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -381,7 +398,7 @@ bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-n
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:717</li>
+									<li>Defined in lib/bcapi.ts:724</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -432,7 +449,7 @@ bc.EnterGlobalPin(<span class="hljs-number">1</span>).then(<span class="hljs-bui
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:758</li>
+									<li>Defined in lib/bcapi.ts:765</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -505,7 +522,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-numb
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:687</li>
+									<li>Defined in lib/bcapi.ts:694</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -563,7 +580,7 @@ bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-number">1
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:799</li>
+									<li>Defined in lib/bcapi.ts:806</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -633,7 +650,7 @@ bc.SignData(<span class="hljs-number">1</span>,bc.WalletType.ethereum,<span clas
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:436</li>
+									<li>Defined in lib/bcapi.ts:443</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -685,7 +702,7 @@ bc.getActiveWalletTypes(<span class="hljs-number">1</span>).then(<span class="hl
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:370</li>
+									<li>Defined in lib/bcapi.ts:377</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -737,7 +754,7 @@ bc.getAvailableSpace(<span class="hljs-number">1</span>).then(<span class="hljs-
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:267</li>
+									<li>Defined in lib/bcapi.ts:274</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -780,7 +797,7 @@ bc.getDevices().then(<span class="hljs-built_in">console</span>.log)
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:301</li>
+									<li>Defined in lib/bcapi.ts:308</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -832,7 +849,7 @@ bc.getFirmwareVersion(<span class="hljs-number">1</span>).then(<span class="hljs
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:584</li>
+									<li>Defined in lib/bcapi.ts:591</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -896,7 +913,7 @@ bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-number
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:403</li>
+									<li>Defined in lib/bcapi.ts:410</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -948,7 +965,7 @@ bc.getSupportedWalletTypes(<span class="hljs-number">1</span>).then(<span class=
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:336</li>
+									<li>Defined in lib/bcapi.ts:343</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1000,7 +1017,7 @@ bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string"
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:237</li>
+									<li>Defined in lib/bcapi.ts:244</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1043,7 +1060,7 @@ bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string"
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:508</li>
+									<li>Defined in lib/bcapi.ts:515</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1107,7 +1124,7 @@ bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-number
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:471</li>
+									<li>Defined in lib/bcapi.ts:478</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1165,7 +1182,7 @@ bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-number"
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:59</li>
+									<li>Defined in lib/bcapi.ts:66</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1213,7 +1230,7 @@ bc.startObjectPolling(<span class="hljs-number">150</span>);
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:115</li>
+									<li>Defined in lib/bcapi.ts:122</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1268,7 +1285,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:813</li>
+									<li>Defined in lib/bcapi.ts:820</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1291,7 +1308,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:888</li>
+									<li>Defined in lib/bcapi.ts:895</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1314,7 +1331,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:871</li>
+									<li>Defined in lib/bcapi.ts:878</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1340,7 +1357,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:852</li>
+									<li>Defined in lib/bcapi.ts:859</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1365,7 +1382,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 					<div class="tsd-signature tsd-kind-icon">BCData<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:180</li>
+							<li>Defined in lib/bcapi.ts:187</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1379,7 +1396,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<div class="tsd-signature tsd-kind-icon">devices<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in lib/bcapi.ts:180</li>
+								<li>Defined in lib/bcapi.ts:187</li>
 							</ul>
 						</aside>
 					</section>
@@ -1401,6 +1418,9 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 					</li>
 					<li class=" tsd-kind-enum">
 						<a href="enums/endpoint.html" class="tsd-kind-icon">Endpoint</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/loglevel.html" class="tsd-kind-icon">Log<wbr>Level</a>
 					</li>
 					<li class=" tsd-kind-enum">
 						<a href="enums/passwordtype.html" class="tsd-kind-icon">Password<wbr>Type</a>
@@ -1449,6 +1469,9 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#ispolling" class="tsd-kind-icon">is<wbr>Polling</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#loglevel" class="tsd-kind-icon">log<wbr>Level</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#typeinfomap" class="tsd-kind-icon">type<wbr>Info<wbr>Map</a>
