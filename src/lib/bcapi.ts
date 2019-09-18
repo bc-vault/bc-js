@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import {BCHttpResponse,Endpoint,HttpResponse,SpaceObject,PasswordType,WalletType,DaemonError, VersionObject, TransactionData,BCDataRefreshStatusCode, BCObject,BCDevice,typeInfoMap, WalletTypeInfo, WalletData, LogLevel} from './types'
 import { Keccak } from 'sha3';
 import { polyfill } from 'es6-promise'; polyfill();
-//import { Buffer } from 'buffer';
+// import { Buffer } from 'buffer';
 export const Host:string="https://localhost.bc-vault.com:1991/"
 function getResponsePromised(endpoint:Endpoint,data?:object):Promise<HttpResponse>{
   return new Promise((res,rej)=>{
@@ -10,7 +10,8 @@ function getResponsePromised(endpoint:Endpoint,data?:object):Promise<HttpRespons
       baseURL:Host,
       data:JSON.stringify((data === undefined?{}:data)),
       method:"POST",
-      url:endpoint
+      url:endpoint,
+      withCredentials:true
       
     }
     axios(options).then((response)=>{
@@ -28,15 +29,15 @@ function assertIsBCHttpResponse(httpr:HttpResponse):void{
   
   if((httpr.body as BCHttpResponse).errorCode !== 0x9000) throw new DaemonError(httpr.body as BCHttpResponse);
 }
-function log(msg,level=LogLevel.verbose){
+function log(msg:any,level=LogLevel.verbose):void{
   if(logLevel <= level){
     console.log('['+new Date(Date.now()).toLocaleTimeString()+']: '+msg);
   }
 }
-//** Is BCData object polling already taking place? */
-export var isPolling = false;
+// ** Is BCData object polling already taking place? */
+export let isPolling = false;
 /** Set Logging verbosity */
-export var logLevel:LogLevel=LogLevel.warning;
+export let logLevel:LogLevel=LogLevel.warning;
 
 /**
   Starts polling daemon for changes and updates BCData object
@@ -64,15 +65,15 @@ export var logLevel:LogLevel=LogLevel.warning;
 @throws        Will throw "Already polling" if polling is already taking place.
  */
 export function startObjectPolling(deviceInterval:number=150):void{
-  if(isPolling) throw "Already polling!";
+  if(isPolling) throw Error("Already polling!");
   isPolling = true;
-  //pollBCObject(fullInterval);
+  // pollBCObject(fullInterval);
   pollDevicesChanged(deviceInterval);
 
 
 }
 async function getWallets(deviceID:number,activeTypes:ReadonlyArray<WalletType>):Promise<WalletData[]>{
-  let ret:WalletData[] = [];
+  const ret:WalletData[] = [];
   for(const x of activeTypes){
     const walletsOfXType = await getWalletsOfType(deviceID,x) as string[];
     for(const wallet of walletsOfXType){
@@ -122,7 +123,7 @@ let lastSeenDevices:ReadonlyArray<number>=[];
 export async function triggerManualUpdate(fullUpdate:boolean=true):Promise<void>{
   if(fullUpdate){
     const devArray = await getDevices();
-    let devs:BCDevice[] = [];
+    const devs:BCDevice[] = [];
     FireAllListeners(1);
     for (const deviceID of devArray) {
       let activeTypes;
@@ -165,11 +166,11 @@ export async function triggerManualUpdate(fullUpdate:boolean=true):Promise<void>
     }
   }
 }
-//async function pollBCObject(interval:number){ Todo fix this
-  //await triggerManualUpdate();
-  //setTimeout(()=>pollBCObject(interval),interval);
-//}
-async function pollDevicesChanged(interval:number){
+// async function pollBCObject(interval:number){ Todo fix this
+  // await triggerManualUpdate();
+  // setTimeout(()=>pollBCObject(interval),interval);
+// }
+async function pollDevicesChanged(interval:number):Promise<void>{
   try{
     await triggerManualUpdate(false);
   }catch(e){
@@ -178,14 +179,14 @@ async function pollDevicesChanged(interval:number){
   }
   setTimeout(()=>pollDevicesChanged(interval),interval);
 }
-function FireAllListeners(...args:any[]){
+function FireAllListeners(...args:any[]):void{
   for(const listener of listeners){
     listener.call(null,...args);
   }
 }
 /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
-export var BCData:BCObject = {devices:[]};
-let listeners:Function[]=[]
+export let BCData:BCObject = {devices:[]};
+const listeners:Array<(status:BCDataRefreshStatusCode)=>void>=[]
 /**
   Adds a status changed listener for updates to the BCData object
   ### Example (es3)
@@ -242,7 +243,7 @@ export function AddBCDataChangedListener(func:(status:BCDataRefreshStatusCode)=>
   ```
  */
 export function getWalletTypeInfo(id:number):WalletTypeInfo|undefined{
-  return typeInfoMap.find(x=>x.type == id);
+  return typeInfoMap.find(x=>x.type === id);
 }
 
 /**
@@ -770,6 +771,8 @@ export async function GenerateTransaction(device:number, type:WalletType,data:Tr
 
   log(httpr.body,LogLevel.debug);
   assertIsBCHttpResponse(httpr);
+  // i know.
+  // tslint:disable-next-line: no-string-literal
   return httpr.body["data"] as string;
 }
 
@@ -811,13 +814,15 @@ export async function SignData(device:number, type:WalletType,publicAddress:stri
 
   log("Response body:"+httpr.body,LogLevel.debug);
   assertIsBCHttpResponse(httpr);
+  // i know.
+  // tslint:disable-next-line: no-string-literal
   return httpr.body["data"] as string;
 }
 
 
 
 
-export async function web3_GetAccounts(cb:Function):Promise<void>{
+export async function web3_GetAccounts(cb:((err?:any,res?:any)=>void)):Promise<void>{
   try{
     const devices = await getDevices();
     if(devices.length === 0){
@@ -829,7 +834,7 @@ export async function web3_GetAccounts(cb:Function):Promise<void>{
       cb( null,wallets.map((x)=>"0x"+x) );
     }catch(e){
       if(e.BCHttpResponse !== undefined){
-        //unlock BC Vault!
+        // unlock BC Vault!
         await EnterGlobalPin(devices[0],PasswordType.GlobalPassword);
         const wallets = await getWalletsOfType(devices[0],WalletType.ethereum);
         return cb( null,wallets.map((x)=>"0x"+x) );
@@ -846,17 +851,18 @@ function strip0x(str:string):string{
   return str;
 }
 function toEtherCase(inputString:string):string{
-  var kec = new Keccak(256);
+  const kec = new Keccak(256);
   kec.update(inputString.toLowerCase());
-  let keccakArray = kec.digest('hex').split('');
-  let upperCase = '89abcdef';
+  const keccakArray = kec.digest('hex').split('');
+  const upperCase = '89abcdef';
   return inputString.toLowerCase().split('').map((x,idx)=>{
-    if(upperCase.indexOf(keccakArray[idx]) !== -1)
+    if(upperCase.indexOf(keccakArray[idx]) !== -1) {
       return x.toUpperCase();
+    }
     return x;
   }).join('');
 }
-export async function web3_signTransaction(txParams:any,cb:Function):Promise<void>{
+export async function web3_signTransaction(txParams:any,cb:((err?:any,res?:any)=>void)):Promise<void>{
   try{
     const devices = await getDevices();
     if(devices.length === 0){
@@ -868,14 +874,14 @@ export async function web3_signTransaction(txParams:any,cb:Function):Promise<voi
     txParams.amount=txParams.value;
     txParams.from=toEtherCase(strip0x(txParams.from))
     
-    let txHex = await GenerateTransaction(devices[devices.length-1],WalletType.ethereum,txParams)
+    const txHex = await GenerateTransaction(devices[devices.length-1],WalletType.ethereum,txParams)
     cb(null,txHex);
   }catch(e){
     cb(e,null)
   }
 }
 
-export async function web3_signPersonalMessage(msgParams:any,cb:Function):Promise<void>{
+export async function web3_signPersonalMessage(msgParams:any,cb:((err?:any,res?:any)=>void)):Promise<void>{
   try{
     const devices = await getDevices();
     if(devices.length === 0){
@@ -885,7 +891,7 @@ export async function web3_signPersonalMessage(msgParams:any,cb:Function):Promis
     msgParams.from=toEtherCase(strip0x(msgParams.from))
     
     
-    let signedMessage = await SignData(devices[devices.length-1],WalletType.ethereum,msgParams.from,msgParams.data);
+    const signedMessage = await SignData(devices[devices.length-1],WalletType.ethereum,msgParams.from,msgParams.data);
     cb(null,signedMessage);
   }catch(e){
     cb(e,null)

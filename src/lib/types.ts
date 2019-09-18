@@ -47,18 +47,18 @@ export interface HttpResponse{
     /**
      * @description HttpResponse !== undefined if the request succeeded but the device returned an error code. 
      */
-    HttpResponse:HttpResponse
+    public HttpResponse:HttpResponse
     /**
      * @description BCHttpResponse !== undefined if the request succeeded but the device returned an error code. 
      */
-    BCHttpResponse:BCHttpResponse
+    public BCHttpResponse:BCHttpResponse
     constructor(data:HttpResponse | BCHttpResponse,m:string="DaemonError") {
         super(m);
 
         // Set the prototype explicitly.
         Object.setPrototypeOf(this, DaemonError.prototype);
         this.name="DaemonError";
-        if((data as HttpResponse).status !== undefined){//data is HttpResponse
+        if((data as HttpResponse).status !== undefined){// data is HttpResponse
           this.HttpResponse = data as HttpResponse;
         }else{
           this.BCHttpResponse = data as BCHttpResponse;

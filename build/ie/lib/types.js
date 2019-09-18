@@ -30,7 +30,7 @@ var DaemonError = /** @class */ (function (_super) {
         // Set the prototype explicitly.
         Object.setPrototypeOf(_this, DaemonError.prototype);
         _this.name = "DaemonError";
-        if (data.status !== undefined) { //data is HttpResponse
+        if (data.status !== undefined) { // data is HttpResponse
             _this.HttpResponse = data;
         }
         else {

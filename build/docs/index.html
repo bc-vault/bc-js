@@ -62,20 +62,26 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="bc-js">bc-js</h1>
+				<a href="#bc-js" id="bc-js" style="color: inherit; text-decoration: none;">
+					<h1>bc-js</h1>
+				</a>
 				<p>Javascript library for interfacing with the BC VAULT daemon via HTTP.</p>
-				<h2 id="description">Description</h2>
+				<a href="#description" id="description" style="color: inherit; text-decoration: none;">
+					<h2>Description</h2>
+				</a>
 				<p>BC-JS is a clientside library which makes integrating support for BC VAULT as easy as possible. When reading this documentation keep in mind that some functions that require user input will display a popup to the user for confirmation. No extra work is required on your part but keep that in mind. </p>
 				<p>All functions are defined as Promises, which means that in <a href="https://caniuse.com/#feat=async-functions">supported environments</a> you can use the native await syntax to resolve actions.</p>
-				<h2 id="quick-start-in-browser">Quick start in browser</h2>
+				<a href="#quick-start-in-browser" id="quick-start-in-browser" style="color: inherit; text-decoration: none;">
+					<h2>Quick start in browser</h2>
+				</a>
 				<p>To get started download <a href="#">bc-js</a> and place it somewhere where it can be found from a HTML file. This will register the object <code>_bcvault</code> in the global <code>window</code> object.</p>
 				<p>Include it where needed:</p>
 				<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/path/to/bc-js.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/path/to/bc-js.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></code></pre>
 				<p>For example, to query currently connected devices:</p>
 				<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/path/to/bc-js.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/path/to/bc-js.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
@@ -89,7 +95,7 @@
 </code></pre>
 				<p>or, if your target browsers support async/await:</p>
 				<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/path/to/bc-js.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/path/to/bc-js.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
@@ -100,41 +106,61 @@
   </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 </code></pre>
-				<h3 id="ie-workarounds">IE workarounds</h3>
+				<a href="#ie-workarounds" id="ie-workarounds" style="color: inherit; text-decoration: none;">
+					<h3>IE workarounds</h3>
+				</a>
 				<p>To support Internet Explorer which doesn&#39;t allow communication cross-domain-area between popups, we had to use showModalDialog internally. This means that if a popup is shown in IE, it will block the entire browser until it is either completed or closed. Other browsers are unaffected.</p>
-				<h2 id="build-instructions">Build Instructions</h2>
-				<h3 id="generate-documentation">Generate Documentation</h3>
-				<h4 id="global-dependencies">Global Dependencies</h4>
+				<a href="#build-instructions" id="build-instructions" style="color: inherit; text-decoration: none;">
+					<h2>Build Instructions</h2>
+				</a>
+				<a href="#generate-documentation" id="generate-documentation" style="color: inherit; text-decoration: none;">
+					<h3>Generate Documentation</h3>
+				</a>
+				<a href="#global-dependencies" id="global-dependencies" style="color: inherit; text-decoration: none;">
+					<h4>Global Dependencies</h4>
+				</a>
 				<ul>
 					<li>TypeDoc</li>
 				</ul>
-				<h4 id="instructions">Instructions</h4>
+				<a href="#instructions" id="instructions" style="color: inherit; text-decoration: none;">
+					<h4>Instructions</h4>
+				</a>
 				<ol>
 					<li>Make sure to cd to the project root</li>
 					<li>Run <code>npm run doc</code></li>
 				</ol>
 				<p>Alternatively, run typedoc directly:</p>
 				<p><code>typedoc --mode file --excludeNotExported --excludePrivate --name bc-js --out build/docs</code></p>
-				<h4 id="output">Output</h4>
+				<a href="#output" id="output" style="color: inherit; text-decoration: none;">
+					<h4>Output</h4>
+				</a>
 				<p>Output files are in <code>build/docs</code></p>
-				<h3 id="build">Build</h3>
-				<h4 id="global-dependencies">Global Dependencies</h4>
+				<a href="#build" id="build" style="color: inherit; text-decoration: none;">
+					<h3>Build</h3>
+				</a>
+				<a href="#global-dependencies-1" id="global-dependencies-1" style="color: inherit; text-decoration: none;">
+					<h4>Global Dependencies</h4>
+				</a>
 				<ol>
 					<li>Typescript</li>
 					<li>Browserify</li>
 				</ol>
-				<h4 id="instructions">Instructions</h4>
+				<a href="#instructions-1" id="instructions-1" style="color: inherit; text-decoration: none;">
+					<h4>Instructions</h4>
+				</a>
 				<ol>
 					<li>Make sure to cd to the project root</li>
 					<li>Run <code>npm run build</code></li>
 				</ol>
-				<h4 id="output">Output</h4>
+				<a href="#output-1" id="output-1" style="color: inherit; text-decoration: none;">
+					<h4>Output</h4>
+				</a>
 				<p>Output files are in</p>
 				<ul>
 					<li><code>build/module</code> - ES6 with esnext modules (Future)</li>
 					<li><code>build/ie</code> - ES3 Polyfills for IE, used in bc_js_*.js</li>
 					<li><code>build/main</code> - ES6 with commonJS modules (NodeJS)</li>
-					<li><code>build/bc_js_*.js</code> - Browserified output for use in browsers (obviously)</li>
+					<li><code>build/bc_js_*.js</code> - Browserified output for use in browsers</li>
 				</ul>
 			</div>
 		</div>
@@ -300,6 +326,7 @@
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
@@ -348,7 +375,7 @@
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>

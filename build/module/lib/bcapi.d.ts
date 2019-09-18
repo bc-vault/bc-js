@@ -1,8 +1,8 @@
 import { SpaceObject, PasswordType, WalletType, VersionObject, TransactionData, BCDataRefreshStatusCode, BCObject, WalletTypeInfo, LogLevel } from './types';
 export declare const Host: string;
-export declare var isPolling: boolean;
+export declare let isPolling: boolean;
 /** Set Logging verbosity */
-export declare var logLevel: LogLevel;
+export declare let logLevel: LogLevel;
 /**
   Starts polling daemon for changes and updates BCData object
   ### Example (es3)
@@ -61,7 +61,7 @@ export declare function startObjectPolling(deviceInterval?: number): void;
  */
 export declare function triggerManualUpdate(fullUpdate?: boolean): Promise<void>;
 /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
-export declare var BCData: BCObject;
+export declare let BCData: BCObject;
 /**
   Adds a status changed listener for updates to the BCData object
   ### Example (es3)
@@ -551,7 +551,7 @@ export declare function GenerateTransaction(device: number, type: WalletType, da
   @returns       The raw signed message hex prefixed with '0x' if operation was successful, otherwise will throw
  */
 export declare function SignData(device: number, type: WalletType, publicAddress: string, data: string): Promise<string>;
-export declare function web3_GetAccounts(cb: Function): Promise<void>;
-export declare function web3_signTransaction(txParams: any, cb: Function): Promise<void>;
-export declare function web3_signPersonalMessage(msgParams: any, cb: Function): Promise<void>;
+export declare function web3_GetAccounts(cb: ((err?: any, res?: any) => void)): Promise<void>;
+export declare function web3_signTransaction(txParams: any, cb: ((err?: any, res?: any) => void)): Promise<void>;
+export declare function web3_signPersonalMessage(msgParams: any, cb: ((err?: any, res?: any) => void)): Promise<void>;
 export declare function web3_Inject(web3Instance: any): void;

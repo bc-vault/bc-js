@@ -102,4 +102,4 @@ Output files are in
  - `build/module` - ES6 with esnext modules (Future)
  - `build/ie` - ES3 Polyfills for IE, used in bc_js_*.js
  - `build/main` - ES6 with commonJS modules (NodeJS)
- - `build/bc_js_*.js` - Browserified output for use in browsers (obviously)
+ - `build/bc_js_*.js` - Browserified output for use in browsers

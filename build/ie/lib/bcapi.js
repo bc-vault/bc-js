@@ -70,7 +70,7 @@ var types_1 = require("./types");
 var sha3_1 = require("sha3");
 var es6_promise_1 = require("es6-promise");
 es6_promise_1.polyfill();
-//import { Buffer } from 'buffer';
+// import { Buffer } from 'buffer';
 exports.Host = "https://localhost.bc-vault.com:1991/";
 function getResponsePromised(endpoint, data) {
     return new Promise(function (res, rej) {
@@ -78,7 +78,8 @@ function getResponsePromised(endpoint, data) {
             baseURL: exports.Host,
             data: JSON.stringify((data === undefined ? {} : data)),
             method: "POST",
-            url: endpoint
+            url: endpoint,
+            withCredentials: true
         };
         axios_1["default"](options).then(function (response) {
             var htpr = { status: response.status, body: response.data };
@@ -100,7 +101,7 @@ function log(msg, level) {
         console.log('[' + new Date(Date.now()).toLocaleTimeString() + ']: ' + msg);
     }
 }
-//** Is BCData object polling already taking place? */
+// ** Is BCData object polling already taking place? */
 exports.isPolling = false;
 /** Set Logging verbosity */
 exports.logLevel = types_1.LogLevel.warning;
@@ -132,9 +133,9 @@ exports.logLevel = types_1.LogLevel.warning;
 function startObjectPolling(deviceInterval) {
     if (deviceInterval === void 0) { deviceInterval = 150; }
     if (exports.isPolling)
-        throw "Already polling!";
+        throw Error("Already polling!");
     exports.isPolling = true;
-    //pollBCObject(fullInterval);
+    // pollBCObject(fullInterval);
     pollDevicesChanged(deviceInterval);
 }
 exports.startObjectPolling = startObjectPolling;
@@ -330,10 +331,10 @@ function triggerManualUpdate(fullUpdate) {
     });
 }
 exports.triggerManualUpdate = triggerManualUpdate;
-//async function pollBCObject(interval:number){ Todo fix this
-//await triggerManualUpdate();
-//setTimeout(()=>pollBCObject(interval),interval);
-//}
+// async function pollBCObject(interval:number){ Todo fix this
+// await triggerManualUpdate();
+// setTimeout(()=>pollBCObject(interval),interval);
+// }
 function pollDevicesChanged(interval) {
     return __awaiter(this, void 0, void 0, function () {
         var e_5;
@@ -437,7 +438,7 @@ exports.AddBCDataChangedListener = AddBCDataChangedListener;
   ```
  */
 function getWalletTypeInfo(id) {
-    return types_1.typeInfoMap.find(function (x) { return x.type == id; });
+    return types_1.typeInfoMap.find(function (x) { return x.type === id; });
 }
 exports.getWalletTypeInfo = getWalletTypeInfo;
 /**
@@ -1092,6 +1093,8 @@ function GenerateTransaction(device, type, data, broadcast) {
                     httpr = _a.sent();
                     log(httpr.body, types_1.LogLevel.debug);
                     assertIsBCHttpResponse(httpr);
+                    // i know.
+                    // tslint:disable-next-line: no-string-literal
                     return [2 /*return*/, httpr.body["data"]];
             }
         });
@@ -1143,6 +1146,8 @@ function SignData(device, type, publicAddress, data) {
                     httpr = _a.sent();
                     log("Response body:" + httpr.body, types_1.LogLevel.debug);
                     assertIsBCHttpResponse(httpr);
+                    // i know.
+                    // tslint:disable-next-line: no-string-literal
                     return [2 /*return*/, httpr.body["data"]];
             }
         });
@@ -1174,10 +1179,10 @@ function web3_GetAccounts(cb) {
                 case 4:
                     e_7 = _a.sent();
                     if (!(e_7.BCHttpResponse !== undefined)) return [3 /*break*/, 7];
-                    //unlock BC Vault!
+                    // unlock BC Vault!
                     return [4 /*yield*/, EnterGlobalPin(devices[0], types_1.PasswordType.GlobalPassword)];
                 case 5:
-                    //unlock BC Vault!
+                    // unlock BC Vault!
                     _a.sent();
                     return [4 /*yield*/, getWalletsOfType(devices[0], types_1.WalletType.ethereum)];
                 case 6:
@@ -1207,8 +1212,9 @@ function toEtherCase(inputString) {
     var keccakArray = kec.digest('hex').split('');
     var upperCase = '89abcdef';
     return inputString.toLowerCase().split('').map(function (x, idx) {
-        if (upperCase.indexOf(keccakArray[idx]) !== -1)
+        if (upperCase.indexOf(keccakArray[idx]) !== -1) {
             return x.toUpperCase();
+        }
         return x;
     }).join('');
 }

@@ -157,21 +157,21 @@
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="ispolling" class="tsd-anchor"></a>
-					<h3>is<wbr>Polling</h3>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> is<wbr>Polling</h3>
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Polling<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:37</li>
+							<li>Defined in lib/bcapi.ts:38</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="loglevel" class="tsd-anchor"></a>
-					<h3>log<wbr>Level</h3>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> log<wbr>Level</h3>
 					<div class="tsd-signature tsd-kind-icon">log<wbr>Level<span class="tsd-signature-symbol">:</span> <a href="enums/loglevel.html" class="tsd-signature-type">LogLevel</a><span class="tsd-signature-symbol"> =&nbsp;LogLevel.warning</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:39</li>
+							<li>Defined in lib/bcapi.ts:40</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -203,26 +203,32 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:218</li>
+									<li>Defined in lib/bcapi.ts:219</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Adds a status changed listener for updates to the BCData object</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.AddBCDataChangedListener(<span class="hljs-built_in">console</span>.log);
 bc.triggerManualUpdate();
 <span class="hljs-comment">// =&gt; 1</span>
 <span class="hljs-comment">// =&gt; 0</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.AddBCDataChangedListener(<span class="hljs-built_in">console</span>.log);
 bc.triggerManualUpdate();
 <span class="hljs-comment">// =&gt; 1</span>
 <span class="hljs-comment">// =&gt; 0</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 bc.AddBCDataChangedListener(<span class="hljs-built_in">console</span>.log);
 bc.triggerManualUpdate();
@@ -267,22 +273,28 @@ bc.triggerManualUpdate();
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:553</li>
+									<li>Defined in lib/bcapi.ts:554</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Copies a wallet private key to another walletType (in case of a fork etc.)</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; "true"</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-keyword">await</span> bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-keyword">await</span> bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
@@ -334,22 +346,28 @@ bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-number"
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:628</li>
+									<li>Defined in lib/bcapi.ts:629</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Displays address on device for verification</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; "true"</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-keyword">await</span> bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-keyword">await</span> bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
@@ -398,20 +416,26 @@ bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-n
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:724</li>
+									<li>Defined in lib/bcapi.ts:725</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Prompt the user to unlock the device</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.EnterGlobalPin(<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)</code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-keyword">await</span> bc.EnterGlobalPin(<span class="hljs-number">1</span>)</code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-keyword">await</span> bc.EnterGlobalPin(<span class="hljs-number">1</span>)</code></pre>
 								<dl class="tsd-comment-tags">
@@ -449,24 +473,30 @@ bc.EnterGlobalPin(<span class="hljs-number">1</span>).then(<span class="hljs-bui
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:765</li>
+									<li>Defined in lib/bcapi.ts:766</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Generates a new transaction on the device</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-keyword">var</span> trxOptions = {<span class="hljs-attr">from</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">to</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">feeCount</span>:<span class="hljs-number">0</span>,<span class="hljs-attr">feePrice</span>:<span class="hljs-string">"50000"</span>,<span class="hljs-attr">amount</span>:<span class="hljs-string">"500000000"</span>};
 bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,trxOptions).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-keyword">var</span> trxOptions = {<span class="hljs-attr">from</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">to</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">feeCount</span>:<span class="hljs-number">0</span>,<span class="hljs-attr">feePrice</span>:<span class="hljs-string">"50000"</span>,<span class="hljs-attr">amount</span>:<span class="hljs-string">"500000000"</span>};
 <span class="hljs-keyword">await</span> bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,trxOptions)
 <span class="hljs-comment">// generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-keyword">var</span> trxOptions = {<span class="hljs-attr">from</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">to</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">feeCount</span>:<span class="hljs-number">0</span>,<span class="hljs-attr">feePrice</span>:<span class="hljs-string">"50000"</span>,<span class="hljs-attr">amount</span>:<span class="hljs-string">"500000000"</span>};
 <span class="hljs-keyword">await</span> bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,trxOptions)
@@ -522,22 +552,28 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-numb
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:694</li>
+									<li>Defined in lib/bcapi.ts:695</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Generates a new wallet on the device</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; "true"</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-keyword">await</span> bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-keyword">await</span> bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
@@ -580,22 +616,28 @@ bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-number">1
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:806</li>
+									<li>Defined in lib/bcapi.ts:809</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Signs data on the device</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.SignData(<span class="hljs-number">1</span>,bc.WalletType.ethereum,<span class="hljs-string">"0x9283099a29556fcf8fff5b2cea2d4f67cb7a7a8b"</span>,<span class="hljs-string">"0x4920616d20627574206120737461636b2065786368616e676520706f7374"</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; "0x..."</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-keyword">await</span> bc.SignData(<span class="hljs-number">1</span>,bc.WalletType.ethereum,<span class="hljs-string">"0x9283099a29556fcf8fff5b2cea2d4f67cb7a7a8b"</span>,<span class="hljs-string">"0x4920616d20627574206120737461636b2065786368616e676520706f7374"</span>)
 <span class="hljs-comment">// =&gt; "0x..."</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-keyword">await</span> bc.SignData(<span class="hljs-number">1</span>,bc.WalletType.ethereum,<span class="hljs-string">"0x9283099a29556fcf8fff5b2cea2d4f67cb7a7a8b"</span>,<span class="hljs-string">"0x4920616d20627574206120737461636b2065786368616e676520706f7374"</span>)
 <span class="hljs-comment">// =&gt; "0x..."</span></code></pre>
@@ -650,22 +692,28 @@ bc.SignData(<span class="hljs-number">1</span>,bc.WalletType.ethereum,<span clas
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:443</li>
+									<li>Defined in lib/bcapi.ts:444</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Gets a list of WalletTypes that are actually used on a specific device(have at least one wallet)</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.getActiveWalletTypes(<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; [1,16777216]</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getActiveWalletTypes(<span class="hljs-number">1</span>))
 <span class="hljs-comment">// =&gt; [1,16777216]</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getActiveWalletTypes(<span class="hljs-number">1</span>))
 <span class="hljs-comment">// =&gt; [1,16777216]</span></code></pre>
@@ -702,22 +750,28 @@ bc.getActiveWalletTypes(<span class="hljs-number">1</span>).then(<span class="hl
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:377</li>
+									<li>Defined in lib/bcapi.ts:378</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Gets the available space on a specific device</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.getAvailableSpace(<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; {"available":4294967295,"complete":4294967295}</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getAvailableSpace(<span class="hljs-number">1</span>))
 <span class="hljs-comment">// =&gt; {"available":4294967295,"complete":4294967295}</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getAvailableSpace(<span class="hljs-number">1</span>))
 <span class="hljs-comment">// =&gt; {"available":4294967295,"complete":4294967295}</span></code></pre>
@@ -754,22 +808,28 @@ bc.getAvailableSpace(<span class="hljs-number">1</span>).then(<span class="hljs-
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:274</li>
+									<li>Defined in lib/bcapi.ts:275</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Gets the currently connected devices.</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.getDevices().then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; [1,2]</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getDevices())
 <span class="hljs-comment">// =&gt; [1,2]</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getDevices())
 <span class="hljs-comment">// =&gt; [1,2]</span></code></pre>
@@ -797,22 +857,28 @@ bc.getDevices().then(<span class="hljs-built_in">console</span>.log)
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:308</li>
+									<li>Defined in lib/bcapi.ts:309</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Gets the firmware version of a specific device.</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.getFirmwareVersion(<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; {"major":1,"minor":0,"revision":1,"date":{"day":17,"month":10,"year":2017},"apiVersion":{"major":1,"minor":0}}</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getFirmwareVersion(<span class="hljs-number">1</span>))
 <span class="hljs-comment">// =&gt; {"major":1,"minor":0,"revision":1,"date":{"day":17,"month":10,"year":2017},"apiVersion":{"major":1,"minor":0}}</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getFirmwareVersion(<span class="hljs-number">1</span>))
 <span class="hljs-comment">// =&gt; {"major":1,"minor":0,"revision":1,"date":{"day":17,"month":10,"year":2017},"apiVersion":{"major":1,"minor":0}}</span></code></pre>
@@ -849,22 +915,28 @@ bc.getFirmwareVersion(<span class="hljs-number">1</span>).then(<span class="hljs
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:591</li>
+									<li>Defined in lib/bcapi.ts:592</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Check if address is valid for a specific WalletType</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; "true"</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-keyword">await</span> bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-keyword">await</span> bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
@@ -913,22 +985,28 @@ bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-number
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:410</li>
+									<li>Defined in lib/bcapi.ts:411</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Gets the supported WalletTypes on a specific device</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.getSupportedWalletTypes(<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getSupportedWalletTypes(<span class="hljs-number">1</span>))
 <span class="hljs-comment">// =&gt; [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getSupportedWalletTypes(<span class="hljs-number">1</span>))
 <span class="hljs-comment">// =&gt; [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]</span></code></pre>
@@ -965,22 +1043,28 @@ bc.getSupportedWalletTypes(<span class="hljs-number">1</span>).then(<span class=
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:343</li>
+									<li>Defined in lib/bcapi.ts:344</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Gets the balance in currency-specific minimum units for the specified wallet from a web-service.</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string">"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; {"errorCode": 36864,"data": "0"}</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string">"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"</span>))
 <span class="hljs-comment">// =&gt; {"errorCode": 36864,"data": "0"}</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string">"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"</span>))
 <span class="hljs-comment">// =&gt; {"errorCode": 36864,"data": "0"}</span></code></pre>
@@ -1017,22 +1101,28 @@ bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string"
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:244</li>
+									<li>Defined in lib/bcapi.ts:245</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Returns WalletTypeInfo(name, ticker, etc...) for a specified WalletType if it exists</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.getWalletTypeInfo(<span class="hljs-number">1</span>)));
 <span class="hljs-comment">// =&gt; {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.getWalletTypeInfo(<span class="hljs-number">1</span>)));
 <span class="hljs-comment">// =&gt; {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.getWalletTypeInfo(<span class="hljs-number">1</span>)));
 <span class="hljs-comment">// =&gt; {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}</span></code></pre>
@@ -1060,22 +1150,28 @@ bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string"
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:515</li>
+									<li>Defined in lib/bcapi.ts:516</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Gets the user data associated with a publicAddress on this device</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; "This is my mining wallet!"</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>))
 <span class="hljs-comment">// =&gt; "This is my mining wallet!"</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>))
 <span class="hljs-comment">// =&gt; "This is my mining wallet!"</span></code></pre>
@@ -1124,22 +1220,28 @@ bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-number
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:478</li>
+									<li>Defined in lib/bcapi.ts:479</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Gets a array(string) of public keys of a specific WalletTypes on a device</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>))
 <span class="hljs-comment">// =&gt; ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>))
 <span class="hljs-comment">// =&gt; ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]</span></code></pre>
@@ -1182,22 +1284,28 @@ bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-number"
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:66</li>
+									<li>Defined in lib/bcapi.ts:67</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Starts polling daemon for changes and updates BCData object</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.startObjectPolling(<span class="hljs-number">150</span>);
 <span class="hljs-comment">//=&gt; bc.BCData will now be updated if the getDevices array changes</span></code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.startObjectPolling(<span class="hljs-number">150</span>);
 <span class="hljs-comment">//=&gt; bc.BCData will now be updated if the getDevices array changes</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 bc.startObjectPolling(<span class="hljs-number">150</span>);
 <span class="hljs-comment">//=&gt; bc.BCData will now be updated if the getDevices array changes</span></code></pre>
@@ -1230,25 +1338,31 @@ bc.startObjectPolling(<span class="hljs-number">150</span>);
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:122</li>
+									<li>Defined in lib/bcapi.ts:123</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Triggers a manual update to BCData.</p>
-									<h3 id="example-es3-">Example (es3)</h3>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.BCData));<span class="hljs-comment">//Old</span>
 bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.BCData));<span class="hljs-comment">//Updated</span>
 });</code></pre>
 								</div>
-								<h3 id="example-promise-browser-">Example (promise browser)</h3>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.BCData));<span class="hljs-comment">//Old</span>
 <span class="hljs-keyword">await</span> bc.triggerManualUpdate();
 <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.BCData));<span class="hljs-comment">//Updated</span></code></pre>
-								<h3 id="example-nodejs-">Example (nodejs)</h3>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.BCData));<span class="hljs-comment">//Old</span>
 <span class="hljs-keyword">await</span> bc.triggerManualUpdate();
@@ -1279,19 +1393,40 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 					<a name="web3_getaccounts" class="tsd-anchor"></a>
 					<h3>web3_<wbr><wbr>Get<wbr>Accounts</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">web3_<wbr><wbr>Get<wbr>Accounts<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">web3_<wbr><wbr>Get<wbr>Accounts<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:820</li>
+									<li>Defined in lib/bcapi.ts:825</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>cb: <span class="tsd-signature-type">Function</span></h5>
+									<h5>cb: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5><span class="tsd-flag ts-flagOptional">Optional</span> err: <span class="tsd-signature-type">any</span></h5>
+														</li>
+														<li>
+															<h5><span class="tsd-flag ts-flagOptional">Optional</span> res: <span class="tsd-signature-type">any</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1308,7 +1443,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:895</li>
+									<li>Defined in lib/bcapi.ts:901</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1325,13 +1460,13 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 					<a name="web3_signpersonalmessage" class="tsd-anchor"></a>
 					<h3>web3_<wbr>sign<wbr>Personal<wbr>Message</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">web3_<wbr>sign<wbr>Personal<wbr>Message<span class="tsd-signature-symbol">(</span>msgParams<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">web3_<wbr>sign<wbr>Personal<wbr>Message<span class="tsd-signature-symbol">(</span>msgParams<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:878</li>
+									<li>Defined in lib/bcapi.ts:884</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1340,7 +1475,28 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 									<h5>msgParams: <span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li>
-									<h5>cb: <span class="tsd-signature-type">Function</span></h5>
+									<h5>cb: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5><span class="tsd-flag ts-flagOptional">Optional</span> err: <span class="tsd-signature-type">any</span></h5>
+														</li>
+														<li>
+															<h5><span class="tsd-flag ts-flagOptional">Optional</span> res: <span class="tsd-signature-type">any</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1351,13 +1507,13 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 					<a name="web3_signtransaction" class="tsd-anchor"></a>
 					<h3>web3_<wbr>sign<wbr>Transaction</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">web3_<wbr>sign<wbr>Transaction<span class="tsd-signature-symbol">(</span>txParams<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">web3_<wbr>sign<wbr>Transaction<span class="tsd-signature-symbol">(</span>txParams<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:859</li>
+									<li>Defined in lib/bcapi.ts:865</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1366,7 +1522,28 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 									<h5>txParams: <span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li>
-									<h5>cb: <span class="tsd-signature-type">Function</span></h5>
+									<h5>cb: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5><span class="tsd-flag ts-flagOptional">Optional</span> err: <span class="tsd-signature-type">any</span></h5>
+														</li>
+														<li>
+															<h5><span class="tsd-flag ts-flagOptional">Optional</span> res: <span class="tsd-signature-type">any</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1378,11 +1555,11 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 				<h2>Object literals</h2>
 				<section class="tsd-panel tsd-member tsd-kind-object-literal">
 					<a name="bcdata" class="tsd-anchor"></a>
-					<h3>BCData</h3>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> BCData</h3>
 					<div class="tsd-signature tsd-kind-icon">BCData<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:187</li>
+							<li>Defined in lib/bcapi.ts:188</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1396,7 +1573,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<div class="tsd-signature tsd-kind-icon">devices<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in lib/bcapi.ts:187</li>
+								<li>Defined in lib/bcapi.ts:188</li>
 							</ul>
 						</aside>
 					</section>
@@ -1565,6 +1742,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
@@ -1613,7 +1791,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>

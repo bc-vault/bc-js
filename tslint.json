@@ -12,16 +12,19 @@
     "typedef": [true, "call-signature"],
 
 
+    "object-literal-sort-keys":false,
+    "ordered-imports":false,
     // Immutability rules
     //"readonly-keyword": true,
+    "jsdoc-format":false,
     "readonly-array": false,
     "no-let": false,
     "no-delete": true,
     "no-method-signature": true,
     "prefer-conditional-expression":false,
     // Functional style rules
-    "no-this": true,
-    "no-class": true,
+    "no-this": false,
+    "no-class": false,
     "no-console":false,
     "no-mixed-interface": true,
     "no-bitwise":false,
