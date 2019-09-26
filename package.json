@@ -19,10 +19,9 @@
     "test": "run-s build test:*",
     "test:lint": "tslint --project . ",
     "test:unit": "nyc ava",
-    "doc": "run-s doc:html && opn build/docs/index.html",
-    "doc:html": "typedoc --mode file --excludeNotExported --excludePrivate --gaID UA-118197678-1 --name bc-js --out build/docs",
-    "doc:json": "typedoc --mode file --excludeNotExported --excludePrivate --gaID UA-118197678-1 --name bc-js --json build/docs/typedoc.json",
-    "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d build/docs",
+    "doc": "run-s doc:html",
+    "doc:html": "typedoc --mode file --excludeNotExported --excludePrivate --gaID UA-118197678-1 --name bc-js --out docs",
+    "doc:json": "typedoc --mode file --excludeNotExported --excludePrivate --gaID UA-118197678-1 --name bc-js --json docs/typedoc.json",
     "version": "standard-version",
     "reset": "git clean -dfx && git reset --hard && npm i",
     "clean": "trash build test"

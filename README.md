@@ -77,11 +77,11 @@ To support Internet Explorer which doesn't allow communication cross-domain-area
 
 Alternatively, run typedoc directly:
 
-`typedoc --mode file --excludeNotExported --excludePrivate --name bc-js --out build/docs`
+`typedoc --mode file --excludeNotExported --excludePrivate --name bc-js --out docs`
 
 #### Output
 
-Output files are in `build/docs`
+Output files are in `docs/`
 
 ### Build
 

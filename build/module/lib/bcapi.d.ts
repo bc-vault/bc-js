@@ -1,8 +1,17 @@
 import { SpaceObject, PasswordType, WalletType, VersionObject, TransactionData, BCDataRefreshStatusCode, BCObject, WalletTypeInfo, LogLevel } from './types';
 export declare const Host: string;
+/** Is BCData object polling already taking place? */
 export declare let isPolling: boolean;
 /** Set Logging verbosity */
 export declare let logLevel: LogLevel;
+/** Get/Set token to be used for device actions */
+export declare let authToken: string;
+/** Use cookies for session management. If set to false no cookies will be set and the session will be lost when 'authToken' is unloaded. It will need to be manually specified. It will be automatically refreshed if a request fails due to a token error. */
+export declare let authTokenUseCookies: boolean;
+/** How long each auth grant will last in seconds since the last request. */
+export declare let authTokenExpireSeconds: number;
+/** The path to match the auth-token against. This is a security feature and allows you to fine tune access. Default is: '/' (web root) */
+export declare let authTokenMatchPath: string;
 /**
   Starts polling daemon for changes and updates BCData object
   ### Example (es3)
@@ -98,24 +107,24 @@ export declare function AddBCDataChangedListener(func: (status: BCDataRefreshSta
   ```js
     var bc = _bcvault;
     console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
-    // => {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}
+    // => {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}
   ```
 
   ### Example (promise browser)
   ```js
     var bc = _bcvault;
     console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
-    // => {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}
+    // => {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}
   ```
 
   ### Example (nodejs)
   ```js
     var bc = require('bc-js');
     console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
-    // => {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}
+    // => {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}
   ```
  */
-export declare function getWalletTypeInfo(id: number): WalletTypeInfo | undefined;
+export declare function getWalletTypeInfo(id: string): WalletTypeInfo | undefined;
 /**
   Gets the currently connected devices.
   ### Example (es3)
@@ -176,21 +185,21 @@ export declare function getFirmwareVersion(device: number): Promise<VersionObjec
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getWalletBalance(0,"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV").then(console.log)
+  bc.getWalletBalance("BitCoin1","1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV").then(console.log)
   // => {"errorCode": 36864,"data": "0"}
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  console.log(await bc.getWalletBalance(0,"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
+  console.log(await bc.getWalletBalance("BitCoin1","1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
   // => {"errorCode": 36864,"data": "0"}
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  console.log(await bc.getWalletBalance(0,"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
+  console.log(await bc.getWalletBalance("BitCoin1","1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
   // => {"errorCode": 36864,"data": "0"}
   ```
   @param device  DeviceID obtained from getDevices
@@ -232,22 +241,22 @@ export declare function getAvailableSpace(device: number): Promise<SpaceObject>;
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getSupportedWalletTypes(1).then(console.log)
-  // => [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]
+  bc.getSupportedWalletTypes("BitCoin1").then(console.log)
+  // => [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
   console.log(await bc.getSupportedWalletTypes(1))
-  // => [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]
+  // => [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
   console.log(await bc.getSupportedWalletTypes(1))
-  // => [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]
+  // => [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]
   ```
   @param device  DeviceID obtained from getDevices
   @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
@@ -261,21 +270,21 @@ export declare function getSupportedWalletTypes(device: number): Promise<Readonl
   ```js
   var bc = _bcvault;
   bc.getActiveWalletTypes(1).then(console.log)
-  // => [1,16777216]
+  // => ["BitCoin1","Ethereum"]
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
   console.log(await bc.getActiveWalletTypes(1))
-  // => [1,16777216]
+  // => ["BitCoin1","Ethereum"]
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
   console.log(await bc.getActiveWalletTypes(1))
-  // => [1,16777216]
+  // => ["BitCoin1","Ethereum"]
   ```
   @param device  DeviceID obtained from getDevices
   @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
@@ -284,25 +293,25 @@ export declare function getSupportedWalletTypes(device: number): Promise<Readonl
  */
 export declare function getActiveWalletTypes(device: number): Promise<ReadonlyArray<WalletType>>;
 /**
-  Gets a array(string) of public keys of a specific WalletTypes on a device
+  Gets an array(string) of public keys of a specific WalletTypes on a device
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getWalletsOfType(1,1).then(console.log)
+  bc.getWalletsOfType(1,"BitCoin1").then(console.log)
   // => ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  console.log(await bc.getWalletsOfType(1,1))
+  console.log(await bc.getWalletsOfType(1,"BitCoin1"))
   // => ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  console.log(await bc.getWalletsOfType(1,1))
+  console.log(await bc.getWalletsOfType(1,"BitCoin1"))
   // => ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]
   ```
   @param device  DeviceID obtained from getDevices
@@ -317,21 +326,21 @@ export declare function getWalletsOfType(device: number, type: WalletType): Prom
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getWalletUserData(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
+  bc.getWalletUserData(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",true).then(console.log)
   // => "This is my mining wallet!"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  console.log(await bc.getWalletUserData(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"))
+  console.log(await bc.getWalletUserData(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",true))
   // => "This is my mining wallet!"
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  console.log(await bc.getWalletUserData(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"))
+  console.log(await bc.getWalletUserData(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",true))
   // => "This is my mining wallet!"
   ```
   @param device  DeviceID obtained from getDevices
@@ -341,27 +350,27 @@ export declare function getWalletsOfType(device: number, type: WalletType): Prom
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
   @returns       The UserData
  */
-export declare function getWalletUserData(device: number, type: WalletType, publicAddress: string): Promise<string>;
+export declare function getWalletUserData(device: number, type: WalletType, publicAddress: string, parseHex?: boolean): Promise<string>;
 /**
   Copies a wallet private key to another walletType (in case of a fork etc.)
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.CopyWalletToType(1,1,0,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
+  bc.CopyWalletToType(1,"BitCoin1","BcCash01","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
   // => "true"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  await bc.CopyWalletToType(1,1,0,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.CopyWalletToType(1,"BitCoin1","BcCash01","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  await bc.CopyWalletToType(1,1,0,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.CopyWalletToType(1,"BitCoin1","BcCash01","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
   @param device  DeviceID obtained from getDevices
@@ -378,21 +387,21 @@ export declare function CopyWalletToType(device: number, oldType: WalletType, ne
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getIsAddressValid(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
+  bc.getIsAddressValid(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
   // => "true"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  await bc.getIsAddressValid(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.getIsAddressValid(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  await bc.getIsAddressValid(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.getIsAddressValid(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
   @param device  DeviceID obtained from getDevices
@@ -408,21 +417,21 @@ export declare function getIsAddressValid(device: number, type: WalletType, publ
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.DisplayAddressOnDevice(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
+  bc.DisplayAddressOnDevice(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
   // => "true"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  await bc.DisplayAddressOnDevice(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.DisplayAddressOnDevice(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  await bc.DisplayAddressOnDevice(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.DisplayAddressOnDevice(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
   @param device  DeviceID obtained from getDevices
@@ -438,21 +447,21 @@ export declare function DisplayAddressOnDevice(device: number, type: WalletType,
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.GenerateWallet(1,1).then(console.log)
+  bc.GenerateWallet(1,"BitCoin1").then(console.log)
   // => "true"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  await bc.GenerateWallet(1,1)
+  await bc.GenerateWallet(1,"BitCoin1")
   // => true
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  await bc.GenerateWallet(1,1)
+  await bc.GenerateWallet(1,"BitCoin1")
   // => true
   ```
   @param device  DeviceID obtained from getDevices
@@ -492,7 +501,7 @@ export declare function EnterGlobalPin(device: number, passwordType?: PasswordTy
   ```js
   var bc = _bcvault;
   var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
-  bc.GenerateTransaction(1,1,trxOptions).then(console.log)
+  bc.GenerateTransaction(1,"BitCoin1",trxOptions).then(console.log)
   // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
   ```
 
@@ -500,7 +509,7 @@ export declare function EnterGlobalPin(device: number, passwordType?: PasswordTy
   ```js
   var bc = _bcvault;
   var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
-  await bc.GenerateTransaction(1,1,trxOptions)
+  await bc.GenerateTransaction(1,"BitCoin1",trxOptions)
   // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
   ```
 
@@ -508,7 +517,7 @@ export declare function EnterGlobalPin(device: number, passwordType?: PasswordTy
   ```js
   var bc = require('bc-js');
   var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
-  await bc.GenerateTransaction(1,1,trxOptions)
+  await bc.GenerateTransaction(1,"BitCoin1",trxOptions)
   // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
   ```
   @param device    DeviceID obtained from getDevices

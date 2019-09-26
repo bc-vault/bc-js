@@ -69,10 +69,13 @@
 							<h3>Enumerations</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-enum"><a href="enums/bcdatarefreshstatuscode.html" class="tsd-kind-icon">BCData<wbr>Refresh<wbr>Status<wbr>Code</a></li>
+								<li class="tsd-kind-enum"><a href="enums/daemonerrorcodes.html" class="tsd-kind-icon">Daemon<wbr>Error<wbr>Codes</a></li>
 								<li class="tsd-kind-enum"><a href="enums/endpoint.html" class="tsd-kind-icon">Endpoint</a></li>
 								<li class="tsd-kind-enum"><a href="enums/loglevel.html" class="tsd-kind-icon">Log<wbr>Level</a></li>
 								<li class="tsd-kind-enum"><a href="enums/passwordtype.html" class="tsd-kind-icon">Password<wbr>Type</a></li>
+								<li class="tsd-kind-enum"><a href="enums/sessionauthtype.html" class="tsd-kind-icon">Session<wbr>Auth<wbr>Type</a></li>
 								<li class="tsd-kind-enum"><a href="enums/wallettype.html" class="tsd-kind-icon">Wallet<wbr>Type</a></li>
+								<li class="tsd-kind-enum"><a href="enums/wallettype_legacy.html" class="tsd-kind-icon">Wallet<wbr>Type_<wbr><wbr>Legacy</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -90,6 +93,7 @@
 								<li class="tsd-kind-interface"><a href="interfaces/bcobject.html" class="tsd-kind-icon">BCObject</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/dateobject.html" class="tsd-kind-icon">Date<wbr>Object</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/httpresponse.html" class="tsd-kind-icon">Http<wbr>Response</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/sessioncreateparameters.html" class="tsd-kind-icon">Session<wbr>Create<wbr>Parameters</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/spaceobject.html" class="tsd-kind-icon">Space<wbr>Object</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/transactiondata.html" class="tsd-kind-icon">Transaction<wbr>Data</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/versionobject.html" class="tsd-kind-icon">Version<wbr>Object</a></li>
@@ -101,6 +105,10 @@
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable"><a href="globals.html#host" class="tsd-kind-icon">Host</a></li>
+								<li class="tsd-kind-variable"><a href="globals.html#authtoken" class="tsd-kind-icon">auth<wbr>Token</a></li>
+								<li class="tsd-kind-variable"><a href="globals.html#authtokenexpireseconds" class="tsd-kind-icon">auth<wbr>Token<wbr>Expire<wbr>Seconds</a></li>
+								<li class="tsd-kind-variable"><a href="globals.html#authtokenmatchpath" class="tsd-kind-icon">auth<wbr>Token<wbr>Match<wbr>Path</a></li>
+								<li class="tsd-kind-variable"><a href="globals.html#authtokenusecookies" class="tsd-kind-icon">auth<wbr>Token<wbr>Use<wbr>Cookies</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#ispolling" class="tsd-kind-icon">is<wbr>Polling</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#loglevel" class="tsd-kind-icon">log<wbr>Level</a></li>
 								<li class="tsd-kind-variable"><a href="globals.html#typeinfomap" class="tsd-kind-icon">type<wbr>Info<wbr>Map</a></li>
@@ -151,9 +159,69 @@
 					<div class="tsd-signature tsd-kind-icon">Host<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;https://localhost.bc-vault.com:1991/&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:6</li>
+							<li>Defined in lib/bcapi.ts:12</li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
+					<a name="authtoken" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> auth<wbr>Token</h3>
+					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in lib/bcapi.ts:99</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Get/Set token to be used for device actions</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
+					<a name="authtokenexpireseconds" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> auth<wbr>Token<wbr>Expire<wbr>Seconds</h3>
+					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<wbr>Expire<wbr>Seconds<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;3600</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in lib/bcapi.ts:103</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>How long each auth grant will last in seconds since the last request.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
+					<a name="authtokenmatchpath" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> auth<wbr>Token<wbr>Match<wbr>Path</h3>
+					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<wbr>Match<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in lib/bcapi.ts:105</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The path to match the auth-token against. This is a security feature and allows you to fine tune access. Default is: &#39;/&#39; (web root)</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
+					<a name="authtokenusecookies" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagLet">Let</span> auth<wbr>Token<wbr>Use<wbr>Cookies</h3>
+					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<wbr>Use<wbr>Cookies<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in lib/bcapi.ts:101</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Use cookies for session management. If set to false no cookies will be set and the session will be lost when &#39;authToken&#39; is unloaded. It will need to be manually specified. It will be automatically refreshed if a request fails due to a token error.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="ispolling" class="tsd-anchor"></a>
@@ -161,17 +229,22 @@
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Polling<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:38</li>
+							<li>Defined in lib/bcapi.ts:95</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Is BCData object polling already taking place?</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="loglevel" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagLet">Let</span> log<wbr>Level</h3>
-					<div class="tsd-signature tsd-kind-icon">log<wbr>Level<span class="tsd-signature-symbol">:</span> <a href="enums/loglevel.html" class="tsd-signature-type">LogLevel</a><span class="tsd-signature-symbol"> =&nbsp;LogLevel.warning</span></div>
+					<div class="tsd-signature tsd-kind-icon">log<wbr>Level<span class="tsd-signature-symbol">:</span> <a href="enums/loglevel.html" class="tsd-signature-type">LogLevel</a><span class="tsd-signature-symbol"> =&nbsp;LogLevel.debug</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:40</li>
+							<li>Defined in lib/bcapi.ts:97</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -183,10 +256,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="typeinfomap" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> type<wbr>Info<wbr>Map</h3>
-					<div class="tsd-signature tsd-kind-icon">type<wbr>Info<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="interfaces/wallettypeinfo.html" class="tsd-signature-type">WalletTypeInfo</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[{type:WalletType.bitCoin,name:&quot;Bitcoin&quot;, ticker:&quot;BTC&quot;},{type:WalletType.ethereum,name:&quot;Ethereum&quot;, ticker:&quot;ETH&quot;},{type:WalletType.bitCoinCash,name:&quot;Bitcoin Cash&quot;, ticker:&quot;BCH&quot;},{type:WalletType.liteCoin,name:&quot;Litecoin&quot;, ticker:&quot;LTC&quot;},{type:WalletType.dash,name:&quot;Dash&quot;, ticker:&quot;DASH&quot;},{type:WalletType.dogeCoin,name:&quot;Dogecoin&quot;, ticker:&quot;DOGE&quot;},{type:WalletType.erc20Salt,name:&quot;Salt&quot; ,ticker:&quot;SALT&quot;},{type:WalletType.erc20Polymath,name:&quot;Polymath&quot; ,ticker:&quot;POLY&quot;},{type:WalletType.erc200x,name:&quot;0X&quot; ,ticker:&quot;ZRX&quot;},{type:WalletType.erc20Cindicator,name:&quot;Cindicator&quot; ,ticker:&quot;CND&quot;},{type:WalletType.erc20CargoX,name:&quot;CargoX&quot; ,ticker:&quot;CXO&quot;},{type:WalletType.erc20Viberate,name:&quot;Viberate&quot; ,ticker:&quot;VIB&quot;},{type:WalletType.erc20Iconomi,name:&quot;Iconomi&quot; ,ticker:&quot;ICN&quot;},{type:WalletType.erc20DTR,name:&quot;Dynamic Trading Rights&quot; ,ticker:&quot;DTR&quot;},{type:WalletType.erc20OriginTrail,name:&quot;OriginTrail&quot; ,ticker:&quot;TRAC&quot;},{type:WalletType.erc20InsurePal,name:&quot;InsurePal&quot; ,ticker:&quot;IPL&quot;},{type:WalletType.erc20Xaurum,name:&quot;Xaurum&quot; ,ticker:&quot;XAURUM&quot;},{type:WalletType.erc20Tron,name:&quot;Tron&quot; ,ticker:&quot;TRX&quot;},{type:WalletType.erc20VeChain,name:&quot;VeChain&quot; ,ticker:&quot;VEN&quot;},{type:WalletType.erc20Binance,name:&quot;Binance&quot; ,ticker:&quot;BNB&quot;},{type:WalletType.erc20Icon,name:&quot;Icon&quot; ,ticker:&quot;ICX&quot;},{type:WalletType.erc20OmiseGo,name:&quot;OmiseGo&quot; ,ticker:&quot;OMG&quot;},{type:WalletType.erc20WaltonChain,name:&quot;WaltonChain&quot; ,ticker:&quot;WTC&quot;},{type:WalletType.bitCoinTest,name:&quot;Bitcoin Test&quot;, ticker:&quot;BTC-T&quot;},{type:WalletType.ethereumTest,name:&quot;Ethereum Test&quot; ,ticker:&quot;ETH-T&quot;},{type:WalletType.bitCoinCashTest,name:&quot;Bitcoin Cash Test&quot;, ticker:&quot;BCH-T&quot;},{type:WalletType.liteCoinTest,name:&quot;Litecoin Test&quot;, ticker:&quot;LTC-T&quot;},{type:WalletType.dashTest,name:&quot;Dash Test&quot;, ticker:&quot;DASH-T&quot;},{type:WalletType.dogeCoinTest,name:&quot;Dogecoin Test&quot;, ticker:&quot;DOGE-T&quot;},{type:WalletType.erc20BokkyTest,name:&quot;Bokky ERC 20 Test&quot; ,ticker:&quot;BOKKY-T&quot;},{type:WalletType.erc20SaltTest,name:&quot;Salt Test&quot; ,ticker:&quot;SALT-T&quot;},{type:WalletType.erc20PolymathTest,name:&quot;Polymath Test&quot; ,ticker:&quot;POLY-T&quot;},{type:WalletType.erc200xTest,name:&quot;0X Test&quot; ,ticker:&quot;ZRX-T&quot;},{type:WalletType.erc20CindicatorTest,name:&quot;Cindicator Test&quot; ,ticker:&quot;CND-T&quot;},{type:WalletType.erc20CargoXTest,name:&quot;CargoX Test&quot; ,ticker:&quot;CXO-T&quot;},{type:WalletType.erc20ViberateTest,name:&quot;Viberate Test&quot; ,ticker:&quot;VIB-T&quot;},{type:WalletType.erc20IconomiTest,name:&quot;Iconomi Test&quot; ,ticker:&quot;ICN-T&quot;},{type:WalletType.erc20DTRTest,name:&quot;Dynamic Trading Rights Test&quot; ,ticker:&quot;DTR-T&quot;},{type:WalletType.erc20OriginTrailTest,name:&quot;OriginTrail Test&quot; ,ticker:&quot;TRAC-T&quot;},{type:WalletType.erc20InsurePalTest,name:&quot;InsurePal Test&quot; ,ticker:&quot;IPL-T&quot;},{type:WalletType.erc20XaurumTest,name:&quot;Xaurum Test&quot; ,ticker:&quot;XAURUM-T&quot;},{type:WalletType.erc20TronTest,name:&quot;Tron Test&quot; ,ticker:&quot;TRX-T&quot;},{type:WalletType.erc20VeChainTest,name:&quot;VeChain Test&quot; ,ticker:&quot;VEN-T&quot;},{type:WalletType.erc20BinanceTest,name:&quot;Binance Test&quot; ,ticker:&quot;BNB-T&quot;},{type:WalletType.erc20IconTest,name:&quot;Icon Test&quot; ,ticker:&quot;ICX-T&quot;},{type:WalletType.erc20OmiseGoTest,name:&quot;OmiseGo Test&quot; ,ticker:&quot;OMG-T&quot;},{type:WalletType.erc20WaltonChainTest,name:&quot;WaltonChain Test&quot; ,ticker:&quot;WTC-T&quot;},{type:WalletType.ripple,name:&quot;Ripple&quot;, ticker:&quot;XRP&quot;},{type:WalletType.rippleTest,name:&quot;Ripple Test&quot;, ticker:&quot;XRP-T&quot;},{type:WalletType.stellar,name:&quot;Stellar&quot;, ticker:&quot;XLM&quot;},{type:WalletType.stellarTest,name:&quot;Stellar Test&quot;, ticker:&quot;XLM-T&quot;},]</span></div>
+					<div class="tsd-signature tsd-kind-icon">type<wbr>Info<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="interfaces/wallettypeinfo.html" class="tsd-signature-type">WalletTypeInfo</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[{type:WalletType.bitCoin,name:&quot;Bitcoin&quot;, ticker:&quot;BTC&quot;},{type:WalletType.ethereum,name:&quot;Ethereum&quot;, ticker:&quot;ETH&quot;},{type:WalletType.bitCoinCash,name:&quot;Bitcoin Cash&quot;, ticker:&quot;BCH&quot;},{type:WalletType.liteCoin,name:&quot;Litecoin&quot;, ticker:&quot;LTC&quot;},{type:WalletType.dash,name:&quot;Dash&quot;, ticker:&quot;DASH&quot;},{type:WalletType.dogeCoin,name:&quot;Dogecoin&quot;, ticker:&quot;DOGE&quot;},{type:WalletType.eos,name:&quot;EOS&quot;, ticker:&quot;EOS&quot;},{type:WalletType.binanceCoin,name:&quot;Binance&quot;, ticker:&quot;BNB&quot;},{type:WalletType.tron,name:&quot;TRON&quot;, ticker:&quot;TRX&quot;},{type:WalletType.groestlcoin,name:&quot;Groestlcoin&quot;, ticker:&quot;GRS&quot;},{type:WalletType.erc20Salt,name:&quot;Salt&quot; ,ticker:&quot;SALT&quot;},{type:WalletType.erc20Polymath,name:&quot;Polymath&quot; ,ticker:&quot;POLY&quot;},{type:WalletType.erc200x,name:&quot;0X&quot; ,ticker:&quot;ZRX&quot;},{type:WalletType.erc20Cindicator,name:&quot;Cindicator&quot; ,ticker:&quot;CND&quot;},{type:WalletType.erc20CargoX,name:&quot;CargoX&quot; ,ticker:&quot;CXO&quot;},{type:WalletType.erc20Viberate,name:&quot;Viberate&quot; ,ticker:&quot;VIB&quot;},{type:WalletType.erc20Iconomi,name:&quot;Iconomi&quot; ,ticker:&quot;ICN&quot;},{type:WalletType.erc20DTR,name:&quot;Dynamic Trading Rights&quot; ,ticker:&quot;DTR&quot;},{type:WalletType.erc20OriginTrail,name:&quot;OriginTrail&quot; ,ticker:&quot;TRAC&quot;},{type:WalletType.erc20InsurePal,name:&quot;InsurePal&quot; ,ticker:&quot;IPL&quot;},{type:WalletType.erc20Xaurum,name:&quot;Xaurum&quot; ,ticker:&quot;XAURUM&quot;},{type:WalletType.erc20OmiseGo,name:&quot;OmiseGo&quot; ,ticker:&quot;OMG&quot;},{type:WalletType.erc20WaltonChain,name:&quot;WaltonChain&quot; ,ticker:&quot;WTC&quot;},{type:WalletType.ripple,name:&quot;Ripple&quot;, ticker:&quot;XRP&quot;},{type:WalletType.stellar,name:&quot;Stellar&quot;, ticker:&quot;XLM&quot;},]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:179</li>
+							<li>Defined in lib/types.ts:208</li>
 						</ul>
 					</aside>
 				</section>
@@ -203,7 +276,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:219</li>
+									<li>Defined in lib/bcapi.ts:319</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -273,7 +346,7 @@ bc.triggerManualUpdate();
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:554</li>
+									<li>Defined in lib/bcapi.ts:671</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -283,20 +356,20 @@ bc.triggerManualUpdate();
 										<h3>Example (es3)</h3>
 									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
+bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"BcCash01"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; "true"</span></code></pre>
 								</div>
 								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
 									<h3>Example (promise browser)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-<span class="hljs-keyword">await</span> bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
+<span class="hljs-keyword">await</span> bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"BcCash01"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
 								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
 									<h3>Example (nodejs)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
-<span class="hljs-keyword">await</span> bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
+<span class="hljs-keyword">await</span> bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"BcCash01"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
@@ -346,7 +419,7 @@ bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-number"
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:629</li>
+									<li>Defined in lib/bcapi.ts:746</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -356,20 +429,20 @@ bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-number"
 										<h3>Example (es3)</h3>
 									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
+bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; "true"</span></code></pre>
 								</div>
 								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
 									<h3>Example (promise browser)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-<span class="hljs-keyword">await</span> bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
+<span class="hljs-keyword">await</span> bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
 								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
 									<h3>Example (nodejs)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
-<span class="hljs-keyword">await</span> bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
+<span class="hljs-keyword">await</span> bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
@@ -416,7 +489,7 @@ bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-n
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:725</li>
+									<li>Defined in lib/bcapi.ts:842</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -473,7 +546,7 @@ bc.EnterGlobalPin(<span class="hljs-number">1</span>).then(<span class="hljs-bui
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:766</li>
+									<li>Defined in lib/bcapi.ts:883</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -484,7 +557,7 @@ bc.EnterGlobalPin(<span class="hljs-number">1</span>).then(<span class="hljs-bui
 									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-keyword">var</span> trxOptions = {<span class="hljs-attr">from</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">to</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">feeCount</span>:<span class="hljs-number">0</span>,<span class="hljs-attr">feePrice</span>:<span class="hljs-string">"50000"</span>,<span class="hljs-attr">amount</span>:<span class="hljs-string">"500000000"</span>};
-bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,trxOptions).then(<span class="hljs-built_in">console</span>.log)
+bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,trxOptions).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address</span></code></pre>
 								</div>
 								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
@@ -492,14 +565,14 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-numb
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-keyword">var</span> trxOptions = {<span class="hljs-attr">from</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">to</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">feeCount</span>:<span class="hljs-number">0</span>,<span class="hljs-attr">feePrice</span>:<span class="hljs-string">"50000"</span>,<span class="hljs-attr">amount</span>:<span class="hljs-string">"500000000"</span>};
-<span class="hljs-keyword">await</span> bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,trxOptions)
+<span class="hljs-keyword">await</span> bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,trxOptions)
 <span class="hljs-comment">// generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address</span></code></pre>
 								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
 									<h3>Example (nodejs)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-keyword">var</span> trxOptions = {<span class="hljs-attr">from</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">to</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">feeCount</span>:<span class="hljs-number">0</span>,<span class="hljs-attr">feePrice</span>:<span class="hljs-string">"50000"</span>,<span class="hljs-attr">amount</span>:<span class="hljs-string">"500000000"</span>};
-<span class="hljs-keyword">await</span> bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,trxOptions)
+<span class="hljs-keyword">await</span> bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,trxOptions)
 <span class="hljs-comment">// generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address</span></code></pre>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
@@ -552,7 +625,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-numb
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:695</li>
+									<li>Defined in lib/bcapi.ts:812</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -562,20 +635,20 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-numb
 										<h3>Example (es3)</h3>
 									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
+bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; "true"</span></code></pre>
 								</div>
 								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
 									<h3>Example (promise browser)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-<span class="hljs-keyword">await</span> bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)
+<span class="hljs-keyword">await</span> bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
 								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
 									<h3>Example (nodejs)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
-<span class="hljs-keyword">await</span> bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)
+<span class="hljs-keyword">await</span> bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
@@ -616,7 +689,7 @@ bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-number">1
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:809</li>
+									<li>Defined in lib/bcapi.ts:926</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -692,7 +765,7 @@ bc.SignData(<span class="hljs-number">1</span>,bc.WalletType.ethereum,<span clas
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:444</li>
+									<li>Defined in lib/bcapi.ts:548</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -703,20 +776,20 @@ bc.SignData(<span class="hljs-number">1</span>,bc.WalletType.ethereum,<span clas
 									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.getActiveWalletTypes(<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
-<span class="hljs-comment">// =&gt; [1,16777216]</span></code></pre>
+<span class="hljs-comment">// =&gt; ["BitCoin1","Ethereum"]</span></code></pre>
 								</div>
 								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
 									<h3>Example (promise browser)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getActiveWalletTypes(<span class="hljs-number">1</span>))
-<span class="hljs-comment">// =&gt; [1,16777216]</span></code></pre>
+<span class="hljs-comment">// =&gt; ["BitCoin1","Ethereum"]</span></code></pre>
 								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
 									<h3>Example (nodejs)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getActiveWalletTypes(<span class="hljs-number">1</span>))
-<span class="hljs-comment">// =&gt; [1,16777216]</span></code></pre>
+<span class="hljs-comment">// =&gt; ["BitCoin1","Ethereum"]</span></code></pre>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
 									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
@@ -750,7 +823,7 @@ bc.getActiveWalletTypes(<span class="hljs-number">1</span>).then(<span class="hl
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:378</li>
+									<li>Defined in lib/bcapi.ts:478</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -808,7 +881,7 @@ bc.getAvailableSpace(<span class="hljs-number">1</span>).then(<span class="hljs-
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:275</li>
+									<li>Defined in lib/bcapi.ts:375</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -857,7 +930,7 @@ bc.getDevices().then(<span class="hljs-built_in">console</span>.log)
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:309</li>
+									<li>Defined in lib/bcapi.ts:409</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -915,7 +988,7 @@ bc.getFirmwareVersion(<span class="hljs-number">1</span>).then(<span class="hljs
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:592</li>
+									<li>Defined in lib/bcapi.ts:709</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -925,20 +998,20 @@ bc.getFirmwareVersion(<span class="hljs-number">1</span>).then(<span class="hljs
 										<h3>Example (es3)</h3>
 									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
+bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; "true"</span></code></pre>
 								</div>
 								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
 									<h3>Example (promise browser)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-<span class="hljs-keyword">await</span> bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
+<span class="hljs-keyword">await</span> bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
 								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
 									<h3>Example (nodejs)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
-<span class="hljs-keyword">await</span> bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
+<span class="hljs-keyword">await</span> bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
 <span class="hljs-comment">// =&gt; true</span></code></pre>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
@@ -985,7 +1058,7 @@ bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-number
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:411</li>
+									<li>Defined in lib/bcapi.ts:511</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -995,21 +1068,21 @@ bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-number
 										<h3>Example (es3)</h3>
 									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-bc.getSupportedWalletTypes(<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
-<span class="hljs-comment">// =&gt; [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]</span></code></pre>
+bc.getSupportedWalletTypes(<span class="hljs-string">"BitCoin1"</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]</span></code></pre>
 								</div>
 								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
 									<h3>Example (promise browser)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getSupportedWalletTypes(<span class="hljs-number">1</span>))
-<span class="hljs-comment">// =&gt; [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]</span></code></pre>
+<span class="hljs-comment">// =&gt; [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]</span></code></pre>
 								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
 									<h3>Example (nodejs)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getSupportedWalletTypes(<span class="hljs-number">1</span>))
-<span class="hljs-comment">// =&gt; [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]</span></code></pre>
+<span class="hljs-comment">// =&gt; [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]</span></code></pre>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
 									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
@@ -1043,7 +1116,7 @@ bc.getSupportedWalletTypes(<span class="hljs-number">1</span>).then(<span class=
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:344</li>
+									<li>Defined in lib/bcapi.ts:444</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1053,20 +1126,20 @@ bc.getSupportedWalletTypes(<span class="hljs-number">1</span>).then(<span class=
 										<h3>Example (es3)</h3>
 									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string">"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"</span>).then(<span class="hljs-built_in">console</span>.log)
+bc.getWalletBalance(<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; {"errorCode": 36864,"data": "0"}</span></code></pre>
 								</div>
 								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
 									<h3>Example (promise browser)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string">"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"</span>))
+<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletBalance(<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"</span>))
 <span class="hljs-comment">// =&gt; {"errorCode": 36864,"data": "0"}</span></code></pre>
 								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
 									<h3>Example (nodejs)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
-<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string">"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"</span>))
+<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletBalance(<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"</span>))
 <span class="hljs-comment">// =&gt; {"errorCode": 36864,"data": "0"}</span></code></pre>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
@@ -1095,13 +1168,13 @@ bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string"
 					<a name="getwallettypeinfo" class="tsd-anchor"></a>
 					<h3>get<wbr>Wallet<wbr>Type<wbr>Info</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Wallet<wbr>Type<wbr>Info<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/wallettypeinfo.html" class="tsd-signature-type">WalletTypeInfo</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Wallet<wbr>Type<wbr>Info<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/wallettypeinfo.html" class="tsd-signature-type">WalletTypeInfo</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:245</li>
+									<li>Defined in lib/bcapi.ts:345</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1112,25 +1185,25 @@ bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string"
 									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.getWalletTypeInfo(<span class="hljs-number">1</span>)));
-<span class="hljs-comment">// =&gt; {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}</span></code></pre>
+<span class="hljs-comment">// =&gt; {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}</span></code></pre>
 								</div>
 								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
 									<h3>Example (promise browser)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.getWalletTypeInfo(<span class="hljs-number">1</span>)));
-<span class="hljs-comment">// =&gt; {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}</span></code></pre>
+<span class="hljs-comment">// =&gt; {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}</span></code></pre>
 								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
 									<h3>Example (nodejs)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.getWalletTypeInfo(<span class="hljs-number">1</span>)));
-<span class="hljs-comment">// =&gt; {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}</span></code></pre>
+<span class="hljs-comment">// =&gt; {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}</span></code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>id: <span class="tsd-signature-type">number</span></h5>
+									<h5>id: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="interfaces/wallettypeinfo.html" class="tsd-signature-type">WalletTypeInfo</a>
@@ -1144,13 +1217,13 @@ bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string"
 					<a name="getwalletuserdata" class="tsd-anchor"></a>
 					<h3>get<wbr>Wallet<wbr>User<wbr>Data</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Wallet<wbr>User<wbr>Data<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, type<span class="tsd-signature-symbol">: </span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a>, publicAddress<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Wallet<wbr>User<wbr>Data<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, type<span class="tsd-signature-symbol">: </span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a>, publicAddress<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, parseHex<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:516</li>
+									<li>Defined in lib/bcapi.ts:624</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1160,20 +1233,20 @@ bc.getWalletBalance(<span class="hljs-number">0</span>,<span class="hljs-string"
 										<h3>Example (es3)</h3>
 									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
+bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-literal">true</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; "This is my mining wallet!"</span></code></pre>
 								</div>
 								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
 									<h3>Example (promise browser)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>))
+<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-literal">true</span>))
 <span class="hljs-comment">// =&gt; "This is my mining wallet!"</span></code></pre>
 								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
 									<h3>Example (nodejs)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
-<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>))
+<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-literal">true</span>))
 <span class="hljs-comment">// =&gt; "This is my mining wallet!"</span></code></pre>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
@@ -1204,6 +1277,9 @@ bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-number
 										<p>publicAddress obtained from getWalletsOfType</p>
 									</div>
 								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> parseHex: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>The UserData</p>
@@ -1220,30 +1296,30 @@ bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-number
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:479</li>
+									<li>Defined in lib/bcapi.ts:587</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets a array(string) of public keys of a specific WalletTypes on a device</p>
+									<p>Gets an array(string) of public keys of a specific WalletTypes on a device</p>
 									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
 										<h3>Example (es3)</h3>
 									</a>
 									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
+bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]</span></code></pre>
 								</div>
 								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
 									<h3>Example (promise browser)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
-<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>))
+<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>))
 <span class="hljs-comment">// =&gt; ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]</span></code></pre>
 								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
 									<h3>Example (nodejs)</h3>
 								</a>
 								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
-<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>))
+<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>))
 <span class="hljs-comment">// =&gt; ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]</span></code></pre>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
@@ -1284,7 +1360,7 @@ bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-number"
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:67</li>
+									<li>Defined in lib/bcapi.ts:131</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1338,7 +1414,7 @@ bc.startObjectPolling(<span class="hljs-number">150</span>);
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:123</li>
+									<li>Defined in lib/bcapi.ts:187</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1399,7 +1475,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:825</li>
+									<li>Defined in lib/bcapi.ts:943</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1443,7 +1519,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:901</li>
+									<li>Defined in lib/bcapi.ts:1019</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1466,7 +1542,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:884</li>
+									<li>Defined in lib/bcapi.ts:1002</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1513,7 +1589,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:865</li>
+									<li>Defined in lib/bcapi.ts:983</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1559,7 +1635,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 					<div class="tsd-signature tsd-kind-icon">BCData<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:188</li>
+							<li>Defined in lib/bcapi.ts:288</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1573,7 +1649,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<div class="tsd-signature tsd-kind-icon">devices<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in lib/bcapi.ts:188</li>
+								<li>Defined in lib/bcapi.ts:288</li>
 							</ul>
 						</aside>
 					</section>
@@ -1594,6 +1670,9 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<a href="enums/bcdatarefreshstatuscode.html" class="tsd-kind-icon">BCData<wbr>Refresh<wbr>Status<wbr>Code</a>
 					</li>
 					<li class=" tsd-kind-enum">
+						<a href="enums/daemonerrorcodes.html" class="tsd-kind-icon">Daemon<wbr>Error<wbr>Codes</a>
+					</li>
+					<li class=" tsd-kind-enum">
 						<a href="enums/endpoint.html" class="tsd-kind-icon">Endpoint</a>
 					</li>
 					<li class=" tsd-kind-enum">
@@ -1603,7 +1682,13 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<a href="enums/passwordtype.html" class="tsd-kind-icon">Password<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-enum">
+						<a href="enums/sessionauthtype.html" class="tsd-kind-icon">Session<wbr>Auth<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum">
 						<a href="enums/wallettype.html" class="tsd-kind-icon">Wallet<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/wallettype_legacy.html" class="tsd-kind-icon">Wallet<wbr>Type_<wbr><wbr>Legacy</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/daemonerror.html" class="tsd-kind-icon">Daemon<wbr>Error</a>
@@ -1627,6 +1712,9 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<a href="interfaces/httpresponse.html" class="tsd-kind-icon">Http<wbr>Response</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/sessioncreateparameters.html" class="tsd-kind-icon">Session<wbr>Create<wbr>Parameters</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/spaceobject.html" class="tsd-kind-icon">Space<wbr>Object</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -1643,6 +1731,18 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#host" class="tsd-kind-icon">Host</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#authtoken" class="tsd-kind-icon">auth<wbr>Token</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#authtokenexpireseconds" class="tsd-kind-icon">auth<wbr>Token<wbr>Expire<wbr>Seconds</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#authtokenmatchpath" class="tsd-kind-icon">auth<wbr>Token<wbr>Match<wbr>Path</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#authtokenusecookies" class="tsd-kind-icon">auth<wbr>Token<wbr>Use<wbr>Cookies</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#ispolling" class="tsd-kind-icon">is<wbr>Polling</a>

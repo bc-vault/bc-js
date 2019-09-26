@@ -93,6 +93,35 @@ export interface SpaceObject {
     readonly complete: number;
 }
 export declare enum WalletType {
+    none = 0,
+    bitCoin = "BitCoin1",
+    ethereum = "Ethereum",
+    ripple = "Ripple01",
+    stellar = "Stellar1",
+    eos = "Eos____1",
+    binanceCoin = "Bnb____1",
+    tron = "Tron___1",
+    bitCoinCash = "BcCash01",
+    bitcoinGold = "BcGold01",
+    liteCoin = "LiteCoi1",
+    dash = "Dash0001",
+    dogeCoin = "DogeCoi1",
+    groestlcoin = "Groestl1",
+    erc20Salt = "E2Salt_1",
+    erc20Polymath = "E2Polym1",
+    erc200x = "E2_0X__1",
+    erc20Cindicator = "E2Cindi1",
+    erc20CargoX = "E2Cargo1",
+    erc20Viberate = "E2Viber1",
+    erc20Iconomi = "E2Icono1",
+    erc20DTR = "E2DynTR1",
+    erc20OriginTrail = "E2OriTr1",
+    erc20InsurePal = "E2InsuP1",
+    erc20Xaurum = "E2Xauru1",
+    erc20OmiseGo = "E2Omise1",
+    erc20WaltonChain = "E2WaltC1"
+}
+export declare enum WalletType_Legacy {
     bitCoin,
     bitCoinCash,
     bitCoinGold,
@@ -161,6 +190,7 @@ export interface BCDevice {
     id: number;
     space: SpaceObject;
     firmware: VersionObject;
+    userData: string;
     supportedTypes: ReadonlyArray<WalletType>;
     activeTypes: ReadonlyArray<WalletType>;
     activeWallets: WalletData[];
@@ -179,4 +209,19 @@ export declare enum BCDataRefreshStatusCode {
 export declare enum PasswordType {
     WalletPassword = "wallet",
     GlobalPassword = "global"
+}
+export declare enum SessionAuthType {
+    token = "token",
+    any = "any"
+}
+export interface SessionCreateParameters {
+    sessionType: SessionAuthType;
+    matchPath: string;
+    expireSeconds: number;
+    versionNumber: number;
+}
+export declare enum DaemonErrorCodes {
+    sessionError = 1,
+    parameterError = 2,
+    httpsInvalid = 3
 }

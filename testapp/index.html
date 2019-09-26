@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <title>BC-Vault Demo</title>
-    <script src="../build/bc_js_ie.js"></script>
+    <script src="bc_js_ie.js"></script>
     <script>
         function isActiveWallet(device,wt){
             var active =  bc.BCData.devices[device].activeTypes.find(function(x){return x==wt;}) != undefined;
@@ -131,7 +131,7 @@
     <div id="app" class="container row" style="width:100vw">
         <div v-for="(device,index) in devices" class="col-md-6 boxContainer container" v-bind="{createTransaction,getWalletTypeInfo,isActiveWallet,createNewWallet,getWalletBalance,balanceList}">
             <p class="infoRow">
-                {{ device.locked?"LOCKED":"" }} Device #{{ device.id }}
+                {{ device.locked?"(LOCKED)":"" }} <br> [v{{device.firmware.major}}.{{device.firmware.minor}}.{{device.firmware.revision}}] <br>  {{ device.userData }}
             </p>
             <div class="boxOverlay" v-if="device.locked" v-on:click="enterGlobalPin(device.id)">
                 <div class="text">Unlock Device</div>

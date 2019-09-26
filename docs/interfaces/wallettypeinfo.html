@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>BCDevice | bc-js</title>
+	<title>WalletTypeInfo | bc-js</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="bcdevice.html">BCDevice</a>
+					<a href="wallettypeinfo.html">WalletTypeInfo</a>
 				</li>
 			</ul>
-			<h1>Interface BCDevice</h1>
+			<h1>Interface WalletTypeInfo</h1>
 		</div>
 	</div>
 </header>
@@ -68,7 +68,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">BCDevice</span>
+						<span class="target">WalletTypeInfo</span>
 					</li>
 				</ul>
 			</section>
@@ -79,13 +79,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="bcdevice.html#activetypes" class="tsd-kind-icon">active<wbr>Types</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="bcdevice.html#activewallets" class="tsd-kind-icon">active<wbr>Wallets</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="bcdevice.html#firmware" class="tsd-kind-icon">firmware</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="bcdevice.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="bcdevice.html#locked" class="tsd-kind-icon">locked</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="bcdevice.html#space" class="tsd-kind-icon">space</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="bcdevice.html#supportedtypes" class="tsd-kind-icon">supported<wbr>Types</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="wallettypeinfo.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="wallettypeinfo.html#ticker" class="tsd-kind-icon">ticker</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="wallettypeinfo.html#type" class="tsd-kind-icon">type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -94,72 +90,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="activetypes" class="tsd-anchor"></a>
-					<h3>active<wbr>Types</h3>
-					<div class="tsd-signature tsd-kind-icon">active<wbr>Types<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ReadonlyArray</span><span class="tsd-signature-symbol">&lt;</span><a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:242</li>
+							<li>Defined in lib/types.ts:205</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="activewallets" class="tsd-anchor"></a>
-					<h3>active<wbr>Wallets</h3>
-					<div class="tsd-signature tsd-kind-icon">active<wbr>Wallets<span class="tsd-signature-symbol">:</span> <a href="walletdata.html" class="tsd-signature-type">WalletData</a><span class="tsd-signature-symbol">[]</span></div>
+					<a name="ticker" class="tsd-anchor"></a>
+					<h3>ticker</h3>
+					<div class="tsd-signature tsd-kind-icon">ticker<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:243</li>
+							<li>Defined in lib/types.ts:206</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="firmware" class="tsd-anchor"></a>
-					<h3>firmware</h3>
-					<div class="tsd-signature tsd-kind-icon">firmware<span class="tsd-signature-symbol">:</span> <a href="versionobject.html" class="tsd-signature-type">VersionObject</a></div>
+					<a name="type" class="tsd-anchor"></a>
+					<h3>type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:240</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="id" class="tsd-anchor"></a>
-					<h3>id</h3>
-					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in lib/types.ts:238</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="locked" class="tsd-anchor"></a>
-					<h3>locked</h3>
-					<div class="tsd-signature tsd-kind-icon">locked<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in lib/types.ts:244</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="space" class="tsd-anchor"></a>
-					<h3>space</h3>
-					<div class="tsd-signature tsd-kind-icon">space<span class="tsd-signature-symbol">:</span> <a href="spaceobject.html" class="tsd-signature-type">SpaceObject</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in lib/types.ts:239</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="supportedtypes" class="tsd-anchor"></a>
-					<h3>supported<wbr>Types</h3>
-					<div class="tsd-signature tsd-kind-icon">supported<wbr>Types<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ReadonlyArray</span><span class="tsd-signature-symbol">&lt;</span><a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in lib/types.ts:241</li>
+							<li>Defined in lib/types.ts:204</li>
 						</ul>
 					</aside>
 				</section>
@@ -178,28 +134,16 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="bcdevice.html" class="tsd-kind-icon">BCDevice</a>
+						<a href="wallettypeinfo.html" class="tsd-kind-icon">Wallet<wbr>Type<wbr>Info</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="bcdevice.html#activetypes" class="tsd-kind-icon">active<wbr>Types</a>
+								<a href="wallettypeinfo.html#name" class="tsd-kind-icon">name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="bcdevice.html#activewallets" class="tsd-kind-icon">active<wbr>Wallets</a>
+								<a href="wallettypeinfo.html#ticker" class="tsd-kind-icon">ticker</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="bcdevice.html#firmware" class="tsd-kind-icon">firmware</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="bcdevice.html#id" class="tsd-kind-icon">id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="bcdevice.html#locked" class="tsd-kind-icon">locked</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="bcdevice.html#space" class="tsd-kind-icon">space</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="bcdevice.html#supportedtypes" class="tsd-kind-icon">supported<wbr>Types</a>
+								<a href="wallettypeinfo.html#type" class="tsd-kind-icon">type</a>
 							</li>
 						</ul>
 					</li>

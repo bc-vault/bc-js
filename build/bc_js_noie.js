@@ -2223,26 +2223,79 @@ const types_1 = require("./types");
 const sha3_1 = require("sha3");
 const es6_promise_1 = require("es6-promise");
 es6_promise_1.polyfill();
-// import { Buffer } from 'buffer';
+const API_VERSION = 1;
 exports.Host = "https://localhost.bc-vault.com:1991/";
+let endpointAllowsCredentials;
+function getNewSession() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const scp = {
+            sessionType: exports.authTokenUseCookies ? types_1.SessionAuthType.any : types_1.SessionAuthType.token,
+            expireSeconds: exports.authTokenExpireSeconds,
+            matchPath: exports.authTokenMatchPath,
+            versionNumber: API_VERSION
+        };
+        const response = yield axios_1.default({
+            baseURL: exports.Host,
+            method: "POST",
+            url: 'SetBCSessionParams',
+            withCredentials: true,
+            data: scp,
+            headers: { "Api-Version": API_VERSION }
+        });
+        return response.data.d_token;
+    });
+}
 function getResponsePromised(endpoint, data) {
-    return new Promise((res, rej) => {
+    const dataWithToken = Object.assign({}, (data || {}), { d_token: exports.authToken });
+    return new Promise((res, rej) => __awaiter(this, void 0, void 0, function* () {
+        if (endpointAllowsCredentials === undefined) {
+            try {
+                const methodCheck = yield axios_1.default({ baseURL: exports.Host, data: "{}", method: "POST", url: "/Devices" });
+                endpointAllowsCredentials = methodCheck.data.daemonError === types_1.DaemonErrorCodes.sessionError;
+            }
+            catch (e) {
+                log("Daemon offline during initialization.", types_1.LogLevel.debug);
+            }
+        }
         const options = {
             baseURL: exports.Host,
-            data: JSON.stringify((data === undefined ? {} : data)),
+            data: JSON.stringify(dataWithToken),
             method: "POST",
-            url: endpoint,
-            withCredentials: true
+            url: endpoint
         };
-        axios_1.default(options).then((response) => {
+        if (endpointAllowsCredentials && exports.authTokenUseCookies) {
+            options.withCredentials = true;
+            options.headers = { "Api-Version": API_VERSION };
+        }
+        const responseFunction = (response) => __awaiter(this, void 0, void 0, function* () {
             const htpr = { status: response.status, body: response.data };
+            if (response.data.daemonError === types_1.DaemonErrorCodes.sessionError) {
+                log(`Creating new session.`, types_1.LogLevel.debug);
+                exports.authToken = yield getNewSession();
+                log(`New session created: ${exports.authToken}`, types_1.LogLevel.debug);
+                options.data = JSON.stringify(Object.assign({}, dataWithToken, { d_token: exports.authToken }));
+                axios_1.default(options).then((authenticatedResponse) => {
+                    if (authenticatedResponse.data.daemonError) {
+                        return rej(new types_1.DaemonError({ status: authenticatedResponse.status, body: authenticatedResponse.data }));
+                    }
+                    else {
+                        return res({ status: authenticatedResponse.status, body: authenticatedResponse.data });
+                    }
+                }).catch((e) => {
+                    log(`Daemon request failed: ${JSON.stringify(e)}`, types_1.LogLevel.warning);
+                    rej(e);
+                });
+                return;
+            }
             if (response.status !== 200)
                 return rej(new types_1.DaemonError(htpr));
             res(htpr);
-        }).catch((e) => {
+        });
+        axios_1.default(options).then(responseFunction).catch((e) => {
+            log(`Daemon request failed: ${JSON.stringify(e)}`, types_1.LogLevel.warning);
             rej(e);
         });
-    });
+    }));
 }
 function assertIsBCHttpResponse(httpr) {
     if (httpr.body.errorCode !== 0x9000)
@@ -2253,10 +2306,16 @@ function log(msg, level = types_1.LogLevel.verbose) {
         console.log('[' + new Date(Date.now()).toLocaleTimeString() + ']: ' + msg);
     }
 }
-// ** Is BCData object polling already taking place? */
+/** Is BCData object polling already taking place? */
 exports.isPolling = false;
 /** Set Logging verbosity */
-exports.logLevel = types_1.LogLevel.warning;
+exports.logLevel = types_1.LogLevel.debug;
+/** Use cookies for session management. If set to false no cookies will be set and the session will be lost when 'authToken' is unloaded. It will need to be manually specified. It will be automatically refreshed if a request fails due to a token error. */
+exports.authTokenUseCookies = true;
+/** How long each auth grant will last in seconds since the last request. */
+exports.authTokenExpireSeconds = 3600;
+/** The path to match the auth-token against. This is a security feature and allows you to fine tune access. Default is: '/' (web root) */
+exports.authTokenMatchPath = '/';
 /**
   Starts polling daemon for changes and updates BCData object
   ### Example (es3)
@@ -2357,6 +2416,7 @@ function triggerManualUpdate(fullUpdate = true) {
                             id: deviceID,
                             space: { available: 1, complete: 1 },
                             firmware: yield getFirmwareVersion(deviceID),
+                            userData: yield getWalletUserData(deviceID, types_1.WalletType.none, ""),
                             supportedTypes: [],
                             activeTypes: [],
                             activeWallets: [],
@@ -2371,6 +2431,7 @@ function triggerManualUpdate(fullUpdate = true) {
                     space: yield getAvailableSpace(deviceID),
                     firmware: yield getFirmwareVersion(deviceID),
                     supportedTypes: yield getSupportedWalletTypes(deviceID),
+                    userData: yield getWalletUserData(deviceID, types_1.WalletType.none, ""),
                     activeTypes,
                     activeWallets: yield getWallets(deviceID, activeTypes),
                     locked: false
@@ -2410,6 +2471,40 @@ function FireAllListeners(...args) {
     for (const listener of listeners) {
         listener.call(null, ...args);
     }
+}
+function toLegacyWalletType(t) {
+    let stringId;
+    for (const typeProperty in types_1.WalletType) {
+        if (types_1.WalletType[typeProperty] === t) {
+            stringId = typeProperty;
+        }
+    }
+    if (stringId === undefined) {
+        return 2147483646;
+    }
+    for (const legacyTypeProperty in types_1.WalletType_Legacy) {
+        if (legacyTypeProperty === stringId) {
+            return types_1.WalletType_Legacy[legacyTypeProperty];
+        }
+    }
+    return 2147483646;
+}
+function fromLegacyWalletType(t) {
+    let stringId;
+    for (const legacyTypeProperty in types_1.WalletType_Legacy) {
+        if (types_1.WalletType_Legacy[legacyTypeProperty] === t) {
+            stringId = legacyTypeProperty;
+        }
+    }
+    if (stringId === undefined) {
+        return "Unknown:" + t;
+    }
+    for (const typeProperty in types_1.WalletType) {
+        if (typeProperty === stringId) {
+            return types_1.WalletType[typeProperty];
+        }
+    }
+    return "Unknown:" + t;
 }
 /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
 exports.BCData = { devices: [] };
@@ -2453,21 +2548,21 @@ exports.AddBCDataChangedListener = AddBCDataChangedListener;
   ```js
     var bc = _bcvault;
     console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
-    // => {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}
+    // => {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}
   ```
 
   ### Example (promise browser)
   ```js
     var bc = _bcvault;
     console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
-    // => {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}
+    // => {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}
   ```
 
   ### Example (nodejs)
   ```js
     var bc = require('bc-js');
     console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
-    // => {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}
+    // => {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}
   ```
  */
 function getWalletTypeInfo(id) {
@@ -2550,21 +2645,21 @@ exports.getFirmwareVersion = getFirmwareVersion;
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getWalletBalance(0,"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV").then(console.log)
+  bc.getWalletBalance("BitCoin1","1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV").then(console.log)
   // => {"errorCode": 36864,"data": "0"}
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  console.log(await bc.getWalletBalance(0,"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
+  console.log(await bc.getWalletBalance("BitCoin1","1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
   // => {"errorCode": 36864,"data": "0"}
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  console.log(await bc.getWalletBalance(0,"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
+  console.log(await bc.getWalletBalance("BitCoin1","1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
   // => {"errorCode": 36864,"data": "0"}
   ```
   @param device  DeviceID obtained from getDevices
@@ -2622,22 +2717,22 @@ exports.getAvailableSpace = getAvailableSpace;
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getSupportedWalletTypes(1).then(console.log)
-  // => [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]
+  bc.getSupportedWalletTypes("BitCoin1").then(console.log)
+  // => [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
   console.log(await bc.getSupportedWalletTypes(1))
-  // => [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]
+  // => [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
   console.log(await bc.getSupportedWalletTypes(1))
-  // => [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]
+  // => [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]
   ```
   @param device  DeviceID obtained from getDevices
   @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
@@ -2649,7 +2744,11 @@ function getSupportedWalletTypes(device) {
         let httpr;
         httpr = yield getResponsePromised(types_1.Endpoint.WalletTypes, { device });
         assertIsBCHttpResponse(httpr);
-        return httpr.body.data;
+        let newFormat = httpr.body.data;
+        if (typeof (newFormat[0]) === typeof (1)) {
+            newFormat = newFormat.map(x => fromLegacyWalletType(x));
+        }
+        return newFormat;
     });
 }
 exports.getSupportedWalletTypes = getSupportedWalletTypes;
@@ -2659,21 +2758,21 @@ exports.getSupportedWalletTypes = getSupportedWalletTypes;
   ```js
   var bc = _bcvault;
   bc.getActiveWalletTypes(1).then(console.log)
-  // => [1,16777216]
+  // => ["BitCoin1","Ethereum"]
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
   console.log(await bc.getActiveWalletTypes(1))
-  // => [1,16777216]
+  // => ["BitCoin1","Ethereum"]
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
   console.log(await bc.getActiveWalletTypes(1))
-  // => [1,16777216]
+  // => ["BitCoin1","Ethereum"]
   ```
   @param device  DeviceID obtained from getDevices
   @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
@@ -2685,30 +2784,34 @@ function getActiveWalletTypes(device) {
         let httpr;
         httpr = yield getResponsePromised(types_1.Endpoint.SavedWalletTypes, { device });
         assertIsBCHttpResponse(httpr);
-        return httpr.body.data;
+        let newFormat = httpr.body.data;
+        if (typeof (newFormat[0]) === typeof (1)) {
+            newFormat = newFormat.map(x => fromLegacyWalletType(x));
+        }
+        return newFormat;
     });
 }
 exports.getActiveWalletTypes = getActiveWalletTypes;
 /**
-  Gets a array(string) of public keys of a specific WalletTypes on a device
+  Gets an array(string) of public keys of a specific WalletTypes on a device
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getWalletsOfType(1,1).then(console.log)
+  bc.getWalletsOfType(1,"BitCoin1").then(console.log)
   // => ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  console.log(await bc.getWalletsOfType(1,1))
+  console.log(await bc.getWalletsOfType(1,"BitCoin1"))
   // => ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  console.log(await bc.getWalletsOfType(1,1))
+  console.log(await bc.getWalletsOfType(1,"BitCoin1"))
   // => ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]
   ```
   @param device  DeviceID obtained from getDevices
@@ -2720,7 +2823,7 @@ exports.getActiveWalletTypes = getActiveWalletTypes;
 function getWalletsOfType(device, type) {
     return __awaiter(this, void 0, void 0, function* () {
         let httpr;
-        httpr = yield getResponsePromised(types_1.Endpoint.WalletsOfType, { device, walletType: type });
+        httpr = yield getResponsePromised(types_1.Endpoint.WalletsOfType, { device, walletType: toLegacyWalletType(type), walletTypeString: type });
         assertIsBCHttpResponse(httpr);
         return httpr.body.data;
     });
@@ -2731,21 +2834,21 @@ exports.getWalletsOfType = getWalletsOfType;
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getWalletUserData(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
+  bc.getWalletUserData(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",true).then(console.log)
   // => "This is my mining wallet!"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  console.log(await bc.getWalletUserData(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"))
+  console.log(await bc.getWalletUserData(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",true))
   // => "This is my mining wallet!"
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  console.log(await bc.getWalletUserData(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"))
+  console.log(await bc.getWalletUserData(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",true))
   // => "This is my mining wallet!"
   ```
   @param device  DeviceID obtained from getDevices
@@ -2755,12 +2858,22 @@ exports.getWalletsOfType = getWalletsOfType;
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
   @returns       The UserData
  */
-function getWalletUserData(device, type, publicAddress) {
+function getWalletUserData(device, type, publicAddress, parseHex = true) {
     return __awaiter(this, void 0, void 0, function* () {
         let httpr;
-        httpr = yield getResponsePromised(types_1.Endpoint.WalletUserData, { device, walletType: type, sourcePublicID: publicAddress });
+        httpr = yield getResponsePromised(types_1.Endpoint.WalletUserData, { device, walletType: toLegacyWalletType(type), walletTypeString: type, sourcePublicID: publicAddress });
         assertIsBCHttpResponse(httpr);
-        return httpr.body.data;
+        let responseString = httpr.body.data;
+        if (parseHex && responseString.length % 2 === 0) {
+            responseString = responseString.substr(2); //remove 0x
+            const responseStringArray = [...responseString];
+            const byteArrayStr = [];
+            for (let i = 0; i < responseStringArray.length; i += 2) {
+                byteArrayStr.push(parseInt(responseStringArray[i] + responseStringArray[i + 1], 16));
+            }
+            responseString = String.fromCharCode(...byteArrayStr);
+        }
+        return responseString;
     });
 }
 exports.getWalletUserData = getWalletUserData;
@@ -2769,21 +2882,21 @@ exports.getWalletUserData = getWalletUserData;
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.CopyWalletToType(1,1,0,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
+  bc.CopyWalletToType(1,"BitCoin1","BcCash01","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
   // => "true"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  await bc.CopyWalletToType(1,1,0,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.CopyWalletToType(1,"BitCoin1","BcCash01","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  await bc.CopyWalletToType(1,1,0,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.CopyWalletToType(1,"BitCoin1","BcCash01","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
   @param device  DeviceID obtained from getDevices
@@ -2798,7 +2911,7 @@ function CopyWalletToType(device, oldType, newType, publicAddress) {
     return __awaiter(this, void 0, void 0, function* () {
         let httpr;
         const id = yield getSecureWindowResponse(types_1.PasswordType.WalletPassword);
-        httpr = yield getResponsePromised(types_1.Endpoint.CopyWalletToType, { device, walletType: oldType, newWalletType: newType, sourcePublicID: publicAddress, password: id });
+        httpr = yield getResponsePromised(types_1.Endpoint.CopyWalletToType, { device, walletType: toLegacyWalletType(oldType), walletTypeString: newType, newWalletType: toLegacyWalletType(newType), newWalletTypeString: newType, sourcePublicID: publicAddress, password: id });
         assertIsBCHttpResponse(httpr);
         return true;
     });
@@ -2809,21 +2922,21 @@ exports.CopyWalletToType = CopyWalletToType;
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getIsAddressValid(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
+  bc.getIsAddressValid(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
   // => "true"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  await bc.getIsAddressValid(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.getIsAddressValid(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  await bc.getIsAddressValid(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.getIsAddressValid(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
   @param device  DeviceID obtained from getDevices
@@ -2836,7 +2949,7 @@ exports.CopyWalletToType = CopyWalletToType;
 function getIsAddressValid(device, type, publicAddress) {
     return __awaiter(this, void 0, void 0, function* () {
         let httpr;
-        httpr = yield getResponsePromised(types_1.Endpoint.IsAddressValid, { device, walletType: type, address: publicAddress });
+        httpr = yield getResponsePromised(types_1.Endpoint.IsAddressValid, { device, walletType: toLegacyWalletType(type), walletTypeString: type, address: publicAddress });
         return httpr.body.errorCode === 0x9000;
     });
 }
@@ -2846,21 +2959,21 @@ exports.getIsAddressValid = getIsAddressValid;
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.DisplayAddressOnDevice(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
+  bc.DisplayAddressOnDevice(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
   // => "true"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  await bc.DisplayAddressOnDevice(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.DisplayAddressOnDevice(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  await bc.DisplayAddressOnDevice(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.DisplayAddressOnDevice(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
   @param device  DeviceID obtained from getDevices
@@ -2873,7 +2986,7 @@ exports.getIsAddressValid = getIsAddressValid;
 function DisplayAddressOnDevice(device, type, publicAddress) {
     return __awaiter(this, void 0, void 0, function* () {
         let httpr;
-        httpr = yield getResponsePromised(types_1.Endpoint.DisplayAddress, { device, walletType: type, publicID: publicAddress });
+        httpr = yield getResponsePromised(types_1.Endpoint.DisplayAddress, { device, walletType: toLegacyWalletType(type), walletTypeString: type, publicID: publicAddress });
         assertIsBCHttpResponse(httpr);
         return true;
     });
@@ -2914,21 +3027,21 @@ function getSecureWindowResponse(passwordType) {
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.GenerateWallet(1,1).then(console.log)
+  bc.GenerateWallet(1,"BitCoin1").then(console.log)
   // => "true"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  await bc.GenerateWallet(1,1)
+  await bc.GenerateWallet(1,"BitCoin1")
   // => true
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  await bc.GenerateWallet(1,1)
+  await bc.GenerateWallet(1,"BitCoin1")
   // => true
   ```
   @param device  DeviceID obtained from getDevices
@@ -2940,7 +3053,7 @@ function getSecureWindowResponse(passwordType) {
 function GenerateWallet(device, type) {
     return __awaiter(this, void 0, void 0, function* () {
         const id = yield getSecureWindowResponse(types_1.PasswordType.WalletPassword);
-        const httpr = yield getResponsePromised(types_1.Endpoint.GenerateWallet, { device, walletType: type, password: id });
+        const httpr = yield getResponsePromised(types_1.Endpoint.GenerateWallet, { device, walletType: toLegacyWalletType(type), walletTypeString: type, password: id });
         assertIsBCHttpResponse(httpr);
         return httpr.body.data;
     });
@@ -2985,7 +3098,7 @@ exports.EnterGlobalPin = EnterGlobalPin;
   ```js
   var bc = _bcvault;
   var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
-  bc.GenerateTransaction(1,1,trxOptions).then(console.log)
+  bc.GenerateTransaction(1,"BitCoin1",trxOptions).then(console.log)
   // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
   ```
 
@@ -2993,7 +3106,7 @@ exports.EnterGlobalPin = EnterGlobalPin;
   ```js
   var bc = _bcvault;
   var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
-  await bc.GenerateTransaction(1,1,trxOptions)
+  await bc.GenerateTransaction(1,"BitCoin1",trxOptions)
   // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
   ```
 
@@ -3001,7 +3114,7 @@ exports.EnterGlobalPin = EnterGlobalPin;
   ```js
   var bc = require('bc-js');
   var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
-  await bc.GenerateTransaction(1,1,trxOptions)
+  await bc.GenerateTransaction(1,"BitCoin1",trxOptions)
   // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
   ```
   @param device    DeviceID obtained from getDevices
@@ -3016,8 +3129,8 @@ function GenerateTransaction(device, type, data, broadcast) {
     return __awaiter(this, void 0, void 0, function* () {
         const id = yield getSecureWindowResponse(types_1.PasswordType.WalletPassword);
         log("Got auth id:" + id, types_1.LogLevel.debug);
-        log("Sending object:" + JSON.stringify({ device, walletType: type, transaction: data, password: id }), types_1.LogLevel.debug);
-        const httpr = yield getResponsePromised(types_1.Endpoint.GenerateTransaction, { device, walletType: type, transaction: data, password: id, broadcast });
+        log("Sending object:" + JSON.stringify({ device, walletType: toLegacyWalletType(type), walletTypeString: type, transaction: data, password: id }), types_1.LogLevel.debug);
+        const httpr = yield getResponsePromised(types_1.Endpoint.GenerateTransaction, { device, walletType: toLegacyWalletType(type), walletTypeString: type, transaction: data, password: id, broadcast });
         log(httpr.body, types_1.LogLevel.debug);
         assertIsBCHttpResponse(httpr);
         // i know.
@@ -3060,8 +3173,8 @@ function SignData(device, type, publicAddress, data) {
     return __awaiter(this, void 0, void 0, function* () {
         const id = yield getSecureWindowResponse(types_1.PasswordType.WalletPassword);
         log("Got auth id:" + id, types_1.LogLevel.debug);
-        log("Sending object:" + JSON.stringify({ device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id }), types_1.LogLevel.debug);
-        const httpr = yield getResponsePromised(types_1.Endpoint.SignData, { device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id });
+        log("Sending object:" + JSON.stringify({ device, walletType: toLegacyWalletType(type), walletTypeString: type, sourcePublicID: publicAddress, srcData: data, password: id }), types_1.LogLevel.debug);
+        const httpr = yield getResponsePromised(types_1.Endpoint.SignData, { device, walletType: toLegacyWalletType(type), walletTypeString: type, sourcePublicID: publicAddress, srcData: data, password: id });
         log("Response body:" + httpr.body, types_1.LogLevel.debug);
         assertIsBCHttpResponse(httpr);
         // i know.
@@ -3212,69 +3325,99 @@ var Endpoint;
     Endpoint["GetWalletBalance"] = "WalletBalance";
     Endpoint["SignData"] = "SignData";
 })(Endpoint = exports.Endpoint || (exports.Endpoint = {}));
+var WalletType;
+(function (WalletType) {
+    WalletType[WalletType["none"] = 0] = "none";
+    WalletType["bitCoin"] = "BitCoin1";
+    WalletType["ethereum"] = "Ethereum";
+    WalletType["ripple"] = "Ripple01";
+    WalletType["stellar"] = "Stellar1";
+    WalletType["eos"] = "Eos____1";
+    WalletType["binanceCoin"] = "Bnb____1";
+    WalletType["tron"] = "Tron___1";
+    WalletType["bitCoinCash"] = "BcCash01";
+    WalletType["bitcoinGold"] = "BcGold01";
+    WalletType["liteCoin"] = "LiteCoi1";
+    WalletType["dash"] = "Dash0001";
+    WalletType["dogeCoin"] = "DogeCoi1";
+    WalletType["groestlcoin"] = "Groestl1";
+    WalletType["erc20Salt"] = "E2Salt_1";
+    WalletType["erc20Polymath"] = "E2Polym1";
+    WalletType["erc200x"] = "E2_0X__1";
+    WalletType["erc20Cindicator"] = "E2Cindi1";
+    WalletType["erc20CargoX"] = "E2Cargo1";
+    WalletType["erc20Viberate"] = "E2Viber1";
+    WalletType["erc20Iconomi"] = "E2Icono1";
+    WalletType["erc20DTR"] = "E2DynTR1";
+    WalletType["erc20OriginTrail"] = "E2OriTr1";
+    WalletType["erc20InsurePal"] = "E2InsuP1";
+    WalletType["erc20Xaurum"] = "E2Xauru1";
+    WalletType["erc20OmiseGo"] = "E2Omise1";
+    WalletType["erc20WaltonChain"] = "E2WaltC1";
+})(WalletType = exports.WalletType || (exports.WalletType = {}));
 const WalletTypeConstants = {
     BTC: 0,
     ERC20: 0x02000000,
     ETH: 0x01000000,
     TESTNET: 0x40000000
 };
-var WalletType;
-(function (WalletType) {
-    WalletType[WalletType["bitCoin"] = WalletTypeConstants.BTC] = "bitCoin";
-    WalletType[WalletType["bitCoinCash"] = WalletTypeConstants.BTC + 1] = "bitCoinCash";
-    WalletType[WalletType["bitCoinGold"] = WalletTypeConstants.BTC + 2] = "bitCoinGold";
-    WalletType[WalletType["liteCoin"] = WalletTypeConstants.BTC + 3] = "liteCoin";
-    WalletType[WalletType["dash"] = WalletTypeConstants.BTC + 4] = "dash";
-    WalletType[WalletType["dogeCoin"] = WalletTypeConstants.BTC + 5] = "dogeCoin";
-    WalletType[WalletType["ripple"] = WalletTypeConstants.BTC + 6] = "ripple";
-    WalletType[WalletType["stellar"] = WalletTypeConstants.BTC + 7] = "stellar";
-    WalletType[WalletType["ethereum"] = WalletTypeConstants.ETH] = "ethereum";
-    WalletType[WalletType["erc20Bokky"] = WalletTypeConstants.ETH | WalletTypeConstants.ERC20] = "erc20Bokky";
-    WalletType[WalletType["erc20Salt"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 1] = "erc20Salt";
-    WalletType[WalletType["erc20Polymath"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 2] = "erc20Polymath";
-    WalletType[WalletType["erc200x"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 3] = "erc200x";
-    WalletType[WalletType["erc20Cindicator"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 4] = "erc20Cindicator";
-    WalletType[WalletType["erc20CargoX"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 5] = "erc20CargoX";
-    WalletType[WalletType["erc20Viberate"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 6] = "erc20Viberate";
-    WalletType[WalletType["erc20Iconomi"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 7] = "erc20Iconomi";
-    WalletType[WalletType["erc20DTR"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 8] = "erc20DTR";
-    WalletType[WalletType["erc20OriginTrail"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 9] = "erc20OriginTrail";
-    WalletType[WalletType["erc20InsurePal"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 10] = "erc20InsurePal";
-    WalletType[WalletType["erc20Xaurum"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 11] = "erc20Xaurum";
-    WalletType[WalletType["erc20Tron"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 12] = "erc20Tron";
-    WalletType[WalletType["erc20VeChain"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 13] = "erc20VeChain";
-    WalletType[WalletType["erc20Binance"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 14] = "erc20Binance";
-    WalletType[WalletType["erc20Icon"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 15] = "erc20Icon";
-    WalletType[WalletType["erc20OmiseGo"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 16] = "erc20OmiseGo";
-    WalletType[WalletType["erc20WaltonChain"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 17] = "erc20WaltonChain";
-    WalletType[WalletType["bitCoinTest"] = (WalletTypeConstants.BTC) | WalletTypeConstants.TESTNET] = "bitCoinTest";
-    WalletType[WalletType["bitCoinCashTest"] = (WalletTypeConstants.BTC + 1) | WalletTypeConstants.TESTNET] = "bitCoinCashTest";
-    WalletType[WalletType["bitCoinGoldTest"] = (WalletTypeConstants.BTC + 2) | WalletTypeConstants.TESTNET] = "bitCoinGoldTest";
-    WalletType[WalletType["liteCoinTest"] = (WalletTypeConstants.BTC + 3) | WalletTypeConstants.TESTNET] = "liteCoinTest";
-    WalletType[WalletType["dashTest"] = (WalletTypeConstants.BTC + 4) | WalletTypeConstants.TESTNET] = "dashTest";
-    WalletType[WalletType["dogeCoinTest"] = (WalletTypeConstants.BTC + 5) | WalletTypeConstants.TESTNET] = "dogeCoinTest";
-    WalletType[WalletType["rippleTest"] = (WalletTypeConstants.BTC + 6) | WalletTypeConstants.TESTNET] = "rippleTest";
-    WalletType[WalletType["stellarTest"] = (WalletTypeConstants.BTC + 7) | WalletTypeConstants.TESTNET] = "stellarTest";
-    WalletType[WalletType["ethereumTest"] = (WalletTypeConstants.ETH) | WalletTypeConstants.TESTNET] = "ethereumTest";
-    WalletType[WalletType["erc20BokkyTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) | WalletTypeConstants.TESTNET] = "erc20BokkyTest";
-    WalletType[WalletType["erc20SaltTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 1] = "erc20SaltTest";
-    WalletType[WalletType["erc20PolymathTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 2] = "erc20PolymathTest";
-    WalletType[WalletType["erc200xTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 3] = "erc200xTest";
-    WalletType[WalletType["erc20CindicatorTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 4] = "erc20CindicatorTest";
-    WalletType[WalletType["erc20CargoXTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 5] = "erc20CargoXTest";
-    WalletType[WalletType["erc20ViberateTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 6] = "erc20ViberateTest";
-    WalletType[WalletType["erc20IconomiTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 7] = "erc20IconomiTest";
-    WalletType[WalletType["erc20DTRTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 8] = "erc20DTRTest";
-    WalletType[WalletType["erc20OriginTrailTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 9] = "erc20OriginTrailTest";
-    WalletType[WalletType["erc20InsurePalTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 10] = "erc20InsurePalTest";
-    WalletType[WalletType["erc20XaurumTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 11] = "erc20XaurumTest";
-    WalletType[WalletType["erc20TronTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 12] = "erc20TronTest";
-    WalletType[WalletType["erc20VeChainTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 13] = "erc20VeChainTest";
-    WalletType[WalletType["erc20BinanceTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 14] = "erc20BinanceTest";
-    WalletType[WalletType["erc20IconTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 15] = "erc20IconTest";
-    WalletType[WalletType["erc20OmiseGoTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 16] = "erc20OmiseGoTest";
-    WalletType[WalletType["erc20WaltonChainTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 17] = "erc20WaltonChainTest";
-})(WalletType = exports.WalletType || (exports.WalletType = {}));
+var WalletType_Legacy;
+(function (WalletType_Legacy) {
+    WalletType_Legacy[WalletType_Legacy["bitCoin"] = WalletTypeConstants.BTC] = "bitCoin";
+    WalletType_Legacy[WalletType_Legacy["bitCoinCash"] = WalletTypeConstants.BTC + 1] = "bitCoinCash";
+    WalletType_Legacy[WalletType_Legacy["bitCoinGold"] = WalletTypeConstants.BTC + 2] = "bitCoinGold";
+    WalletType_Legacy[WalletType_Legacy["liteCoin"] = WalletTypeConstants.BTC + 3] = "liteCoin";
+    WalletType_Legacy[WalletType_Legacy["dash"] = WalletTypeConstants.BTC + 4] = "dash";
+    WalletType_Legacy[WalletType_Legacy["dogeCoin"] = WalletTypeConstants.BTC + 5] = "dogeCoin";
+    WalletType_Legacy[WalletType_Legacy["ripple"] = WalletTypeConstants.BTC + 6] = "ripple";
+    WalletType_Legacy[WalletType_Legacy["stellar"] = WalletTypeConstants.BTC + 7] = "stellar";
+    WalletType_Legacy[WalletType_Legacy["ethereum"] = WalletTypeConstants.ETH] = "ethereum";
+    WalletType_Legacy[WalletType_Legacy["erc20Bokky"] = WalletTypeConstants.ETH | WalletTypeConstants.ERC20] = "erc20Bokky";
+    WalletType_Legacy[WalletType_Legacy["erc20Salt"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 1] = "erc20Salt";
+    WalletType_Legacy[WalletType_Legacy["erc20Polymath"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 2] = "erc20Polymath";
+    WalletType_Legacy[WalletType_Legacy["erc200x"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 3] = "erc200x";
+    WalletType_Legacy[WalletType_Legacy["erc20Cindicator"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 4] = "erc20Cindicator";
+    WalletType_Legacy[WalletType_Legacy["erc20CargoX"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 5] = "erc20CargoX";
+    WalletType_Legacy[WalletType_Legacy["erc20Viberate"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 6] = "erc20Viberate";
+    WalletType_Legacy[WalletType_Legacy["erc20Iconomi"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 7] = "erc20Iconomi";
+    WalletType_Legacy[WalletType_Legacy["erc20DTR"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 8] = "erc20DTR";
+    WalletType_Legacy[WalletType_Legacy["erc20OriginTrail"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 9] = "erc20OriginTrail";
+    WalletType_Legacy[WalletType_Legacy["erc20InsurePal"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 10] = "erc20InsurePal";
+    WalletType_Legacy[WalletType_Legacy["erc20Xaurum"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 11] = "erc20Xaurum";
+    WalletType_Legacy[WalletType_Legacy["erc20Tron"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 12] = "erc20Tron";
+    WalletType_Legacy[WalletType_Legacy["erc20VeChain"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 13] = "erc20VeChain";
+    WalletType_Legacy[WalletType_Legacy["erc20Binance"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 14] = "erc20Binance";
+    WalletType_Legacy[WalletType_Legacy["erc20Icon"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 15] = "erc20Icon";
+    WalletType_Legacy[WalletType_Legacy["erc20OmiseGo"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 16] = "erc20OmiseGo";
+    WalletType_Legacy[WalletType_Legacy["erc20WaltonChain"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 17] = "erc20WaltonChain";
+    WalletType_Legacy[WalletType_Legacy["bitCoinTest"] = (WalletTypeConstants.BTC) | WalletTypeConstants.TESTNET] = "bitCoinTest";
+    WalletType_Legacy[WalletType_Legacy["bitCoinCashTest"] = (WalletTypeConstants.BTC + 1) | WalletTypeConstants.TESTNET] = "bitCoinCashTest";
+    WalletType_Legacy[WalletType_Legacy["bitCoinGoldTest"] = (WalletTypeConstants.BTC + 2) | WalletTypeConstants.TESTNET] = "bitCoinGoldTest";
+    WalletType_Legacy[WalletType_Legacy["liteCoinTest"] = (WalletTypeConstants.BTC + 3) | WalletTypeConstants.TESTNET] = "liteCoinTest";
+    WalletType_Legacy[WalletType_Legacy["dashTest"] = (WalletTypeConstants.BTC + 4) | WalletTypeConstants.TESTNET] = "dashTest";
+    WalletType_Legacy[WalletType_Legacy["dogeCoinTest"] = (WalletTypeConstants.BTC + 5) | WalletTypeConstants.TESTNET] = "dogeCoinTest";
+    WalletType_Legacy[WalletType_Legacy["rippleTest"] = (WalletTypeConstants.BTC + 6) | WalletTypeConstants.TESTNET] = "rippleTest";
+    WalletType_Legacy[WalletType_Legacy["stellarTest"] = (WalletTypeConstants.BTC + 7) | WalletTypeConstants.TESTNET] = "stellarTest";
+    WalletType_Legacy[WalletType_Legacy["ethereumTest"] = (WalletTypeConstants.ETH) | WalletTypeConstants.TESTNET] = "ethereumTest";
+    WalletType_Legacy[WalletType_Legacy["erc20BokkyTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) | WalletTypeConstants.TESTNET] = "erc20BokkyTest";
+    WalletType_Legacy[WalletType_Legacy["erc20SaltTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 1] = "erc20SaltTest";
+    WalletType_Legacy[WalletType_Legacy["erc20PolymathTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 2] = "erc20PolymathTest";
+    WalletType_Legacy[WalletType_Legacy["erc200xTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 3] = "erc200xTest";
+    WalletType_Legacy[WalletType_Legacy["erc20CindicatorTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 4] = "erc20CindicatorTest";
+    WalletType_Legacy[WalletType_Legacy["erc20CargoXTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 5] = "erc20CargoXTest";
+    WalletType_Legacy[WalletType_Legacy["erc20ViberateTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 6] = "erc20ViberateTest";
+    WalletType_Legacy[WalletType_Legacy["erc20IconomiTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 7] = "erc20IconomiTest";
+    WalletType_Legacy[WalletType_Legacy["erc20DTRTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 8] = "erc20DTRTest";
+    WalletType_Legacy[WalletType_Legacy["erc20OriginTrailTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 9] = "erc20OriginTrailTest";
+    WalletType_Legacy[WalletType_Legacy["erc20InsurePalTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 10] = "erc20InsurePalTest";
+    WalletType_Legacy[WalletType_Legacy["erc20XaurumTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 11] = "erc20XaurumTest";
+    WalletType_Legacy[WalletType_Legacy["erc20TronTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 12] = "erc20TronTest";
+    WalletType_Legacy[WalletType_Legacy["erc20VeChainTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 13] = "erc20VeChainTest";
+    WalletType_Legacy[WalletType_Legacy["erc20BinanceTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 14] = "erc20BinanceTest";
+    WalletType_Legacy[WalletType_Legacy["erc20IconTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 15] = "erc20IconTest";
+    WalletType_Legacy[WalletType_Legacy["erc20OmiseGoTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 16] = "erc20OmiseGoTest";
+    WalletType_Legacy[WalletType_Legacy["erc20WaltonChainTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 17] = "erc20WaltonChainTest";
+})(WalletType_Legacy = exports.WalletType_Legacy || (exports.WalletType_Legacy = {}));
 exports.typeInfoMap = [
     { type: WalletType.bitCoin, name: "Bitcoin", ticker: "BTC" },
     { type: WalletType.ethereum, name: "Ethereum", ticker: "ETH" },
@@ -3282,6 +3425,10 @@ exports.typeInfoMap = [
     { type: WalletType.liteCoin, name: "Litecoin", ticker: "LTC" },
     { type: WalletType.dash, name: "Dash", ticker: "DASH" },
     { type: WalletType.dogeCoin, name: "Dogecoin", ticker: "DOGE" },
+    { type: WalletType.eos, name: "EOS", ticker: "EOS" },
+    { type: WalletType.binanceCoin, name: "Binance", ticker: "BNB" },
+    { type: WalletType.tron, name: "TRON", ticker: "TRX" },
+    { type: WalletType.groestlcoin, name: "Groestlcoin", ticker: "GRS" },
     { type: WalletType.erc20Salt, name: "Salt", ticker: "SALT" },
     { type: WalletType.erc20Polymath, name: "Polymath", ticker: "POLY" },
     { type: WalletType.erc200x, name: "0X", ticker: "ZRX" },
@@ -3293,40 +3440,10 @@ exports.typeInfoMap = [
     { type: WalletType.erc20OriginTrail, name: "OriginTrail", ticker: "TRAC" },
     { type: WalletType.erc20InsurePal, name: "InsurePal", ticker: "IPL" },
     { type: WalletType.erc20Xaurum, name: "Xaurum", ticker: "XAURUM" },
-    { type: WalletType.erc20Tron, name: "Tron", ticker: "TRX" },
-    { type: WalletType.erc20VeChain, name: "VeChain", ticker: "VEN" },
-    { type: WalletType.erc20Binance, name: "Binance", ticker: "BNB" },
-    { type: WalletType.erc20Icon, name: "Icon", ticker: "ICX" },
     { type: WalletType.erc20OmiseGo, name: "OmiseGo", ticker: "OMG" },
     { type: WalletType.erc20WaltonChain, name: "WaltonChain", ticker: "WTC" },
-    { type: WalletType.bitCoinTest, name: "Bitcoin Test", ticker: "BTC-T" },
-    { type: WalletType.ethereumTest, name: "Ethereum Test", ticker: "ETH-T" },
-    { type: WalletType.bitCoinCashTest, name: "Bitcoin Cash Test", ticker: "BCH-T" },
-    { type: WalletType.liteCoinTest, name: "Litecoin Test", ticker: "LTC-T" },
-    { type: WalletType.dashTest, name: "Dash Test", ticker: "DASH-T" },
-    { type: WalletType.dogeCoinTest, name: "Dogecoin Test", ticker: "DOGE-T" },
-    { type: WalletType.erc20BokkyTest, name: "Bokky ERC 20 Test", ticker: "BOKKY-T" },
-    { type: WalletType.erc20SaltTest, name: "Salt Test", ticker: "SALT-T" },
-    { type: WalletType.erc20PolymathTest, name: "Polymath Test", ticker: "POLY-T" },
-    { type: WalletType.erc200xTest, name: "0X Test", ticker: "ZRX-T" },
-    { type: WalletType.erc20CindicatorTest, name: "Cindicator Test", ticker: "CND-T" },
-    { type: WalletType.erc20CargoXTest, name: "CargoX Test", ticker: "CXO-T" },
-    { type: WalletType.erc20ViberateTest, name: "Viberate Test", ticker: "VIB-T" },
-    { type: WalletType.erc20IconomiTest, name: "Iconomi Test", ticker: "ICN-T" },
-    { type: WalletType.erc20DTRTest, name: "Dynamic Trading Rights Test", ticker: "DTR-T" },
-    { type: WalletType.erc20OriginTrailTest, name: "OriginTrail Test", ticker: "TRAC-T" },
-    { type: WalletType.erc20InsurePalTest, name: "InsurePal Test", ticker: "IPL-T" },
-    { type: WalletType.erc20XaurumTest, name: "Xaurum Test", ticker: "XAURUM-T" },
-    { type: WalletType.erc20TronTest, name: "Tron Test", ticker: "TRX-T" },
-    { type: WalletType.erc20VeChainTest, name: "VeChain Test", ticker: "VEN-T" },
-    { type: WalletType.erc20BinanceTest, name: "Binance Test", ticker: "BNB-T" },
-    { type: WalletType.erc20IconTest, name: "Icon Test", ticker: "ICX-T" },
-    { type: WalletType.erc20OmiseGoTest, name: "OmiseGo Test", ticker: "OMG-T" },
-    { type: WalletType.erc20WaltonChainTest, name: "WaltonChain Test", ticker: "WTC-T" },
     { type: WalletType.ripple, name: "Ripple", ticker: "XRP" },
-    { type: WalletType.rippleTest, name: "Ripple Test", ticker: "XRP-T" },
     { type: WalletType.stellar, name: "Stellar", ticker: "XLM" },
-    { type: WalletType.stellarTest, name: "Stellar Test", ticker: "XLM-T" },
 ];
 var BCDataRefreshStatusCode;
 (function (BCDataRefreshStatusCode) {
@@ -3339,6 +3456,17 @@ var PasswordType;
     PasswordType["WalletPassword"] = "wallet";
     PasswordType["GlobalPassword"] = "global";
 })(PasswordType = exports.PasswordType || (exports.PasswordType = {}));
+var SessionAuthType;
+(function (SessionAuthType) {
+    SessionAuthType["token"] = "token";
+    SessionAuthType["any"] = "any";
+})(SessionAuthType = exports.SessionAuthType || (exports.SessionAuthType = {}));
+var DaemonErrorCodes;
+(function (DaemonErrorCodes) {
+    DaemonErrorCodes[DaemonErrorCodes["sessionError"] = 1] = "sessionError";
+    DaemonErrorCodes[DaemonErrorCodes["parameterError"] = 2] = "parameterError";
+    DaemonErrorCodes[DaemonErrorCodes["httpsInvalid"] = 3] = "httpsInvalid";
+})(DaemonErrorCodes = exports.DaemonErrorCodes || (exports.DaemonErrorCodes = {}));
 
 },{}],7:[function(require,module,exports){
 module.exports = require('./lib/axios');

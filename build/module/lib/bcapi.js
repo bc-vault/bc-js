@@ -1,25 +1,76 @@
 import axios from 'axios';
-import { Endpoint, PasswordType, WalletType, DaemonError, typeInfoMap, LogLevel } from './types';
+import { Endpoint, PasswordType, WalletType, DaemonError, typeInfoMap, LogLevel, SessionAuthType, DaemonErrorCodes, WalletType_Legacy } from './types';
 import { Keccak } from 'sha3';
 import { polyfill } from 'es6-promise';
 polyfill();
-// import { Buffer } from 'buffer';
+const API_VERSION = 1;
 export const Host = "https://localhost.bc-vault.com:1991/";
+let endpointAllowsCredentials;
+async function getNewSession() {
+    const scp = {
+        sessionType: authTokenUseCookies ? SessionAuthType.any : SessionAuthType.token,
+        expireSeconds: authTokenExpireSeconds,
+        matchPath: authTokenMatchPath,
+        versionNumber: API_VERSION
+    };
+    const response = await axios({
+        baseURL: Host,
+        method: "POST",
+        url: 'SetBCSessionParams',
+        withCredentials: true,
+        data: scp,
+        headers: { "Api-Version": API_VERSION }
+    });
+    return response.data.d_token;
+}
 function getResponsePromised(endpoint, data) {
-    return new Promise((res, rej) => {
+    const dataWithToken = { ...(data || {}), d_token: authToken };
+    return new Promise(async (res, rej) => {
+        if (endpointAllowsCredentials === undefined) {
+            try {
+                const methodCheck = await axios({ baseURL: Host, data: "{}", method: "POST", url: "/Devices" });
+                endpointAllowsCredentials = methodCheck.data.daemonError === DaemonErrorCodes.sessionError;
+            }
+            catch (e) {
+                log("Daemon offline during initialization.", LogLevel.debug);
+            }
+        }
         const options = {
             baseURL: Host,
-            data: JSON.stringify((data === undefined ? {} : data)),
+            data: JSON.stringify(dataWithToken),
             method: "POST",
-            url: endpoint,
-            withCredentials: true
+            url: endpoint
         };
-        axios(options).then((response) => {
+        if (endpointAllowsCredentials && authTokenUseCookies) {
+            options.withCredentials = true;
+            options.headers = { "Api-Version": API_VERSION };
+        }
+        const responseFunction = async (response) => {
             const htpr = { status: response.status, body: response.data };
+            if (response.data.daemonError === DaemonErrorCodes.sessionError) {
+                log(`Creating new session.`, LogLevel.debug);
+                authToken = await getNewSession();
+                log(`New session created: ${authToken}`, LogLevel.debug);
+                options.data = JSON.stringify({ ...dataWithToken, d_token: authToken });
+                axios(options).then((authenticatedResponse) => {
+                    if (authenticatedResponse.data.daemonError) {
+                        return rej(new DaemonError({ status: authenticatedResponse.status, body: authenticatedResponse.data }));
+                    }
+                    else {
+                        return res({ status: authenticatedResponse.status, body: authenticatedResponse.data });
+                    }
+                }).catch((e) => {
+                    log(`Daemon request failed: ${JSON.stringify(e)}`, LogLevel.warning);
+                    rej(e);
+                });
+                return;
+            }
             if (response.status !== 200)
                 return rej(new DaemonError(htpr));
             res(htpr);
-        }).catch((e) => {
+        };
+        axios(options).then(responseFunction).catch((e) => {
+            log(`Daemon request failed: ${JSON.stringify(e)}`, LogLevel.warning);
             rej(e);
         });
     });
@@ -33,10 +84,18 @@ function log(msg, level = LogLevel.verbose) {
         console.log('[' + new Date(Date.now()).toLocaleTimeString() + ']: ' + msg);
     }
 }
-// ** Is BCData object polling already taking place? */
+/** Is BCData object polling already taking place? */
 export let isPolling = false;
 /** Set Logging verbosity */
-export let logLevel = LogLevel.warning;
+export let logLevel = LogLevel.debug;
+/** Get/Set token to be used for device actions */
+export let authToken;
+/** Use cookies for session management. If set to false no cookies will be set and the session will be lost when 'authToken' is unloaded. It will need to be manually specified. It will be automatically refreshed if a request fails due to a token error. */
+export let authTokenUseCookies = true;
+/** How long each auth grant will last in seconds since the last request. */
+export let authTokenExpireSeconds = 3600;
+/** The path to match the auth-token against. This is a security feature and allows you to fine tune access. Default is: '/' (web root) */
+export let authTokenMatchPath = '/';
 /**
   Starts polling daemon for changes and updates BCData object
   ### Example (es3)
@@ -133,6 +192,7 @@ export async function triggerManualUpdate(fullUpdate = true) {
                         id: deviceID,
                         space: { available: 1, complete: 1 },
                         firmware: await getFirmwareVersion(deviceID),
+                        userData: await getWalletUserData(deviceID, WalletType.none, ""),
                         supportedTypes: [],
                         activeTypes: [],
                         activeWallets: [],
@@ -147,6 +207,7 @@ export async function triggerManualUpdate(fullUpdate = true) {
                 space: await getAvailableSpace(deviceID),
                 firmware: await getFirmwareVersion(deviceID),
                 supportedTypes: await getSupportedWalletTypes(deviceID),
+                userData: await getWalletUserData(deviceID, WalletType.none, ""),
                 activeTypes,
                 activeWallets: await getWallets(deviceID, activeTypes),
                 locked: false
@@ -182,6 +243,40 @@ function FireAllListeners(...args) {
     for (const listener of listeners) {
         listener.call(null, ...args);
     }
+}
+function toLegacyWalletType(t) {
+    let stringId;
+    for (const typeProperty in WalletType) {
+        if (WalletType[typeProperty] === t) {
+            stringId = typeProperty;
+        }
+    }
+    if (stringId === undefined) {
+        return 2147483646;
+    }
+    for (const legacyTypeProperty in WalletType_Legacy) {
+        if (legacyTypeProperty === stringId) {
+            return WalletType_Legacy[legacyTypeProperty];
+        }
+    }
+    return 2147483646;
+}
+function fromLegacyWalletType(t) {
+    let stringId;
+    for (const legacyTypeProperty in WalletType_Legacy) {
+        if (WalletType_Legacy[legacyTypeProperty] === t) {
+            stringId = legacyTypeProperty;
+        }
+    }
+    if (stringId === undefined) {
+        return "Unknown:" + t;
+    }
+    for (const typeProperty in WalletType) {
+        if (typeProperty === stringId) {
+            return WalletType[typeProperty];
+        }
+    }
+    return "Unknown:" + t;
 }
 /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
 export let BCData = { devices: [] };
@@ -224,21 +319,21 @@ export function AddBCDataChangedListener(func) {
   ```js
     var bc = _bcvault;
     console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
-    // => {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}
+    // => {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}
   ```
 
   ### Example (promise browser)
   ```js
     var bc = _bcvault;
     console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
-    // => {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}
+    // => {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}
   ```
 
   ### Example (nodejs)
   ```js
     var bc = require('bc-js');
     console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
-    // => {"type":1,"name":"Bitcoin Cash","ticker":"BCH"}
+    // => {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}
   ```
  */
 export function getWalletTypeInfo(id) {
@@ -314,21 +409,21 @@ export async function getFirmwareVersion(device) {
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getWalletBalance(0,"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV").then(console.log)
+  bc.getWalletBalance("BitCoin1","1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV").then(console.log)
   // => {"errorCode": 36864,"data": "0"}
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  console.log(await bc.getWalletBalance(0,"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
+  console.log(await bc.getWalletBalance("BitCoin1","1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
   // => {"errorCode": 36864,"data": "0"}
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  console.log(await bc.getWalletBalance(0,"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
+  console.log(await bc.getWalletBalance("BitCoin1","1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
   // => {"errorCode": 36864,"data": "0"}
   ```
   @param device  DeviceID obtained from getDevices
@@ -380,22 +475,22 @@ export async function getAvailableSpace(device) {
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getSupportedWalletTypes(1).then(console.log)
-  // => [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]
+  bc.getSupportedWalletTypes("BitCoin1").then(console.log)
+  // => [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
   console.log(await bc.getSupportedWalletTypes(1))
-  // => [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]
+  // => [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
   console.log(await bc.getSupportedWalletTypes(1))
-  // => [0,1,16777216,2,3,4,50331648,1073741824,1090519040,1073741826,1073741827,1073741828,1124073472]
+  // => [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]
   ```
   @param device  DeviceID obtained from getDevices
   @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
@@ -406,7 +501,11 @@ export async function getSupportedWalletTypes(device) {
     let httpr;
     httpr = await getResponsePromised(Endpoint.WalletTypes, { device });
     assertIsBCHttpResponse(httpr);
-    return httpr.body.data;
+    let newFormat = httpr.body.data;
+    if (typeof (newFormat[0]) === typeof (1)) {
+        newFormat = newFormat.map(x => fromLegacyWalletType(x));
+    }
+    return newFormat;
 }
 /**
   Gets a list of WalletTypes that are actually used on a specific device(have at least one wallet)
@@ -414,21 +513,21 @@ export async function getSupportedWalletTypes(device) {
   ```js
   var bc = _bcvault;
   bc.getActiveWalletTypes(1).then(console.log)
-  // => [1,16777216]
+  // => ["BitCoin1","Ethereum"]
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
   console.log(await bc.getActiveWalletTypes(1))
-  // => [1,16777216]
+  // => ["BitCoin1","Ethereum"]
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
   console.log(await bc.getActiveWalletTypes(1))
-  // => [1,16777216]
+  // => ["BitCoin1","Ethereum"]
   ```
   @param device  DeviceID obtained from getDevices
   @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
@@ -439,28 +538,32 @@ export async function getActiveWalletTypes(device) {
     let httpr;
     httpr = await getResponsePromised(Endpoint.SavedWalletTypes, { device });
     assertIsBCHttpResponse(httpr);
-    return httpr.body.data;
+    let newFormat = httpr.body.data;
+    if (typeof (newFormat[0]) === typeof (1)) {
+        newFormat = newFormat.map(x => fromLegacyWalletType(x));
+    }
+    return newFormat;
 }
 /**
-  Gets a array(string) of public keys of a specific WalletTypes on a device
+  Gets an array(string) of public keys of a specific WalletTypes on a device
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getWalletsOfType(1,1).then(console.log)
+  bc.getWalletsOfType(1,"BitCoin1").then(console.log)
   // => ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  console.log(await bc.getWalletsOfType(1,1))
+  console.log(await bc.getWalletsOfType(1,"BitCoin1"))
   // => ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  console.log(await bc.getWalletsOfType(1,1))
+  console.log(await bc.getWalletsOfType(1,"BitCoin1"))
   // => ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]
   ```
   @param device  DeviceID obtained from getDevices
@@ -471,7 +574,7 @@ export async function getActiveWalletTypes(device) {
  */
 export async function getWalletsOfType(device, type) {
     let httpr;
-    httpr = await getResponsePromised(Endpoint.WalletsOfType, { device, walletType: type });
+    httpr = await getResponsePromised(Endpoint.WalletsOfType, { device, walletType: toLegacyWalletType(type), walletTypeString: type });
     assertIsBCHttpResponse(httpr);
     return httpr.body.data;
 }
@@ -480,21 +583,21 @@ export async function getWalletsOfType(device, type) {
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getWalletUserData(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
+  bc.getWalletUserData(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",true).then(console.log)
   // => "This is my mining wallet!"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  console.log(await bc.getWalletUserData(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"))
+  console.log(await bc.getWalletUserData(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",true))
   // => "This is my mining wallet!"
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  console.log(await bc.getWalletUserData(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"))
+  console.log(await bc.getWalletUserData(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",true))
   // => "This is my mining wallet!"
   ```
   @param device  DeviceID obtained from getDevices
@@ -504,32 +607,42 @@ export async function getWalletsOfType(device, type) {
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
   @returns       The UserData
  */
-export async function getWalletUserData(device, type, publicAddress) {
+export async function getWalletUserData(device, type, publicAddress, parseHex = true) {
     let httpr;
-    httpr = await getResponsePromised(Endpoint.WalletUserData, { device, walletType: type, sourcePublicID: publicAddress });
+    httpr = await getResponsePromised(Endpoint.WalletUserData, { device, walletType: toLegacyWalletType(type), walletTypeString: type, sourcePublicID: publicAddress });
     assertIsBCHttpResponse(httpr);
-    return httpr.body.data;
+    let responseString = httpr.body.data;
+    if (parseHex && responseString.length % 2 === 0) {
+        responseString = responseString.substr(2); //remove 0x
+        const responseStringArray = [...responseString];
+        const byteArrayStr = [];
+        for (let i = 0; i < responseStringArray.length; i += 2) {
+            byteArrayStr.push(parseInt(responseStringArray[i] + responseStringArray[i + 1], 16));
+        }
+        responseString = String.fromCharCode(...byteArrayStr);
+    }
+    return responseString;
 }
 /**
   Copies a wallet private key to another walletType (in case of a fork etc.)
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.CopyWalletToType(1,1,0,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
+  bc.CopyWalletToType(1,"BitCoin1","BcCash01","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
   // => "true"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  await bc.CopyWalletToType(1,1,0,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.CopyWalletToType(1,"BitCoin1","BcCash01","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  await bc.CopyWalletToType(1,1,0,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.CopyWalletToType(1,"BitCoin1","BcCash01","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
   @param device  DeviceID obtained from getDevices
@@ -543,7 +656,7 @@ export async function getWalletUserData(device, type, publicAddress) {
 export async function CopyWalletToType(device, oldType, newType, publicAddress) {
     let httpr;
     const id = await getSecureWindowResponse(PasswordType.WalletPassword);
-    httpr = await getResponsePromised(Endpoint.CopyWalletToType, { device, walletType: oldType, newWalletType: newType, sourcePublicID: publicAddress, password: id });
+    httpr = await getResponsePromised(Endpoint.CopyWalletToType, { device, walletType: toLegacyWalletType(oldType), walletTypeString: newType, newWalletType: toLegacyWalletType(newType), newWalletTypeString: newType, sourcePublicID: publicAddress, password: id });
     assertIsBCHttpResponse(httpr);
     return true;
 }
@@ -552,21 +665,21 @@ export async function CopyWalletToType(device, oldType, newType, publicAddress) 
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.getIsAddressValid(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
+  bc.getIsAddressValid(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
   // => "true"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  await bc.getIsAddressValid(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.getIsAddressValid(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  await bc.getIsAddressValid(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.getIsAddressValid(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
   @param device  DeviceID obtained from getDevices
@@ -578,7 +691,7 @@ export async function CopyWalletToType(device, oldType, newType, publicAddress) 
  */
 export async function getIsAddressValid(device, type, publicAddress) {
     let httpr;
-    httpr = await getResponsePromised(Endpoint.IsAddressValid, { device, walletType: type, address: publicAddress });
+    httpr = await getResponsePromised(Endpoint.IsAddressValid, { device, walletType: toLegacyWalletType(type), walletTypeString: type, address: publicAddress });
     return httpr.body.errorCode === 0x9000;
 }
 /**
@@ -586,21 +699,21 @@ export async function getIsAddressValid(device, type, publicAddress) {
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.DisplayAddressOnDevice(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
+  bc.DisplayAddressOnDevice(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
   // => "true"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  await bc.DisplayAddressOnDevice(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.DisplayAddressOnDevice(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  await bc.DisplayAddressOnDevice(1,1,"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
+  await bc.DisplayAddressOnDevice(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
   // => true
   ```
   @param device  DeviceID obtained from getDevices
@@ -612,7 +725,7 @@ export async function getIsAddressValid(device, type, publicAddress) {
  */
 export async function DisplayAddressOnDevice(device, type, publicAddress) {
     let httpr;
-    httpr = await getResponsePromised(Endpoint.DisplayAddress, { device, walletType: type, publicID: publicAddress });
+    httpr = await getResponsePromised(Endpoint.DisplayAddress, { device, walletType: toLegacyWalletType(type), walletTypeString: type, publicID: publicAddress });
     assertIsBCHttpResponse(httpr);
     return true;
 }
@@ -651,21 +764,21 @@ function getSecureWindowResponse(passwordType) {
   ### Example (es3)
   ```js
   var bc = _bcvault;
-  bc.GenerateWallet(1,1).then(console.log)
+  bc.GenerateWallet(1,"BitCoin1").then(console.log)
   // => "true"
   ```
 
   ### Example (promise browser)
   ```js
   var bc = _bcvault;
-  await bc.GenerateWallet(1,1)
+  await bc.GenerateWallet(1,"BitCoin1")
   // => true
   ```
 
   ### Example (nodejs)
   ```js
   var bc = require('bc-js');
-  await bc.GenerateWallet(1,1)
+  await bc.GenerateWallet(1,"BitCoin1")
   // => true
   ```
   @param device  DeviceID obtained from getDevices
@@ -676,7 +789,7 @@ function getSecureWindowResponse(passwordType) {
  */
 export async function GenerateWallet(device, type) {
     const id = await getSecureWindowResponse(PasswordType.WalletPassword);
-    const httpr = await getResponsePromised(Endpoint.GenerateWallet, { device, walletType: type, password: id });
+    const httpr = await getResponsePromised(Endpoint.GenerateWallet, { device, walletType: toLegacyWalletType(type), walletTypeString: type, password: id });
     assertIsBCHttpResponse(httpr);
     return httpr.body.data;
 }
@@ -716,7 +829,7 @@ export async function EnterGlobalPin(device, passwordType = PasswordType.GlobalP
   ```js
   var bc = _bcvault;
   var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
-  bc.GenerateTransaction(1,1,trxOptions).then(console.log)
+  bc.GenerateTransaction(1,"BitCoin1",trxOptions).then(console.log)
   // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
   ```
 
@@ -724,7 +837,7 @@ export async function EnterGlobalPin(device, passwordType = PasswordType.GlobalP
   ```js
   var bc = _bcvault;
   var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
-  await bc.GenerateTransaction(1,1,trxOptions)
+  await bc.GenerateTransaction(1,"BitCoin1",trxOptions)
   // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
   ```
 
@@ -732,7 +845,7 @@ export async function EnterGlobalPin(device, passwordType = PasswordType.GlobalP
   ```js
   var bc = require('bc-js');
   var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
-  await bc.GenerateTransaction(1,1,trxOptions)
+  await bc.GenerateTransaction(1,"BitCoin1",trxOptions)
   // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
   ```
   @param device    DeviceID obtained from getDevices
@@ -746,8 +859,8 @@ export async function EnterGlobalPin(device, passwordType = PasswordType.GlobalP
 export async function GenerateTransaction(device, type, data, broadcast) {
     const id = await getSecureWindowResponse(PasswordType.WalletPassword);
     log("Got auth id:" + id, LogLevel.debug);
-    log("Sending object:" + JSON.stringify({ device, walletType: type, transaction: data, password: id }), LogLevel.debug);
-    const httpr = await getResponsePromised(Endpoint.GenerateTransaction, { device, walletType: type, transaction: data, password: id, broadcast });
+    log("Sending object:" + JSON.stringify({ device, walletType: toLegacyWalletType(type), walletTypeString: type, transaction: data, password: id }), LogLevel.debug);
+    const httpr = await getResponsePromised(Endpoint.GenerateTransaction, { device, walletType: toLegacyWalletType(type), walletTypeString: type, transaction: data, password: id, broadcast });
     log(httpr.body, LogLevel.debug);
     assertIsBCHttpResponse(httpr);
     // i know.
@@ -787,8 +900,8 @@ export async function GenerateTransaction(device, type, data, broadcast) {
 export async function SignData(device, type, publicAddress, data) {
     const id = await getSecureWindowResponse(PasswordType.WalletPassword);
     log("Got auth id:" + id, LogLevel.debug);
-    log("Sending object:" + JSON.stringify({ device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id }), LogLevel.debug);
-    const httpr = await getResponsePromised(Endpoint.SignData, { device, walletType: type, sourcePublicID: publicAddress, srcData: data, password: id });
+    log("Sending object:" + JSON.stringify({ device, walletType: toLegacyWalletType(type), walletTypeString: type, sourcePublicID: publicAddress, srcData: data, password: id }), LogLevel.debug);
+    const httpr = await getResponsePromised(Endpoint.SignData, { device, walletType: toLegacyWalletType(type), walletTypeString: type, sourcePublicID: publicAddress, srcData: data, password: id });
     log("Response body:" + httpr.body, LogLevel.debug);
     assertIsBCHttpResponse(httpr);
     // i know.

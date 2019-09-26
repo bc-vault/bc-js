@@ -108,13 +108,42 @@ export interface HttpResponse{
     readonly available:number;
     readonly complete:number;
   }
+  export enum WalletType{
+    none,
+    bitCoin		  	    ="BitCoin1",
+    ethereum	  	    ="Ethereum",
+    ripple		  	    ="Ripple01",
+    stellar		  	    ="Stellar1",
+    eos				        ="Eos____1",
+    binanceCoin	      ="Bnb____1",
+    tron			  	    ="Tron___1",
+    bitCoinCash		    ="BcCash01",
+    bitcoinGold		    ="BcGold01",
+    liteCoin			    ="LiteCoi1",
+    dash			  	    ="Dash0001",
+    dogeCoin			    ="DogeCoi1",
+    groestlcoin		    ="Groestl1",
+    erc20Salt		    	="E2Salt_1",
+    erc20Polymath		  ="E2Polym1",
+    erc200x 	        ="E2_0X__1",
+    erc20Cindicator		="E2Cindi1",
+    erc20CargoX		    ="E2Cargo1",
+    erc20Viberate		  ="E2Viber1",
+    erc20Iconomi 	    ="E2Icono1",
+    erc20DTR		      ="E2DynTR1",
+    erc20OriginTrail	="E2OriTr1",
+    erc20InsurePal		="E2InsuP1",
+    erc20Xaurum	      ="E2Xauru1",
+    erc20OmiseGo 	    ="E2Omise1",
+    erc20WaltonChain	="E2WaltC1",
+  } 
   const WalletTypeConstants = {
     BTC:0,
     ERC20:0x02000000,
     ETH:0x01000000,
     TESTNET:0x40000000
   }
-  export enum WalletType{
+  export enum WalletType_Legacy{
     bitCoin               =WalletTypeConstants.BTC,
     bitCoinCash           =WalletTypeConstants.BTC+1,
     bitCoinGold           =WalletTypeConstants.BTC+2,
@@ -142,7 +171,7 @@ export interface HttpResponse{
     erc20Icon		    	    =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+15,
     erc20OmiseGo    			=(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+16,
     erc20WaltonChain			=(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+17,
-  
+   
     bitCoinTest         =(WalletTypeConstants.BTC)  | WalletTypeConstants.TESTNET,
     bitCoinCashTest     =(WalletTypeConstants.BTC+1)| WalletTypeConstants.TESTNET,
     bitCoinGoldTest     =(WalletTypeConstants.BTC+2)| WalletTypeConstants.TESTNET,
@@ -183,6 +212,10 @@ export interface HttpResponse{
     {type:WalletType.liteCoin,name:"Litecoin", ticker:"LTC"},
     {type:WalletType.dash,name:"Dash", ticker:"DASH"},
     {type:WalletType.dogeCoin,name:"Dogecoin", ticker:"DOGE"},
+    {type:WalletType.eos,name:"EOS", ticker:"EOS"},
+    {type:WalletType.binanceCoin,name:"Binance", ticker:"BNB"},
+    {type:WalletType.tron,name:"TRON", ticker:"TRX"},
+    {type:WalletType.groestlcoin,name:"Groestlcoin", ticker:"GRS"},
     {type:WalletType.erc20Salt,name:"Salt" ,ticker:"SALT"},
     {type:WalletType.erc20Polymath,name:"Polymath" ,ticker:"POLY"},
     {type:WalletType.erc200x,name:"0X" ,ticker:"ZRX"},
@@ -194,40 +227,10 @@ export interface HttpResponse{
     {type:WalletType.erc20OriginTrail,name:"OriginTrail" ,ticker:"TRAC"},
     {type:WalletType.erc20InsurePal,name:"InsurePal" ,ticker:"IPL"},
     {type:WalletType.erc20Xaurum,name:"Xaurum" ,ticker:"XAURUM"},
-    {type:WalletType.erc20Tron,name:"Tron" ,ticker:"TRX"},
-    {type:WalletType.erc20VeChain,name:"VeChain" ,ticker:"VEN"},
-    {type:WalletType.erc20Binance,name:"Binance" ,ticker:"BNB"},
-    {type:WalletType.erc20Icon,name:"Icon" ,ticker:"ICX"},
     {type:WalletType.erc20OmiseGo,name:"OmiseGo" ,ticker:"OMG"},
     {type:WalletType.erc20WaltonChain,name:"WaltonChain" ,ticker:"WTC"},
-    {type:WalletType.bitCoinTest,name:"Bitcoin Test", ticker:"BTC-T"},
-    {type:WalletType.ethereumTest,name:"Ethereum Test" ,ticker:"ETH-T"},
-    {type:WalletType.bitCoinCashTest,name:"Bitcoin Cash Test", ticker:"BCH-T"},
-    {type:WalletType.liteCoinTest,name:"Litecoin Test", ticker:"LTC-T"},
-    {type:WalletType.dashTest,name:"Dash Test", ticker:"DASH-T"},
-    {type:WalletType.dogeCoinTest,name:"Dogecoin Test", ticker:"DOGE-T"},
-    {type:WalletType.erc20BokkyTest,name:"Bokky ERC 20 Test" ,ticker:"BOKKY-T"},
-    {type:WalletType.erc20SaltTest,name:"Salt Test" ,ticker:"SALT-T"},
-    {type:WalletType.erc20PolymathTest,name:"Polymath Test" ,ticker:"POLY-T"},
-    {type:WalletType.erc200xTest,name:"0X Test" ,ticker:"ZRX-T"},
-    {type:WalletType.erc20CindicatorTest,name:"Cindicator Test" ,ticker:"CND-T"},
-    {type:WalletType.erc20CargoXTest,name:"CargoX Test" ,ticker:"CXO-T"},
-    {type:WalletType.erc20ViberateTest,name:"Viberate Test" ,ticker:"VIB-T"},
-    {type:WalletType.erc20IconomiTest,name:"Iconomi Test" ,ticker:"ICN-T"},
-    {type:WalletType.erc20DTRTest,name:"Dynamic Trading Rights Test" ,ticker:"DTR-T"},
-    {type:WalletType.erc20OriginTrailTest,name:"OriginTrail Test" ,ticker:"TRAC-T"},
-    {type:WalletType.erc20InsurePalTest,name:"InsurePal Test" ,ticker:"IPL-T"},
-    {type:WalletType.erc20XaurumTest,name:"Xaurum Test" ,ticker:"XAURUM-T"},
-    {type:WalletType.erc20TronTest,name:"Tron Test" ,ticker:"TRX-T"},
-    {type:WalletType.erc20VeChainTest,name:"VeChain Test" ,ticker:"VEN-T"},
-    {type:WalletType.erc20BinanceTest,name:"Binance Test" ,ticker:"BNB-T"},
-    {type:WalletType.erc20IconTest,name:"Icon Test" ,ticker:"ICX-T"},
-    {type:WalletType.erc20OmiseGoTest,name:"OmiseGo Test" ,ticker:"OMG-T"},
-    {type:WalletType.erc20WaltonChainTest,name:"WaltonChain Test" ,ticker:"WTC-T"},
     {type:WalletType.ripple,name:"Ripple", ticker:"XRP"},
-    {type:WalletType.rippleTest,name:"Ripple Test", ticker:"XRP-T"},
     {type:WalletType.stellar,name:"Stellar", ticker:"XLM"},
-    {type:WalletType.stellarTest,name:"Stellar Test", ticker:"XLM-T"},
   ];
 
   export interface BCObject{
@@ -238,6 +241,7 @@ export interface HttpResponse{
     id:number;
     space:SpaceObject;
     firmware:VersionObject;
+    userData:string;
     supportedTypes:ReadonlyArray<WalletType>;
     activeTypes:ReadonlyArray<WalletType>;
     activeWallets:WalletData[];
@@ -256,4 +260,19 @@ export interface HttpResponse{
   export enum PasswordType{
     WalletPassword='wallet',
     GlobalPassword='global'
+  }
+  export enum SessionAuthType{
+    token="token",
+    any="any"
+  }
+  export interface SessionCreateParameters{
+    sessionType: SessionAuthType,
+    matchPath: string;
+    expireSeconds: number;
+    versionNumber: number;
+  }
+  export enum DaemonErrorCodes{
+    sessionError=1,
+    parameterError=2,
+    httpsInvalid=3
   }
