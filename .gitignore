@@ -7,4 +7,4 @@ coverage
 *.log
 
 yarn.lock
-tools
+tools/
