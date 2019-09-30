@@ -207,7 +207,7 @@ export declare function getFirmwareVersion(device: number): Promise<VersionObjec
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
   @returns       An object containing requested data
  */
-export declare function getWalletBalance(walletType: WalletType, sourcePublicID: string): Promise<string>;
+export declare function getWalletBalance(type: WalletType, sourcePublicID: string): Promise<string>;
 /**
   Gets the available space on a specific device
   ### Example (es3)

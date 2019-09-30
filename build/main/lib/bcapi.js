@@ -460,10 +460,10 @@ exports.getFirmwareVersion = getFirmwareVersion;
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
   @returns       An object containing requested data
  */
-function getWalletBalance(walletType, sourcePublicID) {
+function getWalletBalance(type, sourcePublicID) {
     return __awaiter(this, void 0, void 0, function* () {
         let httpr;
-        httpr = yield getResponsePromised(types_1.Endpoint.GetWalletBalance, { walletType, sourcePublicID });
+        httpr = yield getResponsePromised(types_1.Endpoint.GetWalletBalance, { walletType: toLegacyWalletType(type), walletTypeString: type, sourcePublicID });
         assertIsBCHttpResponse(httpr);
         return httpr.body.data;
     });

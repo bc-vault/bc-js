@@ -12,6 +12,73 @@ export declare enum LogLevel {
     warning = 3,
     error = 4
 }
+/**
+ * @description the type of address, segwit, legacy etc...
+ */
+export declare enum AddressType {
+    All = 0,
+    PKH = 1,
+    PSH = 2,
+    P2WPKH = 3,
+    B32 = 4,
+    BCHNew = 5,
+    EOSAccount = 6,
+    EOSOwner = 7,
+    EOSActive = 8,
+    EOS = 9,
+    EOSK1 = 10,
+    err = 11
+}
+export declare enum StellarCreateAccount {
+    No = 0,
+    Yes = 1,
+    FetchFromNetwork = 255
+}
+export interface Utxo {
+    txId: string;
+    outputIndex: number;
+    amount: number;
+    address: number;
+    type: AddressType;
+}
+export interface AdvancedBTC {
+    utxos: Utxo[];
+}
+export interface AdvancedETH {
+    nonce: number;
+}
+export interface AdvancedTRX {
+    timeStamp: number;
+    refBlockBytes: number;
+    refBlockHash: number;
+    expiration: number;
+}
+export interface AdvancedEOS {
+    expiration: number;
+    refBlockNum: number;
+    refBlockPrefix: number;
+}
+export interface AdvancedBNB {
+    accountNumber: number;
+    nonce: number;
+    networkId: string;
+}
+export interface AdvancedXRP {
+    nonce: number;
+}
+export interface AdvancedXLM {
+    nonce: number;
+    createDestination: StellarCreateAccount;
+}
+export interface AdvancedOptions {
+    btc?: AdvancedBTC;
+    eth?: AdvancedETH;
+    trx?: AdvancedTRX;
+    eos?: AdvancedEOS;
+    bnb?: AdvancedBNB;
+    xrp?: AdvancedXRP;
+    xlm?: AdvancedXLM;
+}
 export interface TransactionData {
     /**
      * @description the public address from which to send
@@ -35,6 +102,10 @@ export interface TransactionData {
      * @description This field is in MINIMUM CURRENCY UNITS (sat for BTC, wei for ETH) and is an INTEGER AS A STRING, not a decimal
      */
     amount: string;
+    /**
+     * @description an optional set of parameters used for offline transaction generation.
+    */
+    advanced?: AdvancedOptions;
 }
 /**
  * @description The DaemonError class contains a BCHttpResponse and a HttpResponse, depending on where the failure was

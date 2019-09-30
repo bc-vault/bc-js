@@ -8,6 +8,30 @@ var LogLevel;
     LogLevel[LogLevel["error"] = 4] = "error";
 })(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
 /**
+ * @description the type of address, segwit, legacy etc...
+ */
+var AddressType;
+(function (AddressType) {
+    AddressType[AddressType["All"] = 0] = "All";
+    AddressType[AddressType["PKH"] = 1] = "PKH";
+    AddressType[AddressType["PSH"] = 2] = "PSH";
+    AddressType[AddressType["P2WPKH"] = 3] = "P2WPKH";
+    AddressType[AddressType["B32"] = 4] = "B32";
+    AddressType[AddressType["BCHNew"] = 5] = "BCHNew";
+    AddressType[AddressType["EOSAccount"] = 6] = "EOSAccount";
+    AddressType[AddressType["EOSOwner"] = 7] = "EOSOwner";
+    AddressType[AddressType["EOSActive"] = 8] = "EOSActive";
+    AddressType[AddressType["EOS"] = 9] = "EOS";
+    AddressType[AddressType["EOSK1"] = 10] = "EOSK1";
+    AddressType[AddressType["err"] = 11] = "err";
+})(AddressType = exports.AddressType || (exports.AddressType = {}));
+var StellarCreateAccount;
+(function (StellarCreateAccount) {
+    StellarCreateAccount[StellarCreateAccount["No"] = 0] = "No";
+    StellarCreateAccount[StellarCreateAccount["Yes"] = 1] = "Yes";
+    StellarCreateAccount[StellarCreateAccount["FetchFromNetwork"] = 255] = "FetchFromNetwork";
+})(StellarCreateAccount = exports.StellarCreateAccount || (exports.StellarCreateAccount = {}));
+/**
  * @description The DaemonError class contains a BCHttpResponse and a HttpResponse, depending on where the failure was
  * @description HttpResponse !== undefined if the response code was != 200 or if the request itself failed
  * @description BCHttpResponse !== undefined if the request succeeded but the device returned an error code.

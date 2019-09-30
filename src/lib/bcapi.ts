@@ -441,9 +441,9 @@ export async function getFirmwareVersion(device:number): Promise<VersionObject>{
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
   @returns       An object containing requested data
  */
-export async function getWalletBalance(walletType:WalletType,sourcePublicID:string): Promise<string>{
+export async function getWalletBalance(type:WalletType,sourcePublicID:string): Promise<string>{
   let httpr;
-  httpr = await getResponsePromised(Endpoint.GetWalletBalance,{walletType,sourcePublicID});
+  httpr = await getResponsePromised(Endpoint.GetWalletBalance,{walletType:toLegacyWalletType(type),walletTypeString:type,sourcePublicID});
   assertIsBCHttpResponse(httpr);
 
   return httpr.body.data as string;

@@ -14,6 +14,73 @@ export interface HttpResponse{
     warning=3,
     error=4
   }
+  /**
+   * @description the type of address, segwit, legacy etc...
+   */
+  export enum AddressType{
+    All = 0,
+    PKH,
+    PSH,
+    P2WPKH,
+    B32,
+    BCHNew,
+    EOSAccount,
+    EOSOwner,
+    EOSActive,
+    EOS,
+    EOSK1,
+    err
+  }
+  export enum StellarCreateAccount{
+    No,
+    Yes,
+    FetchFromNetwork=0xff
+  }
+  export interface Utxo{
+    txId: string,
+    outputIndex: number,
+    amount: number,
+    address: number,
+    type: AddressType
+  }
+  export interface AdvancedBTC{
+    utxos: Utxo[];
+  }
+  export interface AdvancedETH{
+    nonce: number;
+  }
+  export interface AdvancedTRX{
+    timeStamp: number;
+    refBlockBytes: number;
+    refBlockHash: number;
+    expiration: number;
+  }
+  export interface AdvancedEOS{
+    expiration: number;
+    refBlockNum: number;
+    refBlockPrefix: number;
+  }
+  export interface AdvancedBNB{
+    accountNumber: number;
+    nonce: number;
+    networkId: string;
+  }
+  export interface AdvancedXRP{
+    nonce: number;
+  }
+  export interface AdvancedXLM{
+    nonce: number;
+    createDestination: StellarCreateAccount;
+  }
+  export interface AdvancedOptions{
+    btc?:AdvancedBTC;
+    eth?:AdvancedETH;
+    trx?:AdvancedTRX;
+    eos?:AdvancedEOS;
+    bnb?:AdvancedBNB;
+    xrp?:AdvancedXRP;
+    xlm?:AdvancedXLM;
+  }
   export interface TransactionData{
     /**
      * @description the public address from which to send
@@ -37,6 +104,10 @@ export interface HttpResponse{
      * @description This field is in MINIMUM CURRENCY UNITS (sat for BTC, wei for ETH) and is an INTEGER AS A STRING, not a decimal
      */
     amount:string;
+    /** 
+     * @description an optional set of parameters used for offline transaction generation.
+    */
+    advanced?:AdvancedOptions
   }
   /**
    * @description The DaemonError class contains a BCHttpResponse and a HttpResponse, depending on where the failure was
