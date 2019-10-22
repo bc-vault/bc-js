@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AdvancedBTC | bc-js</title>
+	<title>WalletDetailsQuery | bc-js</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,46 +54,82 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="advancedbtc.html">AdvancedBTC</a>
+					<a href="walletdetailsquery.html">WalletDetailsQuery</a>
 				</li>
 			</ul>
-			<h1>Interface AdvancedBTC</h1>
+			<h1>Enumeration WalletDetailsQuery</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<span class="target">AdvancedBTC</span>
-					</li>
-				</ul>
-			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="advancedbtc.html#utxos" class="tsd-kind-icon">utxos</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="walletdetailsquery.html#all" class="tsd-kind-icon">all</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="walletdetailsquery.html#extradata" class="tsd-kind-icon">extra<wbr>Data</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="walletdetailsquery.html#none" class="tsd-kind-icon">none</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="walletdetailsquery.html#status" class="tsd-kind-icon">status</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="walletdetailsquery.html#userdata" class="tsd-kind-icon">user<wbr>Data</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="utxos" class="tsd-anchor"></a>
-					<h3>utxos</h3>
-					<div class="tsd-signature tsd-kind-icon">utxos<span class="tsd-signature-symbol">:</span> <a href="utxo.html" class="tsd-signature-type">Utxo</a><span class="tsd-signature-symbol">[]</span></div>
+				<h2>Enumeration members</h2>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="all" class="tsd-anchor"></a>
+					<h3>all</h3>
+					<div class="tsd-signature tsd-kind-icon">all<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;4294967295</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:48</li>
+							<li>Defined in lib/types.ts:372</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="extradata" class="tsd-anchor"></a>
+					<h3>extra<wbr>Data</h3>
+					<div class="tsd-signature tsd-kind-icon">extra<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;1 &lt;&lt; 1</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in lib/types.ts:370</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="none" class="tsd-anchor"></a>
+					<h3>none</h3>
+					<div class="tsd-signature tsd-kind-icon">none<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in lib/types.ts:368</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="status" class="tsd-anchor"></a>
+					<h3>status</h3>
+					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;1 &lt;&lt; 2</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in lib/types.ts:371</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="userdata" class="tsd-anchor"></a>
+					<h3>user<wbr>Data</h3>
+					<div class="tsd-signature tsd-kind-icon">user<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;1 &lt;&lt; 0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in lib/types.ts:369</li>
 						</ul>
 					</aside>
 				</section>
@@ -111,11 +147,23 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="advancedbtc.html" class="tsd-kind-icon">AdvancedBTC</a>
+					<li class="current tsd-kind-enum">
+						<a href="walletdetailsquery.html" class="tsd-kind-icon">Wallet<wbr>Details<wbr>Query</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="advancedbtc.html#utxos" class="tsd-kind-icon">utxos</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="walletdetailsquery.html#all" class="tsd-kind-icon">all</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="walletdetailsquery.html#extradata" class="tsd-kind-icon">extra<wbr>Data</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="walletdetailsquery.html#none" class="tsd-kind-icon">none</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="walletdetailsquery.html#status" class="tsd-kind-icon">status</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="walletdetailsquery.html#userdata" class="tsd-kind-icon">user<wbr>Data</a>
 							</li>
 						</ul>
 					</li>

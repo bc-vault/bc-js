@@ -76,6 +76,7 @@
 								<li class="tsd-kind-enum"><a href="enums/passwordtype.html" class="tsd-kind-icon">Password<wbr>Type</a></li>
 								<li class="tsd-kind-enum"><a href="enums/sessionauthtype.html" class="tsd-kind-icon">Session<wbr>Auth<wbr>Type</a></li>
 								<li class="tsd-kind-enum"><a href="enums/stellarcreateaccount.html" class="tsd-kind-icon">Stellar<wbr>Create<wbr>Account</a></li>
+								<li class="tsd-kind-enum"><a href="enums/walletdetailsquery.html" class="tsd-kind-icon">Wallet<wbr>Details<wbr>Query</a></li>
 								<li class="tsd-kind-enum"><a href="enums/wallettype.html" class="tsd-kind-icon">Wallet<wbr>Type</a></li>
 								<li class="tsd-kind-enum"><a href="enums/wallettype_legacy.html" class="tsd-kind-icon">Wallet<wbr>Type_<wbr><wbr>Legacy</a></li>
 							</ul>
@@ -108,8 +109,15 @@
 								<li class="tsd-kind-interface"><a href="interfaces/transactiondata.html" class="tsd-kind-icon">Transaction<wbr>Data</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/utxo.html" class="tsd-kind-icon">Utxo</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/versionobject.html" class="tsd-kind-icon">Version<wbr>Object</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/walletbatchdataresponse.html" class="tsd-kind-icon">Wallet<wbr>Batch<wbr>Data<wbr>Response</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/walletdata.html" class="tsd-kind-icon">Wallet<wbr>Data</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/wallettypeinfo.html" class="tsd-kind-icon">Wallet<wbr>Type<wbr>Info</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Type aliases</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias"><a href="globals.html#hexstring" class="tsd-kind-icon">hex<wbr>String</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -137,6 +145,8 @@
 								<li class="tsd-kind-function"><a href="globals.html#signdata" class="tsd-kind-icon">Sign<wbr>Data</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#getactivewallettypes" class="tsd-kind-icon">get<wbr>Active<wbr>Wallet<wbr>Types</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#getavailablespace" class="tsd-kind-icon">get<wbr>Available<wbr>Space</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#getbatchwalletdetails" class="tsd-kind-icon">get<wbr>Batch<wbr>Wallet<wbr>Details</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#getdeviceuid" class="tsd-kind-icon">get<wbr>DeviceUID</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#getdevices" class="tsd-kind-icon">get<wbr>Devices</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#getfirmwareversion" class="tsd-kind-icon">get<wbr>Firmware<wbr>Version</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#getisaddressvalid" class="tsd-kind-icon">get<wbr>IsAddress<wbr>Valid</a></li>
@@ -163,6 +173,19 @@
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Type aliases</h2>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="hexstring" class="tsd-anchor"></a>
+					<h3>hex<wbr>String</h3>
+					<div class="tsd-signature tsd-kind-icon">hex<wbr>String<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in lib/types.ts:11</li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="host" class="tsd-anchor"></a>
@@ -180,7 +203,7 @@
 					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:99</li>
+							<li>Defined in lib/bcapi.ts:111</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -195,7 +218,7 @@
 					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<wbr>Expire<wbr>Seconds<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;3600</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:103</li>
+							<li>Defined in lib/bcapi.ts:115</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -210,7 +233,7 @@
 					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<wbr>Match<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:105</li>
+							<li>Defined in lib/bcapi.ts:117</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -225,7 +248,7 @@
 					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<wbr>Use<wbr>Cookies<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:101</li>
+							<li>Defined in lib/bcapi.ts:113</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -240,7 +263,7 @@
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Polling<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:95</li>
+							<li>Defined in lib/bcapi.ts:107</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -255,7 +278,7 @@
 					<div class="tsd-signature tsd-kind-icon">log<wbr>Level<span class="tsd-signature-symbol">:</span> <a href="enums/loglevel.html" class="tsd-signature-type">LogLevel</a><span class="tsd-signature-symbol"> =&nbsp;LogLevel.debug</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:97</li>
+							<li>Defined in lib/bcapi.ts:109</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -270,7 +293,7 @@
 					<div class="tsd-signature tsd-kind-icon">type<wbr>Info<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="interfaces/wallettypeinfo.html" class="tsd-signature-type">WalletTypeInfo</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[{type:WalletType.bitCoin,name:&quot;Bitcoin&quot;, ticker:&quot;BTC&quot;},{type:WalletType.ethereum,name:&quot;Ethereum&quot;, ticker:&quot;ETH&quot;},{type:WalletType.bitCoinCash,name:&quot;Bitcoin Cash&quot;, ticker:&quot;BCH&quot;},{type:WalletType.liteCoin,name:&quot;Litecoin&quot;, ticker:&quot;LTC&quot;},{type:WalletType.dash,name:&quot;Dash&quot;, ticker:&quot;DASH&quot;},{type:WalletType.dogeCoin,name:&quot;Dogecoin&quot;, ticker:&quot;DOGE&quot;},{type:WalletType.eos,name:&quot;EOS&quot;, ticker:&quot;EOS&quot;},{type:WalletType.binanceCoin,name:&quot;Binance&quot;, ticker:&quot;BNB&quot;},{type:WalletType.tron,name:&quot;TRON&quot;, ticker:&quot;TRX&quot;},{type:WalletType.groestlcoin,name:&quot;Groestlcoin&quot;, ticker:&quot;GRS&quot;},{type:WalletType.erc20Salt,name:&quot;Salt&quot; ,ticker:&quot;SALT&quot;},{type:WalletType.erc20Polymath,name:&quot;Polymath&quot; ,ticker:&quot;POLY&quot;},{type:WalletType.erc200x,name:&quot;0X&quot; ,ticker:&quot;ZRX&quot;},{type:WalletType.erc20Cindicator,name:&quot;Cindicator&quot; ,ticker:&quot;CND&quot;},{type:WalletType.erc20CargoX,name:&quot;CargoX&quot; ,ticker:&quot;CXO&quot;},{type:WalletType.erc20Viberate,name:&quot;Viberate&quot; ,ticker:&quot;VIB&quot;},{type:WalletType.erc20Iconomi,name:&quot;Iconomi&quot; ,ticker:&quot;ICN&quot;},{type:WalletType.erc20DTR,name:&quot;Dynamic Trading Rights&quot; ,ticker:&quot;DTR&quot;},{type:WalletType.erc20OriginTrail,name:&quot;OriginTrail&quot; ,ticker:&quot;TRAC&quot;},{type:WalletType.erc20InsurePal,name:&quot;InsurePal&quot; ,ticker:&quot;IPL&quot;},{type:WalletType.erc20Xaurum,name:&quot;Xaurum&quot; ,ticker:&quot;XAURUM&quot;},{type:WalletType.erc20OmiseGo,name:&quot;OmiseGo&quot; ,ticker:&quot;OMG&quot;},{type:WalletType.erc20WaltonChain,name:&quot;WaltonChain&quot; ,ticker:&quot;WTC&quot;},{type:WalletType.ripple,name:&quot;Ripple&quot;, ticker:&quot;XRP&quot;},{type:WalletType.stellar,name:&quot;Stellar&quot;, ticker:&quot;XLM&quot;},]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:279</li>
+							<li>Defined in lib/types.ts:282</li>
 						</ul>
 					</aside>
 				</section>
@@ -287,7 +310,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:319</li>
+									<li>Defined in lib/bcapi.ts:339</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -357,7 +380,7 @@ bc.triggerManualUpdate();
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:671</li>
+									<li>Defined in lib/bcapi.ts:776</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -430,7 +453,7 @@ bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-string"
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:746</li>
+									<li>Defined in lib/bcapi.ts:851</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -500,7 +523,7 @@ bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-s
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:842</li>
+									<li>Defined in lib/bcapi.ts:947</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -557,7 +580,7 @@ bc.EnterGlobalPin(<span class="hljs-number">1</span>).then(<span class="hljs-bui
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:883</li>
+									<li>Defined in lib/bcapi.ts:988</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -636,7 +659,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:812</li>
+									<li>Defined in lib/bcapi.ts:917</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -700,7 +723,7 @@ bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-string">"
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:926</li>
+									<li>Defined in lib/bcapi.ts:1031</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -770,13 +793,13 @@ bc.SignData(<span class="hljs-number">1</span>,bc.WalletType.ethereum,<span clas
 					<a name="getactivewallettypes" class="tsd-anchor"></a>
 					<h3>get<wbr>Active<wbr>Wallet<wbr>Types</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Active<wbr>Wallet<wbr>Types<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ReadonlyArray</span><span class="tsd-signature-symbol">&lt;</span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Active<wbr>Wallet<wbr>Types<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:548</li>
+									<li>Defined in lib/bcapi.ts:601</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -819,7 +842,7 @@ bc.getActiveWalletTypes(<span class="hljs-number">1</span>).then(<span class="hl
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ReadonlyArray</span><span class="tsd-signature-symbol">&lt;</span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>An array containing requested data</p>
 						</li>
 					</ul>
@@ -834,7 +857,7 @@ bc.getActiveWalletTypes(<span class="hljs-number">1</span>).then(<span class="hl
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:478</li>
+									<li>Defined in lib/bcapi.ts:498</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -883,16 +906,144 @@ bc.getAvailableSpace(<span class="hljs-number">1</span>).then(<span class="hljs-
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
-					<a name="getdevices" class="tsd-anchor"></a>
-					<h3>get<wbr>Devices</h3>
+					<a name="getbatchwalletdetails" class="tsd-anchor"></a>
+					<h3>get<wbr>Batch<wbr>Wallet<wbr>Details</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Devices<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ReadonlyArray</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Batch<wbr>Wallet<wbr>Details<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, walletTypes<span class="tsd-signature-symbol">: </span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">[]</span>, walletDetails<span class="tsd-signature-symbol">?: </span><a href="enums/walletdetailsquery.html" class="tsd-signature-type">WalletDetailsQuery</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/walletbatchdataresponse.html" class="tsd-signature-type">WalletBatchDataResponse</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:375</li>
+									<li>Defined in lib/bcapi.ts:677</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the requested data about wallets stored on the device. Details to query can be specified through the final parameter, which is set to query all details by default.</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
+bc.getBatchWalletDetails(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; an array of type WalletBatchDataResponse</span></code></pre>
+								</div>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
+<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getBatchWalletDetails(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>))
+<span class="hljs-comment">// =&gt; an array of type WalletBatchDataResponse</span></code></pre>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getBatchWalletDetails(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>))
+<span class="hljs-comment">// =&gt; an array of type WalletBatchDataResponse</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
+								</li>
+								<li>
+									<h5>walletTypes: <a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>WalletTypes obtained from getActiveWalletTypes or getSupportedWalletTypes</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> walletDetails: <a href="enums/walletdetailsquery.html" class="tsd-signature-type">WalletDetailsQuery</a><span class="tsd-signature-symbol"> =&nbsp;WalletDetailsQuery.all</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Query details flags, can be combined with binary OR</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/walletbatchdataresponse.html" class="tsd-signature-type">WalletBatchDataResponse</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>An array containing requested data</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="getdeviceuid" class="tsd-anchor"></a>
+					<h3>get<wbr>DeviceUID</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>DeviceUID<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="globals.html#hexstring" class="tsd-signature-type">hexString</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in lib/bcapi.ts:531</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets an ID unique to each device. Will not persist device wipes and will change according to the HTTP Origin. This ID will persist reboots and requires global-pin authorization.</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
+bc.getDeviceUID(<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; "0x9d8e1b33b93d7c27fb4fc17857e22fb529937947152ca7af441095949b20ba02"</span></code></pre>
+								</div>
+								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+									<h3>Example (promise browser)</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
+<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getDeviceUID(<span class="hljs-number">1</span>))
+<span class="hljs-comment">// =&gt; "0x9d8e1b33b93d7c27fb4fc17857e22fb529937947152ca7af441095949b20ba02"</span></code></pre>
+								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+									<h3>Example (nodejs)</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getDeviceUID(<span class="hljs-number">1</span>))
+<span class="hljs-comment">// =&gt; "0x9d8e1b33b93d7c27fb4fc17857e22fb529937947152ca7af441095949b20ba02"</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="globals.html#hexstring" class="tsd-signature-type">hexString</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>The unique ID</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="getdevices" class="tsd-anchor"></a>
+					<h3>get<wbr>Devices</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Devices<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in lib/bcapi.ts:395</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -926,7 +1077,7 @@ bc.getDevices().then(<span class="hljs-built_in">console</span>.log)
 									</dd>
 								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ReadonlyArray</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>An array of Device IDs of currently connected devices</p>
 						</li>
 					</ul>
@@ -941,7 +1092,7 @@ bc.getDevices().then(<span class="hljs-built_in">console</span>.log)
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:409</li>
+									<li>Defined in lib/bcapi.ts:429</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -999,7 +1150,7 @@ bc.getFirmwareVersion(<span class="hljs-number">1</span>).then(<span class="hljs
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:709</li>
+									<li>Defined in lib/bcapi.ts:814</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1063,13 +1214,13 @@ bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-string
 					<a name="getsupportedwallettypes" class="tsd-anchor"></a>
 					<h3>get<wbr>Supported<wbr>Wallet<wbr>Types</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Supported<wbr>Wallet<wbr>Types<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ReadonlyArray</span><span class="tsd-signature-symbol">&lt;</span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Supported<wbr>Wallet<wbr>Types<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:511</li>
+									<li>Defined in lib/bcapi.ts:564</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1112,7 +1263,7 @@ bc.getSupportedWalletTypes(<span class="hljs-string">"BitCoin1"</span>).then(<sp
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ReadonlyArray</span><span class="tsd-signature-symbol">&lt;</span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>An array containing requested data</p>
 						</li>
 					</ul>
@@ -1127,7 +1278,7 @@ bc.getSupportedWalletTypes(<span class="hljs-string">"BitCoin1"</span>).then(<sp
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:444</li>
+									<li>Defined in lib/bcapi.ts:464</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1185,7 +1336,7 @@ bc.getWalletBalance(<span class="hljs-string">"BitCoin1"</span>,<span class="hlj
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:345</li>
+									<li>Defined in lib/bcapi.ts:365</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1228,38 +1379,39 @@ bc.getWalletBalance(<span class="hljs-string">"BitCoin1"</span>,<span class="hlj
 					<a name="getwalletuserdata" class="tsd-anchor"></a>
 					<h3>get<wbr>Wallet<wbr>User<wbr>Data</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Wallet<wbr>User<wbr>Data<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, type<span class="tsd-signature-symbol">: </span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a>, publicAddress<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, parseHex<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Wallet<wbr>User<wbr>Data<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, type<span class="tsd-signature-symbol">: </span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a>, publicAddress<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, shouldParseHex<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:624</li>
+									<li>Defined in lib/bcapi.ts:734</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the user data associated with a publicAddress on this device</p>
-									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
-										<h3>Example (es3)</h3>
-									</a>
-									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
+								<dl class="tsd-comment-tags">
+									<dt>deprecated</dt>
+									<dd><p>since 1.3.2, use getBatchWalletDetails instead
+										Gets the user data associated with a publicAddress on this device</p>
+										<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+											<h3>Example (es3)</h3>
+										</a>
+										<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-literal">true</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; "This is my mining wallet!"</span></code></pre>
-								</div>
-								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
-									<h3>Example (promise browser)</h3>
-								</a>
-								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
+										<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+											<h3>Example (promise browser)</h3>
+										</a>
+										<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-literal">true</span>))
 <span class="hljs-comment">// =&gt; "This is my mining wallet!"</span></code></pre>
-								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
-									<h3>Example (nodejs)</h3>
-								</a>
-								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
+										<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+											<h3>Example (nodejs)</h3>
+										</a>
+										<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-literal">true</span>))
 <span class="hljs-comment">// =&gt; "This is my mining wallet!"</span></code></pre>
-								<dl class="tsd-comment-tags">
+									</dd>
 									<dt>throws</dt>
 									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
 									</dd>
@@ -1289,7 +1441,7 @@ bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-string
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> parseHex: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> shouldParseHex: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1301,38 +1453,39 @@ bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-string
 					<a name="getwalletsoftype" class="tsd-anchor"></a>
 					<h3>get<wbr>Wallets<wbr>OfType</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Wallets<wbr>OfType<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, type<span class="tsd-signature-symbol">: </span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ReadonlyArray</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Wallets<wbr>OfType<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, type<span class="tsd-signature-symbol">: </span><a href="enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:587</li>
+									<li>Defined in lib/bcapi.ts:641</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets an array(string) of public keys of a specific WalletTypes on a device</p>
-									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
-										<h3>Example (es3)</h3>
-									</a>
-									<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
+								<dl class="tsd-comment-tags">
+									<dt>deprecated</dt>
+									<dd><p>since 1.3.2, use getBatchWalletDetails instead
+										Gets an array(string) of public keys of a specific WalletTypes on a device</p>
+										<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+											<h3>Example (es3)</h3>
+										</a>
+										<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>).then(<span class="hljs-built_in">console</span>.log)
 <span class="hljs-comment">// =&gt; ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]</span></code></pre>
-								</div>
-								<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
-									<h3>Example (promise browser)</h3>
-								</a>
-								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
+										<a href="#example-promise-browser" id="example-promise-browser" style="color: inherit; text-decoration: none;">
+											<h3>Example (promise browser)</h3>
+										</a>
+										<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = _bcvault;
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>))
 <span class="hljs-comment">// =&gt; ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]</span></code></pre>
-								<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
-									<h3>Example (nodejs)</h3>
-								</a>
-								<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
+										<a href="#example-nodejs" id="example-nodejs" style="color: inherit; text-decoration: none;">
+											<h3>Example (nodejs)</h3>
+										</a>
+										<pre><code class="language-js"><span class="hljs-keyword">var</span> bc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bc-js'</span>);
 <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>))
 <span class="hljs-comment">// =&gt; ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]</span></code></pre>
-								<dl class="tsd-comment-tags">
+									</dd>
 									<dt>throws</dt>
 									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
 									</dd>
@@ -1356,7 +1509,7 @@ bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-string"
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ReadonlyArray</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>An array containing requested data</p>
 						</li>
 					</ul>
@@ -1371,7 +1524,7 @@ bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-string"
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:131</li>
+									<li>Defined in lib/bcapi.ts:143</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1425,7 +1578,7 @@ bc.startObjectPolling(<span class="hljs-number">150</span>);
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:187</li>
+									<li>Defined in lib/bcapi.ts:202</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1486,7 +1639,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:943</li>
+									<li>Defined in lib/bcapi.ts:1048</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1530,7 +1683,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:1019</li>
+									<li>Defined in lib/bcapi.ts:1124</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1553,7 +1706,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:1002</li>
+									<li>Defined in lib/bcapi.ts:1107</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1600,7 +1753,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/bcapi.ts:983</li>
+									<li>Defined in lib/bcapi.ts:1088</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1646,7 +1799,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 					<div class="tsd-signature tsd-kind-icon">BCData<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/bcapi.ts:288</li>
+							<li>Defined in lib/bcapi.ts:308</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1660,7 +1813,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<div class="tsd-signature tsd-kind-icon">devices<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in lib/bcapi.ts:288</li>
+								<li>Defined in lib/bcapi.ts:308</li>
 							</ul>
 						</aside>
 					</section>
@@ -1700,6 +1853,9 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 					</li>
 					<li class=" tsd-kind-enum">
 						<a href="enums/stellarcreateaccount.html" class="tsd-kind-icon">Stellar<wbr>Create<wbr>Account</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/walletdetailsquery.html" class="tsd-kind-icon">Wallet<wbr>Details<wbr>Query</a>
 					</li>
 					<li class=" tsd-kind-enum">
 						<a href="enums/wallettype.html" class="tsd-kind-icon">Wallet<wbr>Type</a>
@@ -1768,10 +1924,16 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<a href="interfaces/versionobject.html" class="tsd-kind-icon">Version<wbr>Object</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/walletbatchdataresponse.html" class="tsd-kind-icon">Wallet<wbr>Batch<wbr>Data<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/walletdata.html" class="tsd-kind-icon">Wallet<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/wallettypeinfo.html" class="tsd-kind-icon">Wallet<wbr>Type<wbr>Info</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#hexstring" class="tsd-kind-icon">hex<wbr>String</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#host" class="tsd-kind-icon">Host</a>
@@ -1823,6 +1985,12 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#getavailablespace" class="tsd-kind-icon">get<wbr>Available<wbr>Space</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getbatchwalletdetails" class="tsd-kind-icon">get<wbr>Batch<wbr>Wallet<wbr>Details</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getdeviceuid" class="tsd-kind-icon">get<wbr>DeviceUID</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#getdevices" class="tsd-kind-icon">get<wbr>Devices</a>
