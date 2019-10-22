@@ -1,4 +1,4 @@
-import { SpaceObject, PasswordType, WalletType, VersionObject, TransactionData, BCDataRefreshStatusCode, BCObject, WalletTypeInfo, LogLevel } from './types';
+import { SpaceObject, PasswordType, WalletType, VersionObject, TransactionData, BCDataRefreshStatusCode, BCObject, WalletTypeInfo, LogLevel, WalletDetailsQuery, WalletBatchDataResponse, hexString } from './types';
 export declare const Host: string;
 /** Is BCData object polling already taking place? */
 export declare let isPolling: boolean;
@@ -151,7 +151,7 @@ export declare function getWalletTypeInfo(id: string): WalletTypeInfo | undefine
 @throws        Will throw an AxiosError if the request itself failed or if status code != 200
 @returns       An array of Device IDs of currently connected devices
  */
-export declare function getDevices(): Promise<ReadonlyArray<number>>;
+export declare function getDevices(): Promise<number[]>;
 /**
   Gets the firmware version of a specific device.
   ### Example (es3)
@@ -237,6 +237,34 @@ export declare function getWalletBalance(type: WalletType, sourcePublicID: strin
  */
 export declare function getAvailableSpace(device: number): Promise<SpaceObject>;
 /**
+  Gets an ID unique to each device. Will not persist device wipes and will change according to the HTTP Origin. This ID will persist reboots and requires global-pin authorization.
+  ### Example (es3)
+  ```js
+  var bc = _bcvault;
+  bc.getDeviceUID(1).then(console.log)
+  // => "0x9d8e1b33b93d7c27fb4fc17857e22fb529937947152ca7af441095949b20ba02"
+  ```
+
+  ### Example (promise browser)
+  ```js
+  var bc = _bcvault;
+  console.log(await bc.getDeviceUID(1))
+  // => "0x9d8e1b33b93d7c27fb4fc17857e22fb529937947152ca7af441095949b20ba02"
+  ```
+
+  ### Example (nodejs)
+  ```js
+  var bc = require('bc-js');
+  console.log(await bc.getDeviceUID(1))
+  // => "0x9d8e1b33b93d7c27fb4fc17857e22fb529937947152ca7af441095949b20ba02"
+  ```
+  @param device  DeviceID obtained from getDevices
+  @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
+  @throws        Will throw an AxiosError if the request itself failed or if status code != 200
+  @returns       The unique ID
+ */
+export declare function getDeviceUID(device: number): Promise<hexString>;
+/**
   Gets the supported WalletTypes on a specific device
   ### Example (es3)
   ```js
@@ -263,7 +291,7 @@ export declare function getAvailableSpace(device: number): Promise<SpaceObject>;
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
   @returns       An array containing requested data
  */
-export declare function getSupportedWalletTypes(device: number): Promise<ReadonlyArray<WalletType>>;
+export declare function getSupportedWalletTypes(device: number): Promise<WalletType[]>;
 /**
   Gets a list of WalletTypes that are actually used on a specific device(have at least one wallet)
   ### Example (es3)
@@ -291,8 +319,9 @@ export declare function getSupportedWalletTypes(device: number): Promise<Readonl
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
   @returns       An array containing requested data
  */
-export declare function getActiveWalletTypes(device: number): Promise<ReadonlyArray<WalletType>>;
+export declare function getActiveWalletTypes(device: number): Promise<WalletType[]>;
 /**
+ * @deprecated since 1.3.2, use getBatchWalletDetails instead
   Gets an array(string) of public keys of a specific WalletTypes on a device
   ### Example (es3)
   ```js
@@ -320,8 +349,39 @@ export declare function getActiveWalletTypes(device: number): Promise<ReadonlyAr
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
   @returns       An array containing requested data
  */
-export declare function getWalletsOfType(device: number, type: WalletType): Promise<ReadonlyArray<string>>;
+export declare function getWalletsOfType(device: number, type: WalletType): Promise<string[]>;
 /**
+  Gets the requested data about wallets stored on the device. Details to query can be specified through the final parameter, which is set to query all details by default.
+  ### Example (es3)
+  ```js
+  var bc = _bcvault;
+  bc.getBatchWalletDetails(1,"BitCoin1").then(console.log)
+  // => an array of type WalletBatchDataResponse
+  ```
+
+  ### Example (promise browser)
+  ```js
+  var bc = _bcvault;
+  console.log(await bc.getBatchWalletDetails(1,"BitCoin1"))
+  // => an array of type WalletBatchDataResponse
+  ```
+
+  ### Example (nodejs)
+  ```js
+  var bc = require('bc-js');
+  console.log(await bc.getBatchWalletDetails(1,"BitCoin1"))
+  // => an array of type WalletBatchDataResponse
+  ```
+  @param device           DeviceID obtained from getDevices
+  @param walletTypes      WalletTypes obtained from getActiveWalletTypes or getSupportedWalletTypes
+  @param walletDetails    Query details flags, can be combined with binary OR
+  @throws                 Will throw a DaemonError if the status code of the request was rejected by the server for any reason
+  @throws                 Will throw an AxiosError if the request itself failed or if status code != 200
+  @returns                An array containing requested data
+ */
+export declare function getBatchWalletDetails(device: number, walletTypes: WalletType[], walletDetails?: WalletDetailsQuery): Promise<WalletBatchDataResponse[]>;
+/**
+ * @deprecated since 1.3.2, use getBatchWalletDetails instead
   Gets the user data associated with a publicAddress on this device
   ### Example (es3)
   ```js
@@ -350,7 +410,7 @@ export declare function getWalletsOfType(device: number, type: WalletType): Prom
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
   @returns       The UserData
  */
-export declare function getWalletUserData(device: number, type: WalletType, publicAddress: string, parseHex?: boolean): Promise<string>;
+export declare function getWalletUserData(device: number, type: WalletType, publicAddress: string, shouldParseHex?: boolean): Promise<string>;
 /**
   Copies a wallet private key to another walletType (in case of a fork etc.)
   ### Example (es3)

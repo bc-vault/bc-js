@@ -66,6 +66,8 @@
     padding-top:0.25rem !important;
     padding-bottom:0.25rem !important;
     float:left;
+    width: 100%;
+    overflow: hidden;
 }
 .list-group-item > *{
     font-size:0.78rem;

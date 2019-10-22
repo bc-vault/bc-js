@@ -6,6 +6,7 @@ export interface BCHttpResponse {
     readonly errorCode: number;
     readonly data: any;
 }
+export declare type hexString = string;
 export declare enum LogLevel {
     verbose = 1,
     debug = 2,
@@ -146,6 +147,7 @@ export declare enum Endpoint {
     WalletTypes = "WalletTypes",
     SavedWalletTypes = "SavedWalletTypes",
     WalletsOfType = "WalletsOfType",
+    WalletsOfTypes = "WalletsOfTypes",
     GenerateWallet = "GenerateWallet",
     WalletUserData = "WalletUserData",
     GenerateTransaction = "GenerateTransaction",
@@ -157,7 +159,8 @@ export declare enum Endpoint {
     PasswordInput = "PasswordInput",
     GetAuthID = "GetAuthID",
     GetWalletBalance = "WalletBalance",
-    SignData = "SignData"
+    SignData = "SignData",
+    DeviceUID = "DeviceUID"
 }
 export interface SpaceObject {
     readonly available: number;
@@ -259,9 +262,11 @@ export interface BCObject {
 }
 export interface BCDevice {
     id: number;
+    UID?: hexString;
     space: SpaceObject;
     firmware: VersionObject;
     userData: string;
+    userDataRaw: hexString;
     supportedTypes: ReadonlyArray<WalletType>;
     activeTypes: ReadonlyArray<WalletType>;
     activeWallets: WalletData[];
@@ -269,8 +274,19 @@ export interface BCDevice {
 }
 export interface WalletData {
     publicKey: string;
+    userData: hexString;
+    extraData?: hexString;
     walletType: WalletType;
     balance?: string;
+}
+export interface WalletBatchDataResponse {
+    type: WalletType;
+    /** May be undefined in the case of an old daemon which doesn't support fetching this property */
+    status?: number;
+    address: string;
+    userData: hexString;
+    /** May be undefined in the case of an old daemon which doesn't support fetching this property */
+    extraData?: hexString;
 }
 export declare enum BCDataRefreshStatusCode {
     ConnectionError = -1,
@@ -295,4 +311,11 @@ export declare enum DaemonErrorCodes {
     sessionError = 1,
     parameterError = 2,
     httpsInvalid = 3
+}
+export declare enum WalletDetailsQuery {
+    none = 0,
+    userData = 1,
+    extraData = 2,
+    status = 4,
+    all = 4294967295
 }

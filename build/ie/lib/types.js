@@ -73,6 +73,7 @@ var Endpoint;
     Endpoint["WalletTypes"] = "WalletTypes";
     Endpoint["SavedWalletTypes"] = "SavedWalletTypes";
     Endpoint["WalletsOfType"] = "WalletsOfType";
+    Endpoint["WalletsOfTypes"] = "WalletsOfTypes";
     Endpoint["GenerateWallet"] = "GenerateWallet";
     Endpoint["WalletUserData"] = "WalletUserData";
     Endpoint["GenerateTransaction"] = "GenerateTransaction";
@@ -85,6 +86,7 @@ var Endpoint;
     Endpoint["GetAuthID"] = "GetAuthID";
     Endpoint["GetWalletBalance"] = "WalletBalance";
     Endpoint["SignData"] = "SignData";
+    Endpoint["DeviceUID"] = "DeviceUID";
 })(Endpoint = exports.Endpoint || (exports.Endpoint = {}));
 var WalletType;
 (function (WalletType) {
@@ -228,3 +230,11 @@ var DaemonErrorCodes;
     DaemonErrorCodes[DaemonErrorCodes["parameterError"] = 2] = "parameterError";
     DaemonErrorCodes[DaemonErrorCodes["httpsInvalid"] = 3] = "httpsInvalid";
 })(DaemonErrorCodes = exports.DaemonErrorCodes || (exports.DaemonErrorCodes = {}));
+var WalletDetailsQuery;
+(function (WalletDetailsQuery) {
+    WalletDetailsQuery[WalletDetailsQuery["none"] = 0] = "none";
+    WalletDetailsQuery[WalletDetailsQuery["userData"] = 1] = "userData";
+    WalletDetailsQuery[WalletDetailsQuery["extraData"] = 2] = "extraData";
+    WalletDetailsQuery[WalletDetailsQuery["status"] = 4] = "status";
+    WalletDetailsQuery[WalletDetailsQuery["all"] = 4294967295] = "all";
+})(WalletDetailsQuery = exports.WalletDetailsQuery || (exports.WalletDetailsQuery = {}));

@@ -2226,6 +2226,19 @@ es6_promise_1.polyfill();
 const API_VERSION = 1;
 exports.Host = "https://localhost.bc-vault.com:1991/";
 let endpointAllowsCredentials;
+function parseHex(str) {
+    let out = str;
+    if (out.length % 2 === 0) {
+        out = out.substr(2); // remove 0x
+        const responseStringArray = [...out];
+        const byteArrayStr = [];
+        for (let i = 0; i < responseStringArray.length; i += 2) {
+            byteArrayStr.push(parseInt(responseStringArray[i] + responseStringArray[i + 1], 16));
+        }
+        out = String.fromCharCode(...byteArrayStr);
+    }
+    return out;
+}
 function getNewSession() {
     return __awaiter(this, void 0, void 0, function* () {
         const scp = {
@@ -2352,11 +2365,14 @@ exports.startObjectPolling = startObjectPolling;
 function getWallets(deviceID, activeTypes) {
     return __awaiter(this, void 0, void 0, function* () {
         const ret = [];
-        for (const x of activeTypes) {
-            const walletsOfXType = yield getWalletsOfType(deviceID, x);
-            for (const wallet of walletsOfXType) {
-                ret.push({ publicKey: wallet, walletType: x });
-            }
+        const response = yield getBatchWalletDetails(deviceID, activeTypes);
+        for (const detailItem of response) {
+            ret.push({
+                publicKey: detailItem.address,
+                userData: detailItem.userData,
+                extraData: detailItem.extraData,
+                walletType: detailItem.type
+            });
         }
         return ret;
     });
@@ -2412,11 +2428,13 @@ function triggerManualUpdate(fullUpdate = true) {
                 }
                 catch (e) {
                     if (e.BCHttpResponse !== undefined) {
+                        const userData = yield getWalletUserData(deviceID, types_1.WalletType.none, "", false);
                         devs.push({
                             id: deviceID,
                             space: { available: 1, complete: 1 },
                             firmware: yield getFirmwareVersion(deviceID),
-                            userData: yield getWalletUserData(deviceID, types_1.WalletType.none, ""),
+                            userData: parseHex(userData),
+                            userDataRaw: userData,
                             supportedTypes: [],
                             activeTypes: [],
                             activeWallets: [],
@@ -2426,12 +2444,15 @@ function triggerManualUpdate(fullUpdate = true) {
                     }
                     throw e;
                 }
+                const usrDataHex = yield getWalletUserData(deviceID, types_1.WalletType.none, "", false);
                 devs.push({
                     id: deviceID,
+                    UID: yield getDeviceUID(deviceID),
                     space: yield getAvailableSpace(deviceID),
                     firmware: yield getFirmwareVersion(deviceID),
                     supportedTypes: yield getSupportedWalletTypes(deviceID),
-                    userData: yield getWalletUserData(deviceID, types_1.WalletType.none, ""),
+                    userData: parseHex(usrDataHex),
+                    userDataRaw: usrDataHex,
                     activeTypes,
                     activeWallets: yield getWallets(deviceID, activeTypes),
                     locked: false
@@ -2713,6 +2734,42 @@ function getAvailableSpace(device) {
 }
 exports.getAvailableSpace = getAvailableSpace;
 /**
+  Gets an ID unique to each device. Will not persist device wipes and will change according to the HTTP Origin. This ID will persist reboots and requires global-pin authorization.
+  ### Example (es3)
+  ```js
+  var bc = _bcvault;
+  bc.getDeviceUID(1).then(console.log)
+  // => "0x9d8e1b33b93d7c27fb4fc17857e22fb529937947152ca7af441095949b20ba02"
+  ```
+
+  ### Example (promise browser)
+  ```js
+  var bc = _bcvault;
+  console.log(await bc.getDeviceUID(1))
+  // => "0x9d8e1b33b93d7c27fb4fc17857e22fb529937947152ca7af441095949b20ba02"
+  ```
+
+  ### Example (nodejs)
+  ```js
+  var bc = require('bc-js');
+  console.log(await bc.getDeviceUID(1))
+  // => "0x9d8e1b33b93d7c27fb4fc17857e22fb529937947152ca7af441095949b20ba02"
+  ```
+  @param device  DeviceID obtained from getDevices
+  @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
+  @throws        Will throw an AxiosError if the request itself failed or if status code != 200
+  @returns       The unique ID
+ */
+function getDeviceUID(device) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let httpr;
+        httpr = yield getResponsePromised(types_1.Endpoint.DeviceUID, { device });
+        assertIsBCHttpResponse(httpr);
+        return httpr.body.data;
+    });
+}
+exports.getDeviceUID = getDeviceUID;
+/**
   Gets the supported WalletTypes on a specific device
   ### Example (es3)
   ```js
@@ -2793,6 +2850,7 @@ function getActiveWalletTypes(device) {
 }
 exports.getActiveWalletTypes = getActiveWalletTypes;
 /**
+ * @deprecated since 1.3.2, use getBatchWalletDetails instead
   Gets an array(string) of public keys of a specific WalletTypes on a device
   ### Example (es3)
   ```js
@@ -2830,6 +2888,63 @@ function getWalletsOfType(device, type) {
 }
 exports.getWalletsOfType = getWalletsOfType;
 /**
+  Gets the requested data about wallets stored on the device. Details to query can be specified through the final parameter, which is set to query all details by default.
+  ### Example (es3)
+  ```js
+  var bc = _bcvault;
+  bc.getBatchWalletDetails(1,"BitCoin1").then(console.log)
+  // => an array of type WalletBatchDataResponse
+  ```
+
+  ### Example (promise browser)
+  ```js
+  var bc = _bcvault;
+  console.log(await bc.getBatchWalletDetails(1,"BitCoin1"))
+  // => an array of type WalletBatchDataResponse
+  ```
+
+  ### Example (nodejs)
+  ```js
+  var bc = require('bc-js');
+  console.log(await bc.getBatchWalletDetails(1,"BitCoin1"))
+  // => an array of type WalletBatchDataResponse
+  ```
+  @param device           DeviceID obtained from getDevices
+  @param walletTypes      WalletTypes obtained from getActiveWalletTypes or getSupportedWalletTypes
+  @param walletDetails    Query details flags, can be combined with binary OR
+  @throws                 Will throw a DaemonError if the status code of the request was rejected by the server for any reason
+  @throws                 Will throw an AxiosError if the request itself failed or if status code != 200
+  @returns                An array containing requested data
+ */
+function getBatchWalletDetails(device, walletTypes, walletDetails = types_1.WalletDetailsQuery.all) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let httpr;
+        try {
+            httpr = yield getResponsePromised(types_1.Endpoint.WalletsOfTypes, { device, walletTypes, walletDetails });
+            assertIsBCHttpResponse(httpr);
+            return httpr.body.data;
+        }
+        catch (e) {
+            // legacy daemon
+            const outArray = [];
+            for (const wt of walletTypes) {
+                const wallets = yield getWalletsOfType(device, wt);
+                for (const wallet of wallets) {
+                    const walletUserData = yield getWalletUserData(device, wt, wallet, false);
+                    outArray.push({
+                        address: wallet,
+                        type: wt,
+                        userData: walletUserData
+                    });
+                }
+            }
+            return outArray;
+        }
+    });
+}
+exports.getBatchWalletDetails = getBatchWalletDetails;
+/**
+ * @deprecated since 1.3.2, use getBatchWalletDetails instead
   Gets the user data associated with a publicAddress on this device
   ### Example (es3)
   ```js
@@ -2858,20 +2973,14 @@ exports.getWalletsOfType = getWalletsOfType;
   @throws        Will throw an AxiosError if the request itself failed or if status code != 200
   @returns       The UserData
  */
-function getWalletUserData(device, type, publicAddress, parseHex = true) {
+function getWalletUserData(device, type, publicAddress, shouldParseHex = true) {
     return __awaiter(this, void 0, void 0, function* () {
         let httpr;
         httpr = yield getResponsePromised(types_1.Endpoint.WalletUserData, { device, walletType: toLegacyWalletType(type), walletTypeString: type, sourcePublicID: publicAddress });
         assertIsBCHttpResponse(httpr);
         let responseString = httpr.body.data;
-        if (parseHex && responseString.length % 2 === 0) {
-            responseString = responseString.substr(2); //remove 0x
-            const responseStringArray = [...responseString];
-            const byteArrayStr = [];
-            for (let i = 0; i < responseStringArray.length; i += 2) {
-                byteArrayStr.push(parseInt(responseStringArray[i] + responseStringArray[i + 1], 16));
-            }
-            responseString = String.fromCharCode(...byteArrayStr);
+        if (shouldParseHex) {
+            responseString = parseHex(responseString);
         }
         return responseString;
     });
@@ -3336,6 +3445,7 @@ var Endpoint;
     Endpoint["WalletTypes"] = "WalletTypes";
     Endpoint["SavedWalletTypes"] = "SavedWalletTypes";
     Endpoint["WalletsOfType"] = "WalletsOfType";
+    Endpoint["WalletsOfTypes"] = "WalletsOfTypes";
     Endpoint["GenerateWallet"] = "GenerateWallet";
     Endpoint["WalletUserData"] = "WalletUserData";
     Endpoint["GenerateTransaction"] = "GenerateTransaction";
@@ -3348,6 +3458,7 @@ var Endpoint;
     Endpoint["GetAuthID"] = "GetAuthID";
     Endpoint["GetWalletBalance"] = "WalletBalance";
     Endpoint["SignData"] = "SignData";
+    Endpoint["DeviceUID"] = "DeviceUID";
 })(Endpoint = exports.Endpoint || (exports.Endpoint = {}));
 var WalletType;
 (function (WalletType) {
@@ -3491,6 +3602,14 @@ var DaemonErrorCodes;
     DaemonErrorCodes[DaemonErrorCodes["parameterError"] = 2] = "parameterError";
     DaemonErrorCodes[DaemonErrorCodes["httpsInvalid"] = 3] = "httpsInvalid";
 })(DaemonErrorCodes = exports.DaemonErrorCodes || (exports.DaemonErrorCodes = {}));
+var WalletDetailsQuery;
+(function (WalletDetailsQuery) {
+    WalletDetailsQuery[WalletDetailsQuery["none"] = 0] = "none";
+    WalletDetailsQuery[WalletDetailsQuery["userData"] = 1] = "userData";
+    WalletDetailsQuery[WalletDetailsQuery["extraData"] = 2] = "extraData";
+    WalletDetailsQuery[WalletDetailsQuery["status"] = 4] = "status";
+    WalletDetailsQuery[WalletDetailsQuery["all"] = 4294967295] = "all";
+})(WalletDetailsQuery = exports.WalletDetailsQuery || (exports.WalletDetailsQuery = {}));
 
 },{}],7:[function(require,module,exports){
 module.exports = require('./lib/axios');

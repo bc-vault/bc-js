@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <title>BC-Vault Demo</title>
-    <script src="bc_js_ie.js"></script>
+    <script src="bc_js_noie.js"></script>
     <script>
         function isActiveWallet(device,wt){
             var active =  bc.BCData.devices[device].activeTypes.find(function(x){return x==wt;}) != undefined;
@@ -131,7 +131,7 @@
     <div id="app" class="container row" style="width:100vw">
         <div v-for="(device,index) in devices" class="col-md-6 boxContainer container" v-bind="{createTransaction,getWalletTypeInfo,isActiveWallet,createNewWallet,getWalletBalance,balanceList}">
             <p class="infoRow">
-                {{ device.locked?"(LOCKED)":"" }} <br> [v{{device.firmware.major}}.{{device.firmware.minor}}.{{device.firmware.revision}}] <br>  {{ device.userData }}
+                {{ device.locked?"(LOCKED)":device.UID }} <br> [v{{device.firmware.major}}.{{device.firmware.minor}}.{{device.firmware.revision}}] <br>  {{ device.userData }}
             </p>
             <div class="boxOverlay" v-if="device.locked" v-on:click="enterGlobalPin(device.id)">
                 <div class="text">Unlock Device</div>
@@ -152,7 +152,7 @@
                             <div class="rightButtons">
                                     <i class="fas fa-sync-alt clickable" v-on:click="getWalletBalance(currency,wallet.publicKey)" title="Refresh Balance"></i>
                                     <i class="fas fa-paper-plane clickable" v-on:click="createTransaction(device.id,currency,wallet.publicKey)" v-show="balanceList.find(function(x){return x.walletType ==  currency && x.publicKey == wallet.publicKey}) != undefined" title="Send a Transaction" ></i>
-                                    <i class="fas fa-signature clickable" v-on:click="signTestMessage(device.id,currency,wallet.publicKey)" v-show="currency == 0x01000000" title="Sign Test Message" ></i>
+                                    <i class="fas fa-signature clickable" v-on:click="signTestMessage(device.id,currency,wallet.publicKey)" v-show="currency == 'Ethereum'" title="Sign Test Message" ></i>
                             </div>
                         </li>
                     </ul>

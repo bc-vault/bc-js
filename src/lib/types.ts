@@ -8,6 +8,7 @@ export interface HttpResponse{
     readonly errorCode:number;
     readonly data:any;
   }
+  export type hexString = string;
   export enum LogLevel{
     verbose=1,
     debug=2,
@@ -161,6 +162,7 @@ export interface HttpResponse{
     WalletTypes         ="WalletTypes",
     SavedWalletTypes    ="SavedWalletTypes",
     WalletsOfType       ="WalletsOfType",
+    WalletsOfTypes       ="WalletsOfTypes",
     GenerateWallet      ="GenerateWallet",
     WalletUserData      ="WalletUserData",
     GenerateTransaction ="GenerateTransaction",
@@ -173,6 +175,7 @@ export interface HttpResponse{
     GetAuthID           ="GetAuthID",
     GetWalletBalance    ="WalletBalance",
     SignData            ="SignData",
+    DeviceUID           ="DeviceUID"
 
   }
   export interface SpaceObject{
@@ -310,9 +313,11 @@ export interface HttpResponse{
   }
   export interface BCDevice{
     id:number;
+    UID?:hexString;
     space:SpaceObject;
     firmware:VersionObject;
     userData:string;
+    userDataRaw:hexString;
     supportedTypes:ReadonlyArray<WalletType>;
     activeTypes:ReadonlyArray<WalletType>;
     activeWallets:WalletData[];
@@ -320,8 +325,20 @@ export interface HttpResponse{
   }
   export interface WalletData{
     publicKey:string;
+    userData:hexString;
+    extraData?: hexString;
     walletType:WalletType;
     balance?:string;
+  }
+  export interface WalletBatchDataResponse{
+    type:     WalletType;
+    
+    /** May be undefined in the case of an old daemon which doesn't support fetching this property */
+    status?:   number;
+    address:  string;
+    userData: hexString;
+    /** May be undefined in the case of an old daemon which doesn't support fetching this property */
+    extraData?: hexString;
   }
   export enum BCDataRefreshStatusCode{
     ConnectionError=-1,
@@ -346,4 +363,11 @@ export interface HttpResponse{
     sessionError=1,
     parameterError=2,
     httpsInvalid=3
+  }
+  export enum WalletDetailsQuery{
+    none = 0,
+	  userData = 1 << 0,
+	  extraData = 1 << 1,
+	  status = 1 << 2,
+	  all=0xffffffff
   }
