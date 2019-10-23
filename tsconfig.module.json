@@ -2,10 +2,10 @@
   "extends": "./tsconfig",
   "compilerOptions": {
     "target": "esnext",
-    "outDir": "build/module",
+    "outDir": "build/esnext",
     "downlevelIteration":true,
     "skipLibCheck": true,
     "module": "esnext"
   },
-  "exclude": ["node_modules","**/*.spec.ts"],
+  "exclude": ["node_modules","**/*.spec.ts","**/*.browser.ts"],
 }

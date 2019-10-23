@@ -10,6 +10,11 @@ BC-JS is a clientside library which makes integrating support for BC VAULT as ea
 All functions are defined as Promises, which means that in [supported environments](https://caniuse.com/#feat=async-functions) you can use the native await syntax to resolve actions.
 
 
+## Documentation
+
+A static version of the latest documentation is hosted at [https://www.bc-vault.com/api/js/](https://www.bc-vault.com/api/js/)
+You can also build the documentation yourself using the instructions below
+
 ## Quick start in browser
 
 To get started download [bc-js](#) and place it somewhere where it can be found from a HTML file. This will register the object `_bcvault` in the global `window` object.
@@ -54,7 +59,24 @@ or, if your target browsers support async/await:
 </body>
 
 ```
+## Quick start in Node.js
 
+To get started, run `npm i bc-vault-js` or `yarn add bc-vault-js`
+
+A simple example - querying the current device list:
+
+```js
+const bclib = require("bc-vault-js")
+
+let bc = new bclib.BCJS(()=>{});// first arg MUST be a function in node, see AuthWindowHandler to find out more
+
+bc.getDevices().then((result)=>{
+  console.log(JSON.stringify(result));
+})
+
+//this should output [1,2,3,4,5] depending on how many BC Vaults are connected.
+
+```
 
 ### IE workarounds
 
@@ -99,7 +121,8 @@ Output files are in `docs/`
 #### Output
 
 Output files are in
- - `build/module` - ES6 with esnext modules (Future)
- - `build/ie` - ES3 Polyfills for IE, used in bc_js_*.js
- - `build/main` - ES6 with commonJS modules (NodeJS)
- - `build/bc_js_*.js` - Browserified output for use in browsers
+ - `build/es5` - ES5 Polyfills for IE, used in bc_js_ie.js
+ - `build/es2017` - ES2017 with commonJS modules (NodeJS)
+ - `build/es6` - ES6 with commonJS modules (NodeJS), also used in bc_js_noie.js
+ - `build/esnext` - ES6 with esnext modules (Future)
+ - `build/bc_js_*.js` - Browserified single dependency output for use in browsers.

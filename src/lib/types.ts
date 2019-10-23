@@ -318,11 +318,20 @@ export interface HttpResponse{
     firmware:VersionObject;
     userData:string;
     userDataRaw:hexString;
-    supportedTypes:ReadonlyArray<WalletType>;
-    activeTypes:ReadonlyArray<WalletType>;
+    supportedTypes:WalletType[];
+    activeTypes:WalletType[];
     activeWallets:WalletData[];
     locked:boolean;
   }
+  /**
+   * This is a function which must submit a device or wallet password to the daemon for use in the next call.
+   * See showAuthPopup and the popup for implementation ideas. A function of this type must be specified in the constructor of BCJS in node, but in the browser it is ignored/optional.
+   * The call you are expected to make can be found in the source of:
+   * https://localhost.bc-vault.com:1991/PasswordInput?channelID=1&channelPasswordType=global
+   * 
+   * If the call was not successful, reject the promise. If it was, resolve it with no value.
+   */
+  export type AuthorizationHandler = (authID:string,passwordType:PasswordType) => Promise<void>
   export interface WalletData{
     publicKey:string;
     userData:hexString;
