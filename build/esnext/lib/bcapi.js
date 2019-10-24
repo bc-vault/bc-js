@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Endpoint, PasswordType, WalletType, DaemonError, typeInfoMap, LogLevel, SessionAuthType, DaemonErrorCodes, WalletType_Legacy, WalletDetailsQuery } from './types';
+import { Endpoint, PasswordType, WalletType, DaemonError, BCDataRefreshStatusCode, typeInfoMap, LogLevel, SessionAuthType, DaemonErrorCodes, WalletType_Legacy, WalletDetailsQuery } from './types';
 import { Keccak } from 'sha3';
 import { polyfill } from 'es6-promise';
 polyfill();
@@ -22,6 +22,7 @@ export class BCJS {
         this.lastSeenDevices = [];
         this.listeners = [];
         this.stopPolling = false;
+        this.lastPushedStatus = BCDataRefreshStatusCode.Ready;
     }
     BCJS(authWindowHandler) {
         if (typeof (window) !== 'undefined') {
@@ -108,7 +109,7 @@ export class BCJS {
         if (fullUpdate) {
             const devArray = await this.getDevices();
             const devs = [];
-            this.FireAllListeners(1);
+            this.FireAllStatusListeners(1);
             for (const deviceID of devArray) {
                 let activeTypes;
                 try {
@@ -147,12 +148,12 @@ export class BCJS {
                 });
             }
             this.BCData = { devices: devs };
-            this.FireAllListeners(0);
+            this.FireAllStatusListeners(0);
         }
         else {
             let devices;
             devices = await this.getDevices();
-            if (!this.arraysEqual(devices, this.lastSeenDevices)) {
+            if (!this.arraysEqual(devices, this.lastSeenDevices) || this.lastPushedStatus === BCDataRefreshStatusCode.ConnectionError) {
                 this.lastSeenDevices = devices;
                 await this.triggerManualUpdate(true);
             }
@@ -902,7 +903,7 @@ export class BCJS {
             await this.triggerManualUpdate(false);
         }
         catch (e) {
-            this.FireAllListeners(-1);
+            this.FireAllStatusListeners(-1);
             console.error(e);
         }
         if (this.stopPolling) {
@@ -912,9 +913,10 @@ export class BCJS {
         }
         setTimeout(() => this.pollDevicesChanged(interval), interval);
     }
-    FireAllListeners(...args) {
+    FireAllStatusListeners(args) {
+        this.lastPushedStatus = args;
         for (const listener of this.listeners) {
-            listener.call(null, ...args);
+            listener.call(null, args);
         }
     }
     toLegacyWalletType(t) {

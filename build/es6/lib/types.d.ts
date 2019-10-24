@@ -267,8 +267,8 @@ export interface BCDevice {
     firmware: VersionObject;
     userData: string;
     userDataRaw: hexString;
-    supportedTypes: ReadonlyArray<WalletType>;
-    activeTypes: ReadonlyArray<WalletType>;
+    supportedTypes: WalletType[];
+    activeTypes: WalletType[];
     activeWallets: WalletData[];
     locked: boolean;
 }

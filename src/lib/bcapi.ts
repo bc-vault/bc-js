@@ -30,6 +30,7 @@ export class BCJS{
   private listeners:Array<(status:BCDataRefreshStatusCode)=>void>=[]
   private stopPolling = false;
   private authHandler: AuthorizationHandler;
+  private lastPushedStatus:BCDataRefreshStatusCode = BCDataRefreshStatusCode.Ready;
   public BCJS(authWindowHandler?:AuthorizationHandler){
     if(typeof(window) !== 'undefined'){
       // is browser, ignore param and set default
@@ -112,7 +113,7 @@ export class BCJS{
     if(fullUpdate){
       const devArray = await this.getDevices();
       const devs:BCDevice[] = [];
-      this.FireAllListeners(1);
+      this.FireAllStatusListeners(1);
       for (const deviceID of devArray) {
         let activeTypes;
         try{
@@ -151,11 +152,11 @@ export class BCJS{
           });
       }
       this.BCData = {devices:devs};
-      this.FireAllListeners(0);
+      this.FireAllStatusListeners(0);
     }else{
       let devices;
       devices = await this.getDevices();
-      if(!this.arraysEqual(devices,this.lastSeenDevices)){
+      if(!this.arraysEqual(devices,this.lastSeenDevices) || this.lastPushedStatus === BCDataRefreshStatusCode.ConnectionError){
         this.lastSeenDevices = devices;
         await this.triggerManualUpdate(true);
       }
@@ -933,7 +934,7 @@ export class BCJS{
     try{
       await this.triggerManualUpdate(false);
     }catch(e){
-      this.FireAllListeners(-1);
+      this.FireAllStatusListeners(-1);
       console.error(e);
     }
     if(this.stopPolling){
@@ -943,9 +944,10 @@ export class BCJS{
     }
     setTimeout(()=>this.pollDevicesChanged(interval),interval);
   }
-  private FireAllListeners(...args:any[]):void{
+  private FireAllStatusListeners(args:BCDataRefreshStatusCode):void{
+    this.lastPushedStatus=args;
     for(const listener of this.listeners){
-      listener.call(null,...args);
+      listener.call(null,args);
     }
   }
   private toLegacyWalletType(t:WalletType):number{

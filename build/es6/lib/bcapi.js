@@ -35,6 +35,7 @@ class BCJS {
         this.lastSeenDevices = [];
         this.listeners = [];
         this.stopPolling = false;
+        this.lastPushedStatus = types_1.BCDataRefreshStatusCode.Ready;
     }
     BCJS(authWindowHandler) {
         if (typeof (window) !== 'undefined') {
@@ -122,7 +123,7 @@ class BCJS {
             if (fullUpdate) {
                 const devArray = yield this.getDevices();
                 const devs = [];
-                this.FireAllListeners(1);
+                this.FireAllStatusListeners(1);
                 for (const deviceID of devArray) {
                     let activeTypes;
                     try {
@@ -161,12 +162,12 @@ class BCJS {
                     });
                 }
                 this.BCData = { devices: devs };
-                this.FireAllListeners(0);
+                this.FireAllStatusListeners(0);
             }
             else {
                 let devices;
                 devices = yield this.getDevices();
-                if (!this.arraysEqual(devices, this.lastSeenDevices)) {
+                if (!this.arraysEqual(devices, this.lastSeenDevices) || this.lastPushedStatus === types_1.BCDataRefreshStatusCode.ConnectionError) {
                     this.lastSeenDevices = devices;
                     yield this.triggerManualUpdate(true);
                 }
@@ -962,7 +963,7 @@ class BCJS {
                 yield this.triggerManualUpdate(false);
             }
             catch (e) {
-                this.FireAllListeners(-1);
+                this.FireAllStatusListeners(-1);
                 console.error(e);
             }
             if (this.stopPolling) {
@@ -973,9 +974,10 @@ class BCJS {
             setTimeout(() => this.pollDevicesChanged(interval), interval);
         });
     }
-    FireAllListeners(...args) {
+    FireAllStatusListeners(args) {
+        this.lastPushedStatus = args;
         for (const listener of this.listeners) {
-            listener.call(null, ...args);
+            listener.call(null, args);
         }
     }
     toLegacyWalletType(t) {

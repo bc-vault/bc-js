@@ -21,6 +21,7 @@ export declare class BCJS {
     private listeners;
     private stopPolling;
     private authHandler;
+    private lastPushedStatus;
     BCJS(authWindowHandler?: AuthorizationHandler): void;
     /**
       Starts polling daemon for changes and updates BCData object
@@ -506,7 +507,7 @@ export declare class BCJS {
     private getWallets;
     private arraysEqual;
     private pollDevicesChanged;
-    private FireAllListeners;
+    private FireAllStatusListeners;
     private toLegacyWalletType;
     private fromLegacyWalletType;
     private showAuthPopup;

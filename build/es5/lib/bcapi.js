@@ -97,6 +97,7 @@ var BCJS = /** @class */ (function () {
         this.lastSeenDevices = [];
         this.listeners = [];
         this.stopPolling = false;
+        this.lastPushedStatus = types_1.BCDataRefreshStatusCode.Ready;
     }
     BCJS.prototype.BCJS = function (authWindowHandler) {
         if (typeof (window) !== 'undefined') {
@@ -192,7 +193,7 @@ var BCJS = /** @class */ (function () {
                     case 1:
                         devArray = _h.sent();
                         devs = [];
-                        this.FireAllListeners(1);
+                        this.FireAllStatusListeners(1);
                         _h.label = 2;
                     case 2:
                         _h.trys.push([2, 20, 21, 22]);
@@ -278,14 +279,14 @@ var BCJS = /** @class */ (function () {
                         return [7 /*endfinally*/];
                     case 22:
                         this.BCData = { devices: devs };
-                        this.FireAllListeners(0);
+                        this.FireAllStatusListeners(0);
                         return [3 /*break*/, 26];
                     case 23:
                         devices = void 0;
                         return [4 /*yield*/, this.getDevices()];
                     case 24:
                         devices = _h.sent();
-                        if (!!this.arraysEqual(devices, this.lastSeenDevices)) return [3 /*break*/, 26];
+                        if (!(!this.arraysEqual(devices, this.lastSeenDevices) || this.lastPushedStatus === types_1.BCDataRefreshStatusCode.ConnectionError)) return [3 /*break*/, 26];
                         this.lastSeenDevices = devices;
                         return [4 /*yield*/, this.triggerManualUpdate(true)];
                     case 25:
@@ -1355,7 +1356,7 @@ var BCJS = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         e_12 = _a.sent();
-                        this.FireAllListeners(-1);
+                        this.FireAllStatusListeners(-1);
                         console.error(e_12);
                         return [3 /*break*/, 3];
                     case 3:
@@ -1370,16 +1371,13 @@ var BCJS = /** @class */ (function () {
             });
         });
     };
-    BCJS.prototype.FireAllListeners = function () {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
+    BCJS.prototype.FireAllStatusListeners = function (args) {
         var e_13, _a;
+        this.lastPushedStatus = args;
         try {
             for (var _b = __values(this.listeners), _c = _b.next(); !_c.done; _c = _b.next()) {
                 var listener = _c.value;
-                listener.call.apply(listener, __spread([null], args));
+                listener.call(null, args);
             }
         }
         catch (e_13_1) { e_13 = { error: e_13_1 }; }
