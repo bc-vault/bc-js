@@ -100,11 +100,7 @@ var BCJS = /** @class */ (function () {
         this.lastPushedStatus = types_1.BCDataRefreshStatusCode.Ready;
     }
     BCJS.prototype.BCJS = function (authWindowHandler) {
-        if (typeof (window) !== 'undefined') {
-            // is browser, ignore param and set default
-            this.authHandler = this.showAuthPopup;
-        }
-        else {
+        if (typeof (window) === 'undefined') {
             // is nodejs, authWindowHandler MUST be specified!
             if (typeof (authWindowHandler) !== 'function') {
                 throw new Error('authWindowHandler MUST be of type function for BCJS constructor in NodeJS');
@@ -1454,9 +1450,16 @@ var BCJS = /** @class */ (function () {
                     case 1:
                         x = _a.sent();
                         id = x.body;
-                        return [4 /*yield*/, this.authHandler(id, passwordType)];
+                        if (!(this.authHandler === undefined)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.showAuthPopup(id, passwordType)];
                     case 2:
                         _a.sent();
+                        return [3 /*break*/, 5];
+                    case 3: return [4 /*yield*/, this.authHandler(id, passwordType)];
+                    case 4:
+                        _a.sent();
+                        _a.label = 5;
+                    case 5:
                         res(id);
                         return [2 /*return*/];
                 }

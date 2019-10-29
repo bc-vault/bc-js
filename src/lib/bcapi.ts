@@ -32,10 +32,7 @@ export class BCJS{
   private authHandler: AuthorizationHandler;
   private lastPushedStatus:BCDataRefreshStatusCode = BCDataRefreshStatusCode.Ready;
   public BCJS(authWindowHandler?:AuthorizationHandler){
-    if(typeof(window) !== 'undefined'){
-      // is browser, ignore param and set default
-      this.authHandler = this.showAuthPopup;
-    }else{
+    if(typeof(window) === 'undefined'){
       // is nodejs, authWindowHandler MUST be specified!
       if(typeof(authWindowHandler) !== 'function'){
         throw new Error('authWindowHandler MUST be of type function for BCJS constructor in NodeJS');
@@ -1009,7 +1006,11 @@ export class BCJS{
     return new Promise<string>(async (res)=>{
         const x = await this.getResponsePromised(Endpoint.GetAuthID);
         const id = x.body as string;
-        await this.authHandler(id,passwordType);
+        if(this.authHandler === undefined){
+          await this.showAuthPopup(id,passwordType);
+        }else{
+          await this.authHandler(id,passwordType);
+        }
         res(id);
     });
   }
