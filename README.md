@@ -17,7 +17,7 @@ You can also build the documentation yourself using the instructions below
 
 ## Quick start in browser
 
-To get started download [bc-js](#) and place it somewhere where it can be found from a HTML file. This will register the object `_bcvault` in the global `window` object.
+To get started download [bc-js](#) and place it somewhere where it can be found from a HTML file. This will register the object `_bcvault` in the global `window` object. This object is a union of all other Global types and an instance of BCJS. This means you can do `const a = _bcvault.WalletType.bitCoin` and `const b = _bcvault.getDevices()`, you can also create a new object of type BCJS using `const c = new _bcvault.BCJS()`
 
 Include it where needed:
 ```html

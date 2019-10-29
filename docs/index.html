@@ -79,7 +79,7 @@
 				<a href="#quick-start-in-browser" id="quick-start-in-browser" style="color: inherit; text-decoration: none;">
 					<h2>Quick start in browser</h2>
 				</a>
-				<p>To get started download <a href="#">bc-js</a> and place it somewhere where it can be found from a HTML file. This will register the object <code>_bcvault</code> in the global <code>window</code> object.</p>
+				<p>To get started download <a href="#">bc-js</a> and place it somewhere where it can be found from a HTML file. This will register the object <code>_bcvault</code> in the global <code>window</code> object. This object is a union of all other Global types and an instance of BCJS. This means you can do <code>const a = _bcvault.WalletType.bitCoin</code> and <code>const b = _bcvault.getDevices()</code>, you can also create a new object of type BCJS using <code>const c = new _bcvault.BCJS()</code></p>
 				<p>Include it where needed:</p>
 				<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/path/to/bc-js.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
