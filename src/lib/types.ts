@@ -1,12 +1,17 @@
+import { AxiosError } from "axios";
 
 export interface HttpResponse{
     readonly status:number;
-    readonly body:BCHttpResponse | string | object;
+    readonly body?: any;
   
   }
   export interface BCHttpResponse{
     readonly errorCode:number;
     readonly data:any;
+  }
+  export interface DaemonHttpResponse{
+    readonly daemonError: number;
+    readonly parseError: string;
   }
   export type hexString = string;
   export enum LogLevel{
@@ -117,26 +122,40 @@ export interface HttpResponse{
    */
   export class DaemonError extends Error {
     /**
-     * @description HttpResponse !== undefined if the request succeeded but the device returned an error code. 
+     * @description HttpResponse !== undefined if the request failed, this means the daemon could not be reached. 
      */
-    public HttpResponse:HttpResponse
+    public HttpResponse?:AxiosError
     /**
      * @description BCHttpResponse !== undefined if the request succeeded but the device returned an error code. 
      */
-    public BCHttpResponse:BCHttpResponse
-    constructor(data:HttpResponse | BCHttpResponse,m:string="DaemonError") {
+    public BCHttpResponse?:BCHttpResponse
+    /**
+     * @description DaemonHttpResponse !== undefined if the request reached the daemon, who then reject it for a specified reason. 
+     */
+    public DaemonHttpResponse?:DaemonHttpResponse
+    // tslint:disable: no-string-literal
+    constructor(data: BCHttpResponse | DaemonHttpResponse | AxiosError,m:string="DaemonError") {
         super(m);
 
         // Set the prototype explicitly.
         Object.setPrototypeOf(this, DaemonError.prototype);
         this.name="DaemonError";
-        if((data as HttpResponse).status !== undefined){// data is HttpResponse
-          this.HttpResponse = data as HttpResponse;
-        }else{
-          this.BCHttpResponse = data as BCHttpResponse;
+        if(data['config'] !== undefined){
+          this.HttpResponse = data as AxiosError;
+          return;
         }
+        if(data['errorCode'] !== undefined){
+          this.BCHttpResponse = data as BCHttpResponse;
+          return;
+        }
+        if(data['daemonError'] !== undefined){
+          this.DaemonHttpResponse = data as DaemonHttpResponse;
+          return;
+        }
+        throw new Error('Error could not be parsed, this should never happen.');
         
     }
+    // tslint:enable: no-string-literal
   }
   export interface VersionObject{
     major:number

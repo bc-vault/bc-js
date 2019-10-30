@@ -18,7 +18,7 @@ export class BCJS {
         this.authTokenMatchPath = '/';
         /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
         this.BCData = { devices: [] };
-        this.API_VERSION = 1;
+        this.API_VERSION = 2;
         this.lastSeenDevices = [];
         this.listeners = [];
         this.stopPolling = false;
@@ -130,9 +130,16 @@ export class BCJS {
                     throw e;
                 }
                 const usrDataHex = await this.getWalletUserData(deviceID, WalletType.none, "", false);
+                let deviceUID;
+                try {
+                    deviceUID = await this.getDeviceUID(deviceID);
+                }
+                catch {
+                    deviceUID = undefined;
+                }
                 devs.push({
                     id: deviceID,
-                    UID: await this.getDeviceUID(deviceID),
+                    UID: deviceUID,
                     space: await this.getAvailableSpace(deviceID),
                     firmware: await this.getFirmwareVersion(deviceID),
                     supportedTypes: await this.getSupportedWalletTypes(deviceID),
@@ -322,8 +329,25 @@ export class BCJS {
      */
     async getDeviceUID(device) {
         let httpr;
-        httpr = await this.getResponsePromised(Endpoint.DeviceUID, { device });
-        this.assertIsBCHttpResponse(httpr);
+        try {
+            httpr = await this.getResponsePromised(Endpoint.DeviceUID, { device });
+            this.assertIsBCHttpResponse(httpr);
+        }
+        catch {
+            httpr = await axios({
+                method: 'get',
+                baseURL: this.Host,
+                url: '/version'
+            });
+            if (httpr.data === "1") {
+                // daemon predates graceful endpoint error handling
+                const err = new DaemonError({
+                    daemonError: 4,
+                    parseError: "Command not found"
+                });
+                throw err;
+            }
+        }
         return httpr.body.data;
     }
     /**
@@ -817,6 +841,7 @@ export class BCJS {
                 }
                 catch (e) {
                     this.log("Daemon offline during initialization.", LogLevel.debug);
+                    return rej(new DaemonError(e));
                 }
             }
             const options = {
@@ -844,24 +869,22 @@ export class BCJS {
                     options.data = JSON.stringify({ ...dataWithToken, d_token: this.authToken });
                     axios(options).then((authenticatedResponse) => {
                         if (authenticatedResponse.data.daemonError) {
-                            return rej(new DaemonError({ status: authenticatedResponse.status, body: authenticatedResponse.data }));
+                            return rej(new DaemonError(authenticatedResponse.data));
                         }
                         else {
                             return res({ status: authenticatedResponse.status, body: authenticatedResponse.data });
                         }
                     }).catch((e) => {
                         this.log(`Daemon request failed: ${JSON.stringify(e)}`, LogLevel.warning);
-                        rej(e);
+                        rej(new DaemonError(e));
                     });
                     return;
                 }
-                if (response.status !== 200)
-                    return rej(new DaemonError(htpr));
                 res(htpr);
             };
             axios(options).then(responseFunction).catch((e) => {
                 this.log(`Daemon request failed: ${JSON.stringify(e)}`, LogLevel.warning);
-                rej(e);
+                rej(new DaemonError(e));
             });
         });
     }

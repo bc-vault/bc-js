@@ -31,7 +31,7 @@ class BCJS {
         this.authTokenMatchPath = '/';
         /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
         this.BCData = { devices: [] };
-        this.API_VERSION = 1;
+        this.API_VERSION = 2;
         this.lastSeenDevices = [];
         this.listeners = [];
         this.stopPolling = false;
@@ -144,9 +144,16 @@ class BCJS {
                         throw e;
                     }
                     const usrDataHex = yield this.getWalletUserData(deviceID, types_1.WalletType.none, "", false);
+                    let deviceUID;
+                    try {
+                        deviceUID = yield this.getDeviceUID(deviceID);
+                    }
+                    catch (_a) {
+                        deviceUID = undefined;
+                    }
                     devs.push({
                         id: deviceID,
-                        UID: yield this.getDeviceUID(deviceID),
+                        UID: deviceUID,
                         space: yield this.getAvailableSpace(deviceID),
                         firmware: yield this.getFirmwareVersion(deviceID),
                         supportedTypes: yield this.getSupportedWalletTypes(deviceID),
@@ -346,8 +353,25 @@ class BCJS {
     getDeviceUID(device) {
         return __awaiter(this, void 0, void 0, function* () {
             let httpr;
-            httpr = yield this.getResponsePromised(types_1.Endpoint.DeviceUID, { device });
-            this.assertIsBCHttpResponse(httpr);
+            try {
+                httpr = yield this.getResponsePromised(types_1.Endpoint.DeviceUID, { device });
+                this.assertIsBCHttpResponse(httpr);
+            }
+            catch (_a) {
+                httpr = yield axios_1.default({
+                    method: 'get',
+                    baseURL: this.Host,
+                    url: '/version'
+                });
+                if (httpr.data === "1") {
+                    // daemon predates graceful endpoint error handling
+                    const err = new types_1.DaemonError({
+                        daemonError: 4,
+                        parseError: "Command not found"
+                    });
+                    throw err;
+                }
+            }
             return httpr.body.data;
         });
     }
@@ -874,6 +898,7 @@ class BCJS {
                 }
                 catch (e) {
                     this.log("Daemon offline during initialization.", types_1.LogLevel.debug);
+                    return rej(new types_1.DaemonError(e));
                 }
             }
             const options = {
@@ -901,24 +926,22 @@ class BCJS {
                     options.data = JSON.stringify(Object.assign({}, dataWithToken, { d_token: this.authToken }));
                     axios_1.default(options).then((authenticatedResponse) => {
                         if (authenticatedResponse.data.daemonError) {
-                            return rej(new types_1.DaemonError({ status: authenticatedResponse.status, body: authenticatedResponse.data }));
+                            return rej(new types_1.DaemonError(authenticatedResponse.data));
                         }
                         else {
                             return res({ status: authenticatedResponse.status, body: authenticatedResponse.data });
                         }
                     }).catch((e) => {
                         this.log(`Daemon request failed: ${JSON.stringify(e)}`, types_1.LogLevel.warning);
-                        rej(e);
+                        rej(new types_1.DaemonError(e));
                     });
                     return;
                 }
-                if (response.status !== 200)
-                    return rej(new types_1.DaemonError(htpr));
                 res(htpr);
             });
             axios_1.default(options).then(responseFunction).catch((e) => {
                 this.log(`Daemon request failed: ${JSON.stringify(e)}`, types_1.LogLevel.warning);
-                rej(e);
+                rej(new types_1.DaemonError(e));
             });
         }));
     }

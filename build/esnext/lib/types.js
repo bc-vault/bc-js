@@ -35,17 +35,25 @@ export var StellarCreateAccount;
  * @description BCHttpResponse !== undefined if the request succeeded but the device returned an error code.
  */
 export class DaemonError extends Error {
+    // tslint:disable: no-string-literal
     constructor(data, m = "DaemonError") {
         super(m);
         // Set the prototype explicitly.
         Object.setPrototypeOf(this, DaemonError.prototype);
         this.name = "DaemonError";
-        if (data.status !== undefined) { // data is HttpResponse
+        if (data['config'] !== undefined) {
             this.HttpResponse = data;
+            return;
         }
-        else {
+        if (data['errorCode'] !== undefined) {
             this.BCHttpResponse = data;
+            return;
         }
+        if (data['daemonError'] !== undefined) {
+            this.DaemonHttpResponse = data;
+            return;
+        }
+        throw new Error('Error could not be parsed, this should never happen.');
     }
 }
 export var Endpoint;

@@ -1,10 +1,15 @@
+import { AxiosError } from "axios";
 export interface HttpResponse {
     readonly status: number;
-    readonly body: BCHttpResponse | string | object;
+    readonly body?: any;
 }
 export interface BCHttpResponse {
     readonly errorCode: number;
     readonly data: any;
+}
+export interface DaemonHttpResponse {
+    readonly daemonError: number;
+    readonly parseError: string;
 }
 export declare type hexString = string;
 export declare enum LogLevel {
@@ -115,14 +120,18 @@ export interface TransactionData {
  */
 export declare class DaemonError extends Error {
     /**
-     * @description HttpResponse !== undefined if the request succeeded but the device returned an error code.
+     * @description HttpResponse !== undefined if the request failed, this means the daemon could not be reached.
      */
-    HttpResponse: HttpResponse;
+    HttpResponse?: AxiosError;
     /**
      * @description BCHttpResponse !== undefined if the request succeeded but the device returned an error code.
      */
-    BCHttpResponse: BCHttpResponse;
-    constructor(data: HttpResponse | BCHttpResponse, m?: string);
+    BCHttpResponse?: BCHttpResponse;
+    /**
+     * @description DaemonHttpResponse !== undefined if the request reached the daemon, who then reject it for a specified reason.
+     */
+    DaemonHttpResponse?: DaemonHttpResponse;
+    constructor(data: BCHttpResponse | DaemonHttpResponse | AxiosError, m?: string);
 }
 export interface VersionObject {
     major: number;

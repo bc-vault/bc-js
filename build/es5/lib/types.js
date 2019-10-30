@@ -48,18 +48,26 @@ var StellarCreateAccount;
  */
 var DaemonError = /** @class */ (function (_super) {
     __extends(DaemonError, _super);
+    // tslint:disable: no-string-literal
     function DaemonError(data, m) {
         if (m === void 0) { m = "DaemonError"; }
         var _this = _super.call(this, m) || this;
         // Set the prototype explicitly.
         Object.setPrototypeOf(_this, DaemonError.prototype);
         _this.name = "DaemonError";
-        if (data.status !== undefined) { // data is HttpResponse
+        if (data['config'] !== undefined) {
             _this.HttpResponse = data;
+            return _this;
         }
-        else {
+        if (data['errorCode'] !== undefined) {
             _this.BCHttpResponse = data;
+            return _this;
         }
+        if (data['daemonError'] !== undefined) {
+            _this.DaemonHttpResponse = data;
+            return _this;
+        }
+        throw new Error('Error could not be parsed, this should never happen.');
         return _this;
     }
     return DaemonError;

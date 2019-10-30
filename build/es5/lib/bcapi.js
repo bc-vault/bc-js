@@ -93,7 +93,7 @@ var BCJS = /** @class */ (function () {
         this.authTokenMatchPath = '/';
         /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
         this.BCData = { devices: [] };
-        this.API_VERSION = 1;
+        this.API_VERSION = 2;
         this.lastSeenDevices = [];
         this.listeners = [];
         this.stopPolling = false;
@@ -180,38 +180,38 @@ var BCJS = /** @class */ (function () {
     BCJS.prototype.triggerManualUpdate = function (fullUpdate) {
         if (fullUpdate === void 0) { fullUpdate = true; }
         return __awaiter(this, void 0, void 0, function () {
-            var e_1, _a, devArray, devs, devArray_1, devArray_1_1, deviceID, activeTypes, e_2, userData, _b, _c, _d, usrDataHex, _e, _f, _g, e_1_1, devices;
-            return __generator(this, function (_h) {
-                switch (_h.label) {
+            var e_1, _a, devArray, devs, devArray_1, devArray_1_1, deviceID, activeTypes, e_2, userData, _b, _c, _d, usrDataHex, deviceUID, _e, _f, _g, _h, e_1_1, devices;
+            return __generator(this, function (_j) {
+                switch (_j.label) {
                     case 0:
-                        if (!fullUpdate) return [3 /*break*/, 23];
+                        if (!fullUpdate) return [3 /*break*/, 26];
                         return [4 /*yield*/, this.getDevices()];
                     case 1:
-                        devArray = _h.sent();
+                        devArray = _j.sent();
                         devs = [];
                         this.FireAllStatusListeners(1);
-                        _h.label = 2;
+                        _j.label = 2;
                     case 2:
-                        _h.trys.push([2, 20, 21, 22]);
+                        _j.trys.push([2, 23, 24, 25]);
                         devArray_1 = __values(devArray), devArray_1_1 = devArray_1.next();
-                        _h.label = 3;
+                        _j.label = 3;
                     case 3:
-                        if (!!devArray_1_1.done) return [3 /*break*/, 19];
+                        if (!!devArray_1_1.done) return [3 /*break*/, 22];
                         deviceID = devArray_1_1.value;
                         activeTypes = void 0;
-                        _h.label = 4;
+                        _j.label = 4;
                     case 4:
-                        _h.trys.push([4, 6, , 11]);
+                        _j.trys.push([4, 6, , 11]);
                         return [4 /*yield*/, this.getActiveWalletTypes(deviceID)];
                     case 5:
-                        activeTypes = _h.sent();
+                        activeTypes = _j.sent();
                         return [3 /*break*/, 11];
                     case 6:
-                        e_2 = _h.sent();
+                        e_2 = _j.sent();
                         if (!(e_2.BCHttpResponse !== undefined)) return [3 /*break*/, 10];
                         return [4 /*yield*/, this.getWalletUserData(deviceID, types_1.WalletType.none, "", false)];
                     case 7:
-                        userData = _h.sent();
+                        userData = _j.sent();
                         _c = (_b = devs).push;
                         _d = {
                             id: deviceID,
@@ -219,76 +219,87 @@ var BCJS = /** @class */ (function () {
                         };
                         return [4 /*yield*/, this.getFirmwareVersion(deviceID)];
                     case 8:
-                        _d.firmware = _h.sent(),
+                        _d.firmware = _j.sent(),
                             _d.userData = this.parseHex(userData),
                             _d.userDataRaw = userData;
                         return [4 /*yield*/, this.getSupportedWalletTypes(deviceID)];
                     case 9:
-                        _c.apply(_b, [(_d.supportedTypes = _h.sent(),
+                        _c.apply(_b, [(_d.supportedTypes = _j.sent(),
                                 _d.activeTypes = [],
                                 _d.activeWallets = [],
                                 _d.locked = true,
                                 _d)]);
-                        return [3 /*break*/, 18];
+                        return [3 /*break*/, 21];
                     case 10: throw e_2;
                     case 11: return [4 /*yield*/, this.getWalletUserData(deviceID, types_1.WalletType.none, "", false)];
                     case 12:
-                        usrDataHex = _h.sent();
-                        _f = (_e = devs).push;
-                        _g = {
-                            id: deviceID
-                        };
-                        return [4 /*yield*/, this.getDeviceUID(deviceID)];
+                        usrDataHex = _j.sent();
+                        deviceUID = void 0;
+                        _j.label = 13;
                     case 13:
-                        _g.UID = _h.sent();
-                        return [4 /*yield*/, this.getAvailableSpace(deviceID)];
+                        _j.trys.push([13, 15, , 16]);
+                        return [4 /*yield*/, this.getDeviceUID(deviceID)];
                     case 14:
-                        _g.space = _h.sent();
-                        return [4 /*yield*/, this.getFirmwareVersion(deviceID)];
+                        deviceUID = _j.sent();
+                        return [3 /*break*/, 16];
                     case 15:
-                        _g.firmware = _h.sent();
-                        return [4 /*yield*/, this.getSupportedWalletTypes(deviceID)];
+                        _e = _j.sent();
+                        deviceUID = undefined;
+                        return [3 /*break*/, 16];
                     case 16:
-                        _g.supportedTypes = _h.sent(),
-                            _g.userData = this.parseHex(usrDataHex),
-                            _g.userDataRaw = usrDataHex,
-                            _g.activeTypes = activeTypes;
-                        return [4 /*yield*/, this.getWallets(deviceID, activeTypes)];
+                        _g = (_f = devs).push;
+                        _h = {
+                            id: deviceID,
+                            UID: deviceUID
+                        };
+                        return [4 /*yield*/, this.getAvailableSpace(deviceID)];
                     case 17:
-                        _f.apply(_e, [(_g.activeWallets = _h.sent(),
-                                _g.locked = false,
-                                _g)]);
-                        _h.label = 18;
+                        _h.space = _j.sent();
+                        return [4 /*yield*/, this.getFirmwareVersion(deviceID)];
                     case 18:
+                        _h.firmware = _j.sent();
+                        return [4 /*yield*/, this.getSupportedWalletTypes(deviceID)];
+                    case 19:
+                        _h.supportedTypes = _j.sent(),
+                            _h.userData = this.parseHex(usrDataHex),
+                            _h.userDataRaw = usrDataHex,
+                            _h.activeTypes = activeTypes;
+                        return [4 /*yield*/, this.getWallets(deviceID, activeTypes)];
+                    case 20:
+                        _g.apply(_f, [(_h.activeWallets = _j.sent(),
+                                _h.locked = false,
+                                _h)]);
+                        _j.label = 21;
+                    case 21:
                         devArray_1_1 = devArray_1.next();
                         return [3 /*break*/, 3];
-                    case 19: return [3 /*break*/, 22];
-                    case 20:
-                        e_1_1 = _h.sent();
+                    case 22: return [3 /*break*/, 25];
+                    case 23:
+                        e_1_1 = _j.sent();
                         e_1 = { error: e_1_1 };
-                        return [3 /*break*/, 22];
-                    case 21:
+                        return [3 /*break*/, 25];
+                    case 24:
                         try {
                             if (devArray_1_1 && !devArray_1_1.done && (_a = devArray_1["return"])) _a.call(devArray_1);
                         }
                         finally { if (e_1) throw e_1.error; }
                         return [7 /*endfinally*/];
-                    case 22:
+                    case 25:
                         this.BCData = { devices: devs };
                         this.FireAllStatusListeners(0);
-                        return [3 /*break*/, 26];
-                    case 23:
+                        return [3 /*break*/, 29];
+                    case 26:
                         devices = void 0;
                         return [4 /*yield*/, this.getDevices()];
-                    case 24:
-                        devices = _h.sent();
-                        if (!(!this.arraysEqual(devices, this.lastSeenDevices) || this.lastPushedStatus === types_1.BCDataRefreshStatusCode.ConnectionError)) return [3 /*break*/, 26];
+                    case 27:
+                        devices = _j.sent();
+                        if (!(!this.arraysEqual(devices, this.lastSeenDevices) || this.lastPushedStatus === types_1.BCDataRefreshStatusCode.ConnectionError)) return [3 /*break*/, 29];
                         this.lastSeenDevices = devices;
                         return [4 /*yield*/, this.triggerManualUpdate(true)];
-                    case 25:
-                        _h.sent();
-                        _h.label = 26;
-                    case 26: return [2 /*return*/];
+                    case 28:
+                        _j.sent();
+                        _j.label = 29;
+                    case 29: return [2 /*return*/];
                 }
             });
         });
@@ -492,14 +503,34 @@ var BCJS = /** @class */ (function () {
      */
     BCJS.prototype.getDeviceUID = function (device) {
         return __awaiter(this, void 0, void 0, function () {
-            var httpr;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.DeviceUID, { device: device })];
+            var httpr, _a, err;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 4]);
+                        return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.DeviceUID, { device: device })];
                     case 1:
-                        httpr = _a.sent();
+                        httpr = _b.sent();
                         this.assertIsBCHttpResponse(httpr);
-                        return [2 /*return*/, httpr.body.data];
+                        return [3 /*break*/, 4];
+                    case 2:
+                        _a = _b.sent();
+                        return [4 /*yield*/, axios_1["default"]({
+                                method: 'get',
+                                baseURL: this.Host,
+                                url: '/version'
+                            })];
+                    case 3:
+                        httpr = _b.sent();
+                        if (httpr.data === "1") {
+                            err = new types_1.DaemonError({
+                                daemonError: 4,
+                                parseError: "Command not found"
+                            });
+                            throw err;
+                        }
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/, httpr.body.data];
                 }
             });
         });
@@ -1226,7 +1257,7 @@ var BCJS = /** @class */ (function () {
                     case 3:
                         e_10 = _a.sent();
                         this.log("Daemon offline during initialization.", types_1.LogLevel.debug);
-                        return [3 /*break*/, 4];
+                        return [2 /*return*/, rej(new types_1.DaemonError(e_10))];
                     case 4:
                         options = {
                             baseURL: this.Host,
@@ -1261,19 +1292,17 @@ var BCJS = /** @class */ (function () {
                                         options.data = JSON.stringify(__assign({}, dataWithToken, { d_token: this.authToken }));
                                         axios_1["default"](options).then(function (authenticatedResponse) {
                                             if (authenticatedResponse.data.daemonError) {
-                                                return rej(new types_1.DaemonError({ status: authenticatedResponse.status, body: authenticatedResponse.data }));
+                                                return rej(new types_1.DaemonError(authenticatedResponse.data));
                                             }
                                             else {
                                                 return res({ status: authenticatedResponse.status, body: authenticatedResponse.data });
                                             }
                                         })["catch"](function (e) {
                                             _this.log("Daemon request failed: " + JSON.stringify(e), types_1.LogLevel.warning);
-                                            rej(e);
+                                            rej(new types_1.DaemonError(e));
                                         });
                                         return [2 /*return*/];
                                     case 2:
-                                        if (response.status !== 200)
-                                            return [2 /*return*/, rej(new types_1.DaemonError(htpr))];
                                         res(htpr);
                                         return [2 /*return*/];
                                 }
@@ -1281,7 +1310,7 @@ var BCJS = /** @class */ (function () {
                         }); };
                         axios_1["default"](options).then(responseFunction)["catch"](function (e) {
                             _this.log("Daemon request failed: " + JSON.stringify(e), types_1.LogLevel.warning);
-                            rej(e);
+                            rej(new types_1.DaemonError(e));
                         });
                         return [2 /*return*/];
                 }
