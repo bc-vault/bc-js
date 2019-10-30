@@ -510,34 +510,27 @@ var BCJS = /** @class */ (function () {
      */
     BCJS.prototype.getDeviceUID = function (device) {
         return __awaiter(this, void 0, void 0, function () {
-            var httpr, _a, err;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var httpr, e_3, err;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _b.trys.push([0, 2, , 4]);
+                        _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.DeviceUID, { device: device })];
                     case 1:
-                        httpr = _b.sent();
+                        httpr = _a.sent();
                         this.assertIsBCHttpResponse(httpr);
-                        return [3 /*break*/, 4];
+                        return [3 /*break*/, 3];
                     case 2:
-                        _a = _b.sent();
-                        return [4 /*yield*/, axios_1["default"]({
-                                method: 'get',
-                                baseURL: this.Host,
-                                url: '/version'
-                            })];
-                    case 3:
-                        httpr = _b.sent();
-                        if (httpr.data === "1") {
+                        e_3 = _a.sent();
+                        if (e_3.HttpResponse !== undefined) {
                             err = new types_1.DaemonError({
                                 daemonError: 4,
                                 parseError: "Command not found"
                             });
                             throw err;
                         }
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/, httpr.body.data];
+                        throw e_3;
+                    case 3: return [2 /*return*/, httpr.body.data];
                 }
             });
         });
@@ -679,7 +672,7 @@ var BCJS = /** @class */ (function () {
     BCJS.prototype.getBatchWalletDetails = function (device, walletTypes, walletDetails) {
         if (walletDetails === void 0) { walletDetails = types_1.WalletDetailsQuery.all; }
         return __awaiter(this, void 0, void 0, function () {
-            var e_3, _a, e_4, _b, httpr, e_5, outArray, walletTypes_1, walletTypes_1_1, wt, wallets, wallets_1, wallets_1_1, wallet, walletUserData, e_4_1, e_3_1;
+            var e_4, _a, e_5, _b, httpr, e_6, outArray, walletTypes_1, walletTypes_1_1, wt, wallets, wallets_1, wallets_1_1, wallet, walletUserData, e_5_1, e_4_1;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -690,7 +683,7 @@ var BCJS = /** @class */ (function () {
                         this.assertIsBCHttpResponse(httpr);
                         return [2 /*return*/, httpr.body.data];
                     case 2:
-                        e_5 = _c.sent();
+                        e_6 = _c.sent();
                         outArray = [];
                         _c.label = 3;
                     case 3:
@@ -725,28 +718,28 @@ var BCJS = /** @class */ (function () {
                         return [3 /*break*/, 7];
                     case 10: return [3 /*break*/, 13];
                     case 11:
-                        e_4_1 = _c.sent();
-                        e_4 = { error: e_4_1 };
+                        e_5_1 = _c.sent();
+                        e_5 = { error: e_5_1 };
                         return [3 /*break*/, 13];
                     case 12:
                         try {
                             if (wallets_1_1 && !wallets_1_1.done && (_b = wallets_1["return"])) _b.call(wallets_1);
                         }
-                        finally { if (e_4) throw e_4.error; }
+                        finally { if (e_5) throw e_5.error; }
                         return [7 /*endfinally*/];
                     case 13:
                         walletTypes_1_1 = walletTypes_1.next();
                         return [3 /*break*/, 4];
                     case 14: return [3 /*break*/, 17];
                     case 15:
-                        e_3_1 = _c.sent();
-                        e_3 = { error: e_3_1 };
+                        e_4_1 = _c.sent();
+                        e_4 = { error: e_4_1 };
                         return [3 /*break*/, 17];
                     case 16:
                         try {
                             if (walletTypes_1_1 && !walletTypes_1_1.done && (_a = walletTypes_1["return"])) _a.call(walletTypes_1);
                         }
-                        finally { if (e_3) throw e_3.error; }
+                        finally { if (e_4) throw e_4.error; }
                         return [7 /*endfinally*/];
                     case 17: return [2 /*return*/, outArray];
                     case 18: return [2 /*return*/];
@@ -1076,7 +1069,7 @@ var BCJS = /** @class */ (function () {
     };
     BCJS.prototype.web3_GetAccounts = function (cb) {
         return __awaiter(this, void 0, void 0, function () {
-            var devices, wallets, e_6, wallets, e_7;
+            var devices, wallets, e_7, wallets, e_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1097,8 +1090,8 @@ var BCJS = /** @class */ (function () {
                         cb(null, wallets.map(function (x) { return "0x" + x; }));
                         return [3 /*break*/, 8];
                     case 4:
-                        e_6 = _a.sent();
-                        if (!(e_6.BCHttpResponse !== undefined)) return [3 /*break*/, 7];
+                        e_7 = _a.sent();
+                        if (!(e_7.BCHttpResponse !== undefined)) return [3 /*break*/, 7];
                         // unlock BC Vault!
                         return [4 /*yield*/, this.EnterGlobalPin(devices[0], types_1.PasswordType.GlobalPassword)];
                     case 5:
@@ -1111,8 +1104,8 @@ var BCJS = /** @class */ (function () {
                     case 7: return [3 /*break*/, 8];
                     case 8: return [3 /*break*/, 10];
                     case 9:
-                        e_7 = _a.sent();
-                        cb(e_7, null);
+                        e_8 = _a.sent();
+                        cb(e_8, null);
                         return [3 /*break*/, 10];
                     case 10: return [2 /*return*/];
                 }
@@ -1121,7 +1114,7 @@ var BCJS = /** @class */ (function () {
     };
     BCJS.prototype.web3_signTransaction = function (txParams, cb) {
         return __awaiter(this, void 0, void 0, function () {
-            var devices, txHex, e_8;
+            var devices, txHex, e_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1143,8 +1136,8 @@ var BCJS = /** @class */ (function () {
                         cb(null, txHex);
                         return [3 /*break*/, 4];
                     case 3:
-                        e_8 = _a.sent();
-                        cb(e_8, null);
+                        e_9 = _a.sent();
+                        cb(e_9, null);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -1153,7 +1146,7 @@ var BCJS = /** @class */ (function () {
     };
     BCJS.prototype.web3_signPersonalMessage = function (msgParams, cb) {
         return __awaiter(this, void 0, void 0, function () {
-            var devices, signedMessage, e_9;
+            var devices, signedMessage, e_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1172,8 +1165,8 @@ var BCJS = /** @class */ (function () {
                         cb(null, signedMessage);
                         return [3 /*break*/, 4];
                     case 3:
-                        e_9 = _a.sent();
-                        cb(e_9, null);
+                        e_10 = _a.sent();
+                        cb(e_10, null);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -1247,7 +1240,7 @@ var BCJS = /** @class */ (function () {
         var _this = this;
         var dataWithToken = __assign({}, (data || {}), { d_token: this.authToken });
         return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
-            var methodCheck, e_10, options, responseFunction;
+            var methodCheck, e_11, options, responseFunction;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -1262,9 +1255,9 @@ var BCJS = /** @class */ (function () {
                         this.endpointAllowsCredentials = methodCheck.data.daemonError === types_1.DaemonErrorCodes.sessionError;
                         return [3 /*break*/, 4];
                     case 3:
-                        e_10 = _a.sent();
+                        e_11 = _a.sent();
                         this.log("Daemon offline during initialization.", types_1.LogLevel.debug);
-                        return [2 /*return*/, rej(new types_1.DaemonError(e_10))];
+                        return [2 /*return*/, rej(new types_1.DaemonError(e_11))];
                     case 4:
                         options = {
                             baseURL: this.Host,
@@ -1336,7 +1329,7 @@ var BCJS = /** @class */ (function () {
     };
     BCJS.prototype.getWallets = function (deviceID, activeTypes) {
         return __awaiter(this, void 0, void 0, function () {
-            var e_11, _a, ret, response, response_1, response_1_1, detailItem;
+            var e_12, _a, ret, response, response_1, response_1_1, detailItem;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -1355,12 +1348,12 @@ var BCJS = /** @class */ (function () {
                                 });
                             }
                         }
-                        catch (e_11_1) { e_11 = { error: e_11_1 }; }
+                        catch (e_12_1) { e_12 = { error: e_12_1 }; }
                         finally {
                             try {
                                 if (response_1_1 && !response_1_1.done && (_a = response_1["return"])) _a.call(response_1);
                             }
-                            finally { if (e_11) throw e_11.error; }
+                            finally { if (e_12) throw e_12.error; }
                         }
                         return [2 /*return*/, ret];
                 }
@@ -1376,7 +1369,7 @@ var BCJS = /** @class */ (function () {
     };
     BCJS.prototype.pollDevicesChanged = function (interval) {
         return __awaiter(this, void 0, void 0, function () {
-            var e_12;
+            var e_13;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -1387,9 +1380,9 @@ var BCJS = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_12 = _a.sent();
+                        e_13 = _a.sent();
                         this.FireAllStatusListeners(-1);
-                        console.error(e_12);
+                        console.error(e_13);
                         return [3 /*break*/, 3];
                     case 3:
                         if (this.stopPolling) {
@@ -1404,7 +1397,7 @@ var BCJS = /** @class */ (function () {
         });
     };
     BCJS.prototype.FireAllStatusListeners = function (args) {
-        var e_13, _a;
+        var e_14, _a;
         this.lastPushedStatus = args;
         try {
             for (var _b = __values(this.listeners), _c = _b.next(); !_c.done; _c = _b.next()) {
@@ -1412,12 +1405,12 @@ var BCJS = /** @class */ (function () {
                 listener.call(null, args);
             }
         }
-        catch (e_13_1) { e_13 = { error: e_13_1 }; }
+        catch (e_14_1) { e_14 = { error: e_14_1 }; }
         finally {
             try {
                 if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
             }
-            finally { if (e_13) throw e_13.error; }
+            finally { if (e_14) throw e_14.error; }
         }
     };
     BCJS.prototype.toLegacyWalletType = function (t) {

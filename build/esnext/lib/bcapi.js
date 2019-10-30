@@ -333,13 +333,8 @@ export class BCJS {
             httpr = await this.getResponsePromised(Endpoint.DeviceUID, { device });
             this.assertIsBCHttpResponse(httpr);
         }
-        catch {
-            httpr = await axios({
-                method: 'get',
-                baseURL: this.Host,
-                url: '/version'
-            });
-            if (httpr.data === "1") {
+        catch (e) {
+            if (e.HttpResponse !== undefined) {
                 // daemon predates graceful endpoint error handling
                 const err = new DaemonError({
                     daemonError: 4,
@@ -347,6 +342,7 @@ export class BCJS {
                 });
                 throw err;
             }
+            throw e;
         }
         return httpr.body.data;
     }

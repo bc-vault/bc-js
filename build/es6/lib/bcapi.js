@@ -357,13 +357,8 @@ class BCJS {
                 httpr = yield this.getResponsePromised(types_1.Endpoint.DeviceUID, { device });
                 this.assertIsBCHttpResponse(httpr);
             }
-            catch (_a) {
-                httpr = yield axios_1.default({
-                    method: 'get',
-                    baseURL: this.Host,
-                    url: '/version'
-                });
-                if (httpr.data === "1") {
+            catch (e) {
+                if (e.HttpResponse !== undefined) {
                     // daemon predates graceful endpoint error handling
                     const err = new types_1.DaemonError({
                         daemonError: 4,
@@ -371,6 +366,7 @@ class BCJS {
                     });
                     throw err;
                 }
+                throw e;
             }
             return httpr.body.data;
         });
