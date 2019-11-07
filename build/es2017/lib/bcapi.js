@@ -23,7 +23,6 @@ class BCJS {
         this.API_VERSION = 2;
         this.lastSeenDevices = [];
         this.listeners = [];
-        this.stopPolling = false;
         this.lastPushedStatus = types_1.BCDataRefreshStatusCode.Ready;
     }
     BCJS(authWindowHandler) {
@@ -79,7 +78,11 @@ class BCJS {
       ```
      */
     stopObjectPolling() {
-        this.stopPolling = true;
+        if (!this.isPolling) {
+            throw new Error("Not polling!");
+        }
+        this.isPolling = false;
+        clearTimeout(this.timeoutRef);
     }
     /**
       Triggers a manual update to BCData.
@@ -915,20 +918,18 @@ class BCJS {
         }
         return equal;
     }
-    async pollDevicesChanged(interval) {
-        try {
-            await this.triggerManualUpdate(false);
-        }
-        catch (e) {
-            this.FireAllStatusListeners(-1);
-            console.error(e);
-        }
-        if (this.stopPolling) {
-            this.isPolling = false;
-            this.stopPolling = false;
-            return;
-        }
-        setTimeout(() => this.pollDevicesChanged(interval), interval);
+    pollDevicesChanged(interval) {
+        this.timeoutRef = setTimeout(() => this.pollDevicesChanged(interval), interval);
+        return new Promise(async (res) => {
+            try {
+                await this.triggerManualUpdate(false);
+                res();
+            }
+            catch (e) {
+                this.FireAllStatusListeners(-1);
+                console.error(e);
+            }
+        });
     }
     FireAllStatusListeners(args) {
         this.lastPushedStatus = args;

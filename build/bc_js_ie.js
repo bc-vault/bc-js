@@ -103,7 +103,6 @@ var BCJS = /** @class */ (function () {
         this.API_VERSION = 2;
         this.lastSeenDevices = [];
         this.listeners = [];
-        this.stopPolling = false;
         this.lastPushedStatus = types_1.BCDataRefreshStatusCode.Ready;
     }
     BCJS.prototype.BCJS = function (authWindowHandler) {
@@ -160,7 +159,11 @@ var BCJS = /** @class */ (function () {
       ```
      */
     BCJS.prototype.stopObjectPolling = function () {
-        this.stopPolling = true;
+        if (!this.isPolling) {
+            throw new Error("Not polling!");
+        }
+        this.isPolling = false;
+        clearTimeout(this.timeoutRef);
     };
     /**
       Triggers a manual update to BCData.
@@ -1368,9 +1371,10 @@ var BCJS = /** @class */ (function () {
         return equal;
     };
     BCJS.prototype.pollDevicesChanged = function (interval) {
-        return __awaiter(this, void 0, void 0, function () {
+        var _this = this;
+        this.timeoutRef = setTimeout(function () { return _this.pollDevicesChanged(interval); }, interval);
+        return new Promise(function (res) { return __awaiter(_this, void 0, void 0, function () {
             var e_13;
-            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1378,23 +1382,17 @@ var BCJS = /** @class */ (function () {
                         return [4 /*yield*/, this.triggerManualUpdate(false)];
                     case 1:
                         _a.sent();
+                        res();
                         return [3 /*break*/, 3];
                     case 2:
                         e_13 = _a.sent();
                         this.FireAllStatusListeners(-1);
                         console.error(e_13);
                         return [3 /*break*/, 3];
-                    case 3:
-                        if (this.stopPolling) {
-                            this.isPolling = false;
-                            this.stopPolling = false;
-                            return [2 /*return*/];
-                        }
-                        setTimeout(function () { return _this.pollDevicesChanged(interval); }, interval);
-                        return [2 /*return*/];
+                    case 3: return [2 /*return*/];
                 }
             });
-        });
+        }); });
     };
     BCJS.prototype.FireAllStatusListeners = function (args) {
         var e_14, _a;

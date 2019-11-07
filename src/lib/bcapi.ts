@@ -28,9 +28,9 @@ export class BCJS{
   private endpointAllowsCredentials:boolean;
   private lastSeenDevices:number[]=[];
   private listeners:Array<(status:BCDataRefreshStatusCode)=>void>=[]
-  private stopPolling = false;
   private authHandler: AuthorizationHandler;
   private lastPushedStatus:BCDataRefreshStatusCode = BCDataRefreshStatusCode.Ready;
+  private timeoutRef: any;//polling setTimeout reference
   public BCJS(authWindowHandler?:AuthorizationHandler){
     if(typeof(window) === 'undefined'){
       // is nodejs, authWindowHandler MUST be specified!
@@ -82,7 +82,12 @@ export class BCJS{
     ```
    */
   public stopObjectPolling():void{
-    this.stopPolling = true;
+    if(!this.isPolling){
+      throw new Error("Not polling!");
+    }
+    this.isPolling=false;
+    clearTimeout(this.timeoutRef);
+    
   }
   /**
     Triggers a manual update to BCData.
@@ -946,19 +951,17 @@ export class BCJS{
     }
     return equal;
   }
-  private async pollDevicesChanged(interval:number):Promise<void>{
-    try{
-      await this.triggerManualUpdate(false);
-    }catch(e){
-      this.FireAllStatusListeners(-1);
-      console.error(e);
-    }
-    if(this.stopPolling){
-      this.isPolling = false;
-      this.stopPolling = false;
-      return;
-    }
-    setTimeout(()=>this.pollDevicesChanged(interval),interval);
+  private pollDevicesChanged(interval:number):Promise<void>{
+    this.timeoutRef = setTimeout(()=>this.pollDevicesChanged(interval),interval);
+    return new Promise(async(res)=>{
+      try{
+        await this.triggerManualUpdate(false);
+        res();
+      }catch(e){
+        this.FireAllStatusListeners(-1);
+        console.error(e);
+      }
+    })
   }
   private FireAllStatusListeners(args:BCDataRefreshStatusCode):void{
     this.lastPushedStatus=args;

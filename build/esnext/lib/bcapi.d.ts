@@ -19,9 +19,9 @@ export declare class BCJS {
     private endpointAllowsCredentials;
     private lastSeenDevices;
     private listeners;
-    private stopPolling;
     private authHandler;
     private lastPushedStatus;
+    private timeoutRef;
     BCJS(authWindowHandler?: AuthorizationHandler): void;
     /**
       Starts polling daemon for changes and updates BCData object
