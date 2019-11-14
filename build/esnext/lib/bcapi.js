@@ -474,7 +474,8 @@ export class BCJS {
                     outArray.push({
                         address: wallet,
                         type: wt,
-                        userData: walletUserData
+                        userData: walletUserData,
+                        userDataParsed: this.parseHex(walletUserData)
                     });
                 }
             }
@@ -903,6 +904,7 @@ export class BCJS {
             ret.push({
                 publicKey: detailItem.address,
                 userData: detailItem.userData,
+                userDataParsed: detailItem.userDataParsed,
                 extraData: detailItem.extraData,
                 walletType: detailItem.type
             });

@@ -293,18 +293,20 @@ export declare type AuthorizationHandler = (authID: string, passwordType: Passwo
 export interface WalletData {
     publicKey: string;
     userData: hexString;
+    userDataParsed: string;
     extraData?: hexString;
     walletType: WalletType;
     balance?: string;
 }
 export interface WalletBatchDataResponse {
     type: WalletType;
-    /** May be undefined in the case of an old daemon which doesn't support fetching this property */
-    status?: number;
     address: string;
     userData: hexString;
+    userDataParsed: string;
     /** May be undefined in the case of an old daemon which doesn't support fetching this property */
     extraData?: hexString;
+    /** May be undefined in the case of an old daemon which doesn't support fetching this property */
+    status?: number;
 }
 export declare enum BCDataRefreshStatusCode {
     ConnectionError = -1,
