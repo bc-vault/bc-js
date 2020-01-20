@@ -473,17 +473,18 @@ export class BCJS{
     let httpr;
     try{
       httpr = await this.getResponsePromised(Endpoint.WalletsOfTypes,{device,walletTypes,walletDetails});
-      this.assertIsBCHttpResponse(httpr);
+	  this.assertIsBCHttpResponse(httpr);
+	  httpr.body.data.userDataParsed = this.parseHex(httpr.body.data.userData);
   
       return httpr.body.data;
     } catch(e) {
-      // legacy daemon
+	  // legacy daemon
       const outArray:WalletBatchDataResponse[] = [];
       for(const wt of walletTypes) {
         
         const wallets = await this.getWalletsOfType(device,wt);
         for(const wallet of wallets){
-          const walletUserData = await this.getWalletUserData(device,wt,wallet,false);
+		  const walletUserData = await this.getWalletUserData(device,wt,wallet,false);
   
           outArray.push({
             address: wallet,

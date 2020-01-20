@@ -677,6 +677,7 @@ var BCJS = /** @class */ (function () {
                     case 1:
                         httpr = _c.sent();
                         this.assertIsBCHttpResponse(httpr);
+                        httpr.body.data.userDataParsed = this.parseHex(httpr.body.data.userData);
                         return [2 /*return*/, httpr.body.data];
                     case 2:
                         e_6 = _c.sent();

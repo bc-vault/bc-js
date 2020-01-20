@@ -2707,6 +2707,7 @@ class BCJS {
             try {
                 httpr = yield this.getResponsePromised(types_1.Endpoint.WalletsOfTypes, { device, walletTypes, walletDetails });
                 this.assertIsBCHttpResponse(httpr);
+                httpr.body.data.userDataParsed = this.parseHex(httpr.body.data.userData);
                 return httpr.body.data;
             }
             catch (e) {
