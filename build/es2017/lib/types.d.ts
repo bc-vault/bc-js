@@ -236,8 +236,8 @@ export interface BCDevice {
 export declare type AuthorizationHandler = (authID: string, passwordType: PasswordType) => Promise<void>;
 export interface WalletData {
     publicKey: string;
-    userData: hexString;
-    userDataParsed: string;
+    userData: string;
+    userDataRaw: hexString;
     extraData?: hexString;
     walletType: WalletType;
     balance?: string;
@@ -245,8 +245,8 @@ export interface WalletData {
 export interface WalletBatchDataResponse {
     type: WalletType;
     address: string;
-    userData: hexString;
-    userDataParsed: string;
+    userData: string;
+    userDataRaw: hexString;
     /** May be undefined in the case of an old daemon which doesn't support fetching this property */
     extraData?: hexString;
     /** May be undefined in the case of an old daemon which doesn't support fetching this property */

@@ -453,7 +453,8 @@ class BCJS {
         let httpr;
         httpr = await this.getResponsePromised(types_1.Endpoint.WalletsOfTypes, { device, walletTypes, walletDetails });
         this.assertIsBCHttpResponse(httpr);
-        httpr.body.data.userDataParsed = this.parseHex(httpr.body.data.userData);
+        httpr.body.data.userDataRaw = httpr.body.data.userData;
+        httpr.body.data.userData = this.parseHex(httpr.body.data.userData);
         return httpr.body.data;
     }
     /**
@@ -897,7 +898,7 @@ class BCJS {
             ret.push({
                 publicKey: detailItem.address,
                 userData: detailItem.userData,
-                userDataParsed: detailItem.userDataParsed,
+                userDataRaw: detailItem.userDataRaw,
                 extraData: detailItem.extraData,
                 walletType: detailItem.type
             });

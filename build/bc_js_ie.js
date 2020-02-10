@@ -856,7 +856,8 @@ var BCJS = /** @class */ (function () {
                     case 1:
                         httpr = _a.sent();
                         this.assertIsBCHttpResponse(httpr);
-                        httpr.body.data.userDataParsed = this.parseHex(httpr.body.data.userData);
+                        httpr.body.data.userDataRaw = httpr.body.data.userData;
+                        httpr.body.data.userData = this.parseHex(httpr.body.data.userData);
                         return [2 /*return*/, httpr.body.data];
                 }
             });
@@ -1503,7 +1504,7 @@ var BCJS = /** @class */ (function () {
                                 ret.push({
                                     publicKey: detailItem.address,
                                     userData: detailItem.userData,
-                                    userDataParsed: detailItem.userDataParsed,
+                                    userDataRaw: detailItem.userDataRaw,
                                     extraData: detailItem.extraData,
                                     walletType: detailItem.type
                                 });
