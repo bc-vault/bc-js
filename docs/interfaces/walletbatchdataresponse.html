@@ -84,7 +84,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="walletbatchdataresponse.html#status" class="tsd-kind-icon">status</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="walletbatchdataresponse.html#type" class="tsd-kind-icon">type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="walletbatchdataresponse.html#userdata" class="tsd-kind-icon">user<wbr>Data</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="walletbatchdataresponse.html#userdataparsed" class="tsd-kind-icon">user<wbr>Data<wbr>Parsed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="walletbatchdataresponse.html#userdataraw" class="tsd-kind-icon">user<wbr>Data<wbr>Raw</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,7 +98,7 @@
 					<div class="tsd-signature tsd-kind-icon">address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:365</li>
+							<li>Defined in lib/types.ts:302</li>
 						</ul>
 					</aside>
 				</section>
@@ -108,14 +108,9 @@
 					<div class="tsd-signature tsd-kind-icon">extra<wbr>Data<span class="tsd-signature-symbol">:</span> <a href="../globals.html#hexstring" class="tsd-signature-type">hexString</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:370</li>
+							<li>Defined in lib/types.ts:307</li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>May be undefined in the case of an old daemon which doesn&#39;t support fetching this property</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="status" class="tsd-anchor"></a>
@@ -123,14 +118,9 @@
 					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:372</li>
+							<li>Defined in lib/types.ts:309</li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>May be undefined in the case of an old daemon which doesn&#39;t support fetching this property</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="type" class="tsd-anchor"></a>
@@ -138,27 +128,27 @@
 					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:363</li>
+							<li>Defined in lib/types.ts:300</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="userdata" class="tsd-anchor"></a>
 					<h3>user<wbr>Data</h3>
-					<div class="tsd-signature tsd-kind-icon">user<wbr>Data<span class="tsd-signature-symbol">:</span> <a href="../globals.html#hexstring" class="tsd-signature-type">hexString</a></div>
+					<div class="tsd-signature tsd-kind-icon">user<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:366</li>
+							<li>Defined in lib/types.ts:303</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="userdataparsed" class="tsd-anchor"></a>
-					<h3>user<wbr>Data<wbr>Parsed</h3>
-					<div class="tsd-signature tsd-kind-icon">user<wbr>Data<wbr>Parsed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="userdataraw" class="tsd-anchor"></a>
+					<h3>user<wbr>Data<wbr>Raw</h3>
+					<div class="tsd-signature tsd-kind-icon">user<wbr>Data<wbr>Raw<span class="tsd-signature-symbol">:</span> <a href="../globals.html#hexstring" class="tsd-signature-type">hexString</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:367</li>
+							<li>Defined in lib/types.ts:304</li>
 						</ul>
 					</aside>
 				</section>
@@ -203,9 +193,6 @@
 					</li>
 					<li class=" tsd-kind-enum">
 						<a href="../enums/wallettype.html" class="tsd-kind-icon">Wallet<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/wallettype_legacy.html" class="tsd-kind-icon">Wallet<wbr>Type_<wbr><wbr>Legacy</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="../classes/bcjs.html" class="tsd-kind-icon">BCJS</a>
@@ -294,7 +281,7 @@
 								<a href="walletbatchdataresponse.html#userdata" class="tsd-kind-icon">user<wbr>Data</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="walletbatchdataresponse.html#userdataparsed" class="tsd-kind-icon">user<wbr>Data<wbr>Parsed</a>
+								<a href="walletbatchdataresponse.html#userdataraw" class="tsd-kind-icon">user<wbr>Data<wbr>Raw</a>
 							</li>
 						</ul>
 					</li>
