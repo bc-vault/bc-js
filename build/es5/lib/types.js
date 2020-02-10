@@ -126,69 +126,6 @@ var WalletType;
     WalletType["erc20OmiseGo"] = "E2Omise1";
     WalletType["erc20WaltonChain"] = "E2WaltC1";
 })(WalletType = exports.WalletType || (exports.WalletType = {}));
-var WalletTypeConstants = {
-    BTC: 0,
-    ERC20: 0x02000000,
-    ETH: 0x01000000,
-    TESTNET: 0x40000000
-};
-var WalletType_Legacy;
-(function (WalletType_Legacy) {
-    WalletType_Legacy[WalletType_Legacy["bitCoin"] = WalletTypeConstants.BTC] = "bitCoin";
-    WalletType_Legacy[WalletType_Legacy["bitCoinCash"] = WalletTypeConstants.BTC + 1] = "bitCoinCash";
-    WalletType_Legacy[WalletType_Legacy["bitCoinGold"] = WalletTypeConstants.BTC + 2] = "bitCoinGold";
-    WalletType_Legacy[WalletType_Legacy["liteCoin"] = WalletTypeConstants.BTC + 3] = "liteCoin";
-    WalletType_Legacy[WalletType_Legacy["dash"] = WalletTypeConstants.BTC + 4] = "dash";
-    WalletType_Legacy[WalletType_Legacy["dogeCoin"] = WalletTypeConstants.BTC + 5] = "dogeCoin";
-    WalletType_Legacy[WalletType_Legacy["ripple"] = WalletTypeConstants.BTC + 6] = "ripple";
-    WalletType_Legacy[WalletType_Legacy["stellar"] = WalletTypeConstants.BTC + 7] = "stellar";
-    WalletType_Legacy[WalletType_Legacy["ethereum"] = WalletTypeConstants.ETH] = "ethereum";
-    WalletType_Legacy[WalletType_Legacy["erc20Bokky"] = WalletTypeConstants.ETH | WalletTypeConstants.ERC20] = "erc20Bokky";
-    WalletType_Legacy[WalletType_Legacy["erc20Salt"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 1] = "erc20Salt";
-    WalletType_Legacy[WalletType_Legacy["erc20Polymath"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 2] = "erc20Polymath";
-    WalletType_Legacy[WalletType_Legacy["erc200x"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 3] = "erc200x";
-    WalletType_Legacy[WalletType_Legacy["erc20Cindicator"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 4] = "erc20Cindicator";
-    WalletType_Legacy[WalletType_Legacy["erc20CargoX"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 5] = "erc20CargoX";
-    WalletType_Legacy[WalletType_Legacy["erc20Viberate"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 6] = "erc20Viberate";
-    WalletType_Legacy[WalletType_Legacy["erc20Iconomi"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 7] = "erc20Iconomi";
-    WalletType_Legacy[WalletType_Legacy["erc20DTR"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 8] = "erc20DTR";
-    WalletType_Legacy[WalletType_Legacy["erc20OriginTrail"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 9] = "erc20OriginTrail";
-    WalletType_Legacy[WalletType_Legacy["erc20InsurePal"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 10] = "erc20InsurePal";
-    WalletType_Legacy[WalletType_Legacy["erc20Xaurum"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 11] = "erc20Xaurum";
-    WalletType_Legacy[WalletType_Legacy["erc20Tron"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 12] = "erc20Tron";
-    WalletType_Legacy[WalletType_Legacy["erc20VeChain"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 13] = "erc20VeChain";
-    WalletType_Legacy[WalletType_Legacy["erc20Binance"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 14] = "erc20Binance";
-    WalletType_Legacy[WalletType_Legacy["erc20Icon"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 15] = "erc20Icon";
-    WalletType_Legacy[WalletType_Legacy["erc20OmiseGo"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 16] = "erc20OmiseGo";
-    WalletType_Legacy[WalletType_Legacy["erc20WaltonChain"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) + 17] = "erc20WaltonChain";
-    WalletType_Legacy[WalletType_Legacy["bitCoinTest"] = (WalletTypeConstants.BTC) | WalletTypeConstants.TESTNET] = "bitCoinTest";
-    WalletType_Legacy[WalletType_Legacy["bitCoinCashTest"] = (WalletTypeConstants.BTC + 1) | WalletTypeConstants.TESTNET] = "bitCoinCashTest";
-    WalletType_Legacy[WalletType_Legacy["bitCoinGoldTest"] = (WalletTypeConstants.BTC + 2) | WalletTypeConstants.TESTNET] = "bitCoinGoldTest";
-    WalletType_Legacy[WalletType_Legacy["liteCoinTest"] = (WalletTypeConstants.BTC + 3) | WalletTypeConstants.TESTNET] = "liteCoinTest";
-    WalletType_Legacy[WalletType_Legacy["dashTest"] = (WalletTypeConstants.BTC + 4) | WalletTypeConstants.TESTNET] = "dashTest";
-    WalletType_Legacy[WalletType_Legacy["dogeCoinTest"] = (WalletTypeConstants.BTC + 5) | WalletTypeConstants.TESTNET] = "dogeCoinTest";
-    WalletType_Legacy[WalletType_Legacy["rippleTest"] = (WalletTypeConstants.BTC + 6) | WalletTypeConstants.TESTNET] = "rippleTest";
-    WalletType_Legacy[WalletType_Legacy["stellarTest"] = (WalletTypeConstants.BTC + 7) | WalletTypeConstants.TESTNET] = "stellarTest";
-    WalletType_Legacy[WalletType_Legacy["ethereumTest"] = (WalletTypeConstants.ETH) | WalletTypeConstants.TESTNET] = "ethereumTest";
-    WalletType_Legacy[WalletType_Legacy["erc20BokkyTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20) | WalletTypeConstants.TESTNET] = "erc20BokkyTest";
-    WalletType_Legacy[WalletType_Legacy["erc20SaltTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 1] = "erc20SaltTest";
-    WalletType_Legacy[WalletType_Legacy["erc20PolymathTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 2] = "erc20PolymathTest";
-    WalletType_Legacy[WalletType_Legacy["erc200xTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 3] = "erc200xTest";
-    WalletType_Legacy[WalletType_Legacy["erc20CindicatorTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 4] = "erc20CindicatorTest";
-    WalletType_Legacy[WalletType_Legacy["erc20CargoXTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 5] = "erc20CargoXTest";
-    WalletType_Legacy[WalletType_Legacy["erc20ViberateTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 6] = "erc20ViberateTest";
-    WalletType_Legacy[WalletType_Legacy["erc20IconomiTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 7] = "erc20IconomiTest";
-    WalletType_Legacy[WalletType_Legacy["erc20DTRTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 8] = "erc20DTRTest";
-    WalletType_Legacy[WalletType_Legacy["erc20OriginTrailTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 9] = "erc20OriginTrailTest";
-    WalletType_Legacy[WalletType_Legacy["erc20InsurePalTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 10] = "erc20InsurePalTest";
-    WalletType_Legacy[WalletType_Legacy["erc20XaurumTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 11] = "erc20XaurumTest";
-    WalletType_Legacy[WalletType_Legacy["erc20TronTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 12] = "erc20TronTest";
-    WalletType_Legacy[WalletType_Legacy["erc20VeChainTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 13] = "erc20VeChainTest";
-    WalletType_Legacy[WalletType_Legacy["erc20BinanceTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 14] = "erc20BinanceTest";
-    WalletType_Legacy[WalletType_Legacy["erc20IconTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 15] = "erc20IconTest";
-    WalletType_Legacy[WalletType_Legacy["erc20OmiseGoTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 16] = "erc20OmiseGoTest";
-    WalletType_Legacy[WalletType_Legacy["erc20WaltonChainTest"] = (WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET) + 17] = "erc20WaltonChainTest";
-})(WalletType_Legacy = exports.WalletType_Legacy || (exports.WalletType_Legacy = {}));
 exports.typeInfoMap = [
     { type: WalletType.bitCoin, name: "Bitcoin", ticker: "BTC" },
     { type: WalletType.ethereum, name: "Ethereum", ticker: "ETH" },

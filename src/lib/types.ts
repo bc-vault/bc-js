@@ -229,69 +229,6 @@ export interface HttpResponse{
     erc20Xaurum	      ="E2Xauru1",
     erc20OmiseGo 	    ="E2Omise1",
     erc20WaltonChain	="E2WaltC1",
-  } 
-  const WalletTypeConstants = {
-    BTC:0,
-    ERC20:0x02000000,
-    ETH:0x01000000,
-    TESTNET:0x40000000
-  }
-  export enum WalletType_Legacy{
-    bitCoin               =WalletTypeConstants.BTC,
-    bitCoinCash           =WalletTypeConstants.BTC+1,
-    bitCoinGold           =WalletTypeConstants.BTC+2,
-    liteCoin              =WalletTypeConstants.BTC+3,
-    dash                  =WalletTypeConstants.BTC+4,
-    dogeCoin              =WalletTypeConstants.BTC+5,
-    ripple                =WalletTypeConstants.BTC+6,
-    stellar               =WalletTypeConstants.BTC+7,
-    ethereum              =WalletTypeConstants.ETH,
-    erc20Bokky            =WalletTypeConstants.ETH  | WalletTypeConstants.ERC20,
-    erc20Salt             =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+1,
-    erc20Polymath			    =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+2,
-    erc200x			          =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+3,
-    erc20Cindicator			  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+4,
-    erc20CargoX		    	  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+5,
-    erc20Viberate			    =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+6,
-    erc20Iconomi	    		=(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+7,
-    erc20DTR			        =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+8,
-    erc20OriginTrail			=(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+9,
-    erc20InsurePal		   	=(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+10,
-    erc20Xaurum	    	   	=(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+11,
-    erc20Tron		    	    =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+12,
-    erc20VeChain    			=(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+13,
-    erc20Binance    			=(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+14,
-    erc20Icon		    	    =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+15,
-    erc20OmiseGo    			=(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+16,
-    erc20WaltonChain			=(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)+17,
-   
-    bitCoinTest         =(WalletTypeConstants.BTC)  | WalletTypeConstants.TESTNET,
-    bitCoinCashTest     =(WalletTypeConstants.BTC+1)| WalletTypeConstants.TESTNET,
-    bitCoinGoldTest     =(WalletTypeConstants.BTC+2)| WalletTypeConstants.TESTNET,
-    liteCoinTest        =(WalletTypeConstants.BTC+3)| WalletTypeConstants.TESTNET,
-    dashTest            =(WalletTypeConstants.BTC+4)| WalletTypeConstants.TESTNET,
-    dogeCoinTest        =(WalletTypeConstants.BTC+5)| WalletTypeConstants.TESTNET,
-    rippleTest          =(WalletTypeConstants.BTC+6)| WalletTypeConstants.TESTNET,
-    stellarTest         =(WalletTypeConstants.BTC+7)| WalletTypeConstants.TESTNET,
-    ethereumTest        =(WalletTypeConstants.ETH)  | WalletTypeConstants.TESTNET,
-    erc20BokkyTest      =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20)| WalletTypeConstants.TESTNET,
-    erc20SaltTest			  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+1,
-    erc20PolymathTest	  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+2,
-    erc200xTest			    =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+3,
-    erc20CindicatorTest =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+4,
-    erc20CargoXTest		  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+5,	
-    erc20ViberateTest	  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+6,
-    erc20IconomiTest	  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+7,
-    erc20DTRTest			  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+8,
-    erc20OriginTrailTest=(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+9,
-    erc20InsurePalTest  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+10,	
-    erc20XaurumTest		  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+11,
-    erc20TronTest			  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+12,
-    erc20VeChainTest	  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+13,
-    erc20BinanceTest	  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+14,
-    erc20IconTest			  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+15,
-    erc20OmiseGoTest	  =(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+16,
-    erc20WaltonChainTest=(WalletTypeConstants.ETH | WalletTypeConstants.ERC20 | WalletTypeConstants.TESTNET)+17,
   }
   export interface WalletTypeInfo{
     type:WalletType
@@ -386,7 +323,7 @@ export interface HttpResponse{
   }
   export interface SessionCreateParameters{
     sessionType: SessionAuthType,
-    matchPath: string;
+    matchPath?: string;
     expireSeconds: number;
     versionNumber: number;
   }

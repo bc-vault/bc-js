@@ -204,62 +204,6 @@ export declare enum WalletType {
     erc20OmiseGo = "E2Omise1",
     erc20WaltonChain = "E2WaltC1"
 }
-export declare enum WalletType_Legacy {
-    bitCoin,
-    bitCoinCash,
-    bitCoinGold,
-    liteCoin,
-    dash,
-    dogeCoin,
-    ripple,
-    stellar,
-    ethereum,
-    erc20Bokky,
-    erc20Salt,
-    erc20Polymath,
-    erc200x,
-    erc20Cindicator,
-    erc20CargoX,
-    erc20Viberate,
-    erc20Iconomi,
-    erc20DTR,
-    erc20OriginTrail,
-    erc20InsurePal,
-    erc20Xaurum,
-    erc20Tron,
-    erc20VeChain,
-    erc20Binance,
-    erc20Icon,
-    erc20OmiseGo,
-    erc20WaltonChain,
-    bitCoinTest,
-    bitCoinCashTest,
-    bitCoinGoldTest,
-    liteCoinTest,
-    dashTest,
-    dogeCoinTest,
-    rippleTest,
-    stellarTest,
-    ethereumTest,
-    erc20BokkyTest,
-    erc20SaltTest,
-    erc20PolymathTest,
-    erc200xTest,
-    erc20CindicatorTest,
-    erc20CargoXTest,
-    erc20ViberateTest,
-    erc20IconomiTest,
-    erc20DTRTest,
-    erc20OriginTrailTest,
-    erc20InsurePalTest,
-    erc20XaurumTest,
-    erc20TronTest,
-    erc20VeChainTest,
-    erc20BinanceTest,
-    erc20IconTest,
-    erc20OmiseGoTest,
-    erc20WaltonChainTest
-}
 export interface WalletTypeInfo {
     type: WalletType;
     name: string;
@@ -323,7 +267,7 @@ export declare enum SessionAuthType {
 }
 export interface SessionCreateParameters {
     sessionType: SessionAuthType;
-    matchPath: string;
+    matchPath?: string;
     expireSeconds: number;
     versionNumber: number;
 }

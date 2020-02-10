@@ -75,12 +75,10 @@ var __spread = (this && this.__spread) || function () {
 exports.__esModule = true;
 var axios_1 = require("axios");
 var types_1 = require("./types");
-var sha3_1 = require("sha3");
 var es6_promise_1 = require("es6-promise");
 es6_promise_1.polyfill();
 var BCJS = /** @class */ (function () {
     function BCJS() {
-        this.Host = "https://localhost.bc-vault.com:1991/";
         /** Is BCData object polling already taking place? */
         this.isPolling = false;
         /** Set Logging verbosity */
@@ -89,8 +87,8 @@ var BCJS = /** @class */ (function () {
         this.authTokenUseCookies = true;
         /** How long each auth grant will last in seconds since the last request. */
         this.authTokenExpireSeconds = 3600;
-        /** The path to match the auth-token against. This is a security feature and allows you to fine tune access. Default is: '/' (web root) */
-        this.authTokenMatchPath = '/';
+        /** The path to match the auth-token against. This is a security feature and allows you to fine tune access. Default is: undefined (don't check the full path, warning: specifying this will require you to allow https://www.w3.org/TR/referrer-policy/#referrer-policy-origin-when-cross-origin on your webpage to avoid disrupting users who use the daemon in HTTP only mode (firefox, etc...)) */
+        this.authTokenMatchPath = undefined;
         /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
         this.BCData = { devices: [] };
         this.API_VERSION = 2;
@@ -441,7 +439,7 @@ var BCJS = /** @class */ (function () {
             var httpr;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.GetWalletBalance, { walletType: this.toLegacyWalletType(type), walletTypeString: type, sourcePublicID: sourcePublicID })];
+                    case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.GetWalletBalance, { walletTypeString: type, sourcePublicID: sourcePublicID })];
                     case 1:
                         httpr = _a.sent();
                         this.assertIsBCHttpResponse(httpr);
@@ -553,19 +551,14 @@ var BCJS = /** @class */ (function () {
      */
     BCJS.prototype.getSupportedWalletTypes = function (device) {
         return __awaiter(this, void 0, void 0, function () {
-            var httpr, newFormat;
-            var _this = this;
+            var httpr;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.WalletTypes, { device: device })];
                     case 1:
                         httpr = _a.sent();
                         this.assertIsBCHttpResponse(httpr);
-                        newFormat = httpr.body.data;
-                        if (typeof (newFormat[0]) === typeof (1)) {
-                            newFormat = newFormat.map(function (x) { return _this.fromLegacyWalletType(x); });
-                        }
-                        return [2 /*return*/, newFormat];
+                        return [2 /*return*/, httpr.body.data];
                 }
             });
         });
@@ -592,19 +585,14 @@ var BCJS = /** @class */ (function () {
      */
     BCJS.prototype.getActiveWalletTypes = function (device) {
         return __awaiter(this, void 0, void 0, function () {
-            var httpr, newFormat;
-            var _this = this;
+            var httpr;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.SavedWalletTypes, { device: device })];
                     case 1:
                         httpr = _a.sent();
                         this.assertIsBCHttpResponse(httpr);
-                        newFormat = httpr.body.data;
-                        if (typeof (newFormat[0]) === typeof (1)) {
-                            newFormat = newFormat.map(function (x) { return _this.fromLegacyWalletType(x); });
-                        }
-                        return [2 /*return*/, newFormat];
+                        return [2 /*return*/, httpr.body.data];
                 }
             });
         });
@@ -634,7 +622,7 @@ var BCJS = /** @class */ (function () {
             var httpr;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.WalletsOfType, { device: device, walletType: this.toLegacyWalletType(type), walletTypeString: type })];
+                    case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.WalletsOfType, { device: device, walletTypeString: type })];
                     case 1:
                         httpr = _a.sent();
                         this.assertIsBCHttpResponse(httpr);
@@ -668,79 +656,15 @@ var BCJS = /** @class */ (function () {
     BCJS.prototype.getBatchWalletDetails = function (device, walletTypes, walletDetails) {
         if (walletDetails === void 0) { walletDetails = types_1.WalletDetailsQuery.all; }
         return __awaiter(this, void 0, void 0, function () {
-            var e_4, _a, e_5, _b, httpr, e_6, outArray, walletTypes_1, walletTypes_1_1, wt, wallets, wallets_1, wallets_1_1, wallet, walletUserData, e_5_1, e_4_1;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _c.trys.push([0, 2, , 18]);
-                        return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.WalletsOfTypes, { device: device, walletTypes: walletTypes, walletDetails: walletDetails })];
+            var httpr;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.WalletsOfTypes, { device: device, walletTypes: walletTypes, walletDetails: walletDetails })];
                     case 1:
-                        httpr = _c.sent();
+                        httpr = _a.sent();
                         this.assertIsBCHttpResponse(httpr);
                         httpr.body.data.userDataParsed = this.parseHex(httpr.body.data.userData);
                         return [2 /*return*/, httpr.body.data];
-                    case 2:
-                        e_6 = _c.sent();
-                        outArray = [];
-                        _c.label = 3;
-                    case 3:
-                        _c.trys.push([3, 15, 16, 17]);
-                        walletTypes_1 = __values(walletTypes), walletTypes_1_1 = walletTypes_1.next();
-                        _c.label = 4;
-                    case 4:
-                        if (!!walletTypes_1_1.done) return [3 /*break*/, 14];
-                        wt = walletTypes_1_1.value;
-                        return [4 /*yield*/, this.getWalletsOfType(device, wt)];
-                    case 5:
-                        wallets = _c.sent();
-                        _c.label = 6;
-                    case 6:
-                        _c.trys.push([6, 11, 12, 13]);
-                        wallets_1 = __values(wallets), wallets_1_1 = wallets_1.next();
-                        _c.label = 7;
-                    case 7:
-                        if (!!wallets_1_1.done) return [3 /*break*/, 10];
-                        wallet = wallets_1_1.value;
-                        return [4 /*yield*/, this.getWalletUserData(device, wt, wallet, false)];
-                    case 8:
-                        walletUserData = _c.sent();
-                        outArray.push({
-                            address: wallet,
-                            type: wt,
-                            userData: walletUserData,
-                            userDataParsed: this.parseHex(walletUserData)
-                        });
-                        _c.label = 9;
-                    case 9:
-                        wallets_1_1 = wallets_1.next();
-                        return [3 /*break*/, 7];
-                    case 10: return [3 /*break*/, 13];
-                    case 11:
-                        e_5_1 = _c.sent();
-                        e_5 = { error: e_5_1 };
-                        return [3 /*break*/, 13];
-                    case 12:
-                        try {
-                            if (wallets_1_1 && !wallets_1_1.done && (_b = wallets_1["return"])) _b.call(wallets_1);
-                        }
-                        finally { if (e_5) throw e_5.error; }
-                        return [7 /*endfinally*/];
-                    case 13:
-                        walletTypes_1_1 = walletTypes_1.next();
-                        return [3 /*break*/, 4];
-                    case 14: return [3 /*break*/, 17];
-                    case 15:
-                        e_4_1 = _c.sent();
-                        e_4 = { error: e_4_1 };
-                        return [3 /*break*/, 17];
-                    case 16:
-                        try {
-                            if (walletTypes_1_1 && !walletTypes_1_1.done && (_a = walletTypes_1["return"])) _a.call(walletTypes_1);
-                        }
-                        finally { if (e_4) throw e_4.error; }
-                        return [7 /*endfinally*/];
-                    case 17: return [2 /*return*/, outArray];
-                    case 18: return [2 /*return*/];
                 }
             });
         });
@@ -774,7 +698,7 @@ var BCJS = /** @class */ (function () {
             var httpr, responseString;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.WalletUserData, { device: device, walletType: this.toLegacyWalletType(type), walletTypeString: type, sourcePublicID: publicAddress })];
+                    case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.WalletUserData, { device: device, walletTypeString: type, sourcePublicID: publicAddress })];
                     case 1:
                         httpr = _a.sent();
                         this.assertIsBCHttpResponse(httpr);
@@ -818,7 +742,7 @@ var BCJS = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.getSecureWindowResponse(types_1.PasswordType.WalletPassword)];
                     case 1:
                         id = _a.sent();
-                        return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.CopyWalletToType, { device: device, walletType: this.toLegacyWalletType(oldType), walletTypeString: newType, newWalletType: this.toLegacyWalletType(newType), newWalletTypeString: newType, sourcePublicID: publicAddress, password: id })];
+                        return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.CopyWalletToType, { device: device, walletTypeString: oldType, newWalletTypeString: newType, sourcePublicID: publicAddress, password: id })];
                     case 2:
                         httpr = _a.sent();
                         this.assertIsBCHttpResponse(httpr);
@@ -854,7 +778,7 @@ var BCJS = /** @class */ (function () {
             var httpr;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.IsAddressValid, { device: device, walletType: this.toLegacyWalletType(type), walletTypeString: type, address: publicAddress })];
+                    case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.IsAddressValid, { device: device, walletTypeString: type, address: publicAddress })];
                     case 1:
                         httpr = _a.sent();
                         return [2 /*return*/, httpr.body.errorCode === 0x9000];
@@ -889,7 +813,7 @@ var BCJS = /** @class */ (function () {
             var httpr;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.DisplayAddress, { device: device, walletType: this.toLegacyWalletType(type), walletTypeString: type, publicID: publicAddress })];
+                    case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.DisplayAddress, { device: device, walletTypeString: type, publicID: publicAddress })];
                     case 1:
                         httpr = _a.sent();
                         this.assertIsBCHttpResponse(httpr);
@@ -927,7 +851,7 @@ var BCJS = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.getSecureWindowResponse(types_1.PasswordType.WalletPassword)];
                     case 1:
                         id = _a.sent();
-                        return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.GenerateWallet, { device: device, walletType: this.toLegacyWalletType(type), walletTypeString: type, password: id })];
+                        return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.GenerateWallet, { device: device, walletTypeString: type, password: id })];
                     case 2:
                         httpr = _a.sent();
                         this.assertIsBCHttpResponse(httpr);
@@ -1007,8 +931,8 @@ var BCJS = /** @class */ (function () {
                     case 1:
                         id = _a.sent();
                         this.log("Got auth id:" + id, types_1.LogLevel.debug);
-                        this.log("Sending object:" + JSON.stringify({ device: device, walletType: this.toLegacyWalletType(type), walletTypeString: type, transaction: data, password: id }), types_1.LogLevel.debug);
-                        return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.GenerateTransaction, { device: device, walletType: this.toLegacyWalletType(type), walletTypeString: type, transaction: data, password: id, broadcast: broadcast })];
+                        this.log("Sending object:" + JSON.stringify({ device: device, walletTypeString: type, transaction: data, password: id }), types_1.LogLevel.debug);
+                        return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.GenerateTransaction, { device: device, walletTypeString: type, transaction: data, password: id, broadcast: broadcast })];
                     case 2:
                         httpr = _a.sent();
                         this.log(httpr.body, types_1.LogLevel.debug);
@@ -1052,8 +976,8 @@ var BCJS = /** @class */ (function () {
                     case 1:
                         id = _a.sent();
                         this.log("Got auth id:" + id, types_1.LogLevel.debug);
-                        this.log("Sending object:" + JSON.stringify({ device: device, walletType: this.toLegacyWalletType(type), walletTypeString: type, sourcePublicID: publicAddress, srcData: data, password: id }), types_1.LogLevel.debug);
-                        return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.SignData, { device: device, walletType: this.toLegacyWalletType(type), walletTypeString: type, sourcePublicID: publicAddress, srcData: data, password: id })];
+                        this.log("Sending object:" + JSON.stringify({ device: device, walletTypeString: type, sourcePublicID: publicAddress, srcData: data, password: id }), types_1.LogLevel.debug);
+                        return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.SignData, { device: device, walletTypeString: type, sourcePublicID: publicAddress, srcData: data, password: id })];
                     case 2:
                         httpr = _a.sent();
                         this.log("Response body:" + httpr.body, types_1.LogLevel.debug);
@@ -1067,7 +991,7 @@ var BCJS = /** @class */ (function () {
     };
     BCJS.prototype.web3_GetAccounts = function (cb) {
         return __awaiter(this, void 0, void 0, function () {
-            var devices, wallets, e_7, wallets, e_8;
+            var devices, wallets, e_4, wallets, e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1088,8 +1012,8 @@ var BCJS = /** @class */ (function () {
                         cb(null, wallets.map(function (x) { return "0x" + x; }));
                         return [3 /*break*/, 8];
                     case 4:
-                        e_7 = _a.sent();
-                        if (!(e_7.BCHttpResponse !== undefined)) return [3 /*break*/, 7];
+                        e_4 = _a.sent();
+                        if (!(e_4.BCHttpResponse !== undefined)) return [3 /*break*/, 7];
                         // unlock BC Vault!
                         return [4 /*yield*/, this.EnterGlobalPin(devices[0], types_1.PasswordType.GlobalPassword)];
                     case 5:
@@ -1102,8 +1026,8 @@ var BCJS = /** @class */ (function () {
                     case 7: return [3 /*break*/, 8];
                     case 8: return [3 /*break*/, 10];
                     case 9:
-                        e_8 = _a.sent();
-                        cb(e_8, null);
+                        e_5 = _a.sent();
+                        cb(e_5, null);
                         return [3 /*break*/, 10];
                     case 10: return [2 /*return*/];
                 }
@@ -1112,7 +1036,7 @@ var BCJS = /** @class */ (function () {
     };
     BCJS.prototype.web3_signTransaction = function (txParams, cb) {
         return __awaiter(this, void 0, void 0, function () {
-            var devices, txHex, e_9;
+            var devices, txHex, e_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1134,8 +1058,8 @@ var BCJS = /** @class */ (function () {
                         cb(null, txHex);
                         return [3 /*break*/, 4];
                     case 3:
-                        e_9 = _a.sent();
-                        cb(e_9, null);
+                        e_6 = _a.sent();
+                        cb(e_6, null);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -1144,7 +1068,7 @@ var BCJS = /** @class */ (function () {
     };
     BCJS.prototype.web3_signPersonalMessage = function (msgParams, cb) {
         return __awaiter(this, void 0, void 0, function () {
-            var devices, signedMessage, e_10;
+            var devices, signedMessage, e_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1163,8 +1087,8 @@ var BCJS = /** @class */ (function () {
                         cb(null, signedMessage);
                         return [3 /*break*/, 4];
                     case 3:
-                        e_10 = _a.sent();
-                        cb(e_10, null);
+                        e_7 = _a.sent();
+                        cb(e_7, null);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -1178,16 +1102,7 @@ var BCJS = /** @class */ (function () {
         return str;
     };
     BCJS.prototype.toEtherCase = function (inputString) {
-        var kec = new sha3_1.Keccak(256);
-        kec.update(inputString.toLowerCase());
-        var keccakArray = kec.digest('hex').split('');
-        var upperCase = '89abcdef';
-        return inputString.toLowerCase().split('').map(function (x, idx) {
-            if (upperCase.indexOf(keccakArray[idx]) !== -1) {
-                return x.toUpperCase();
-            }
-            return x;
-        }).join('');
+        return inputString.toUpperCase();
     };
     BCJS.prototype.parseHex = function (str) {
         var out = str;
@@ -1202,11 +1117,58 @@ var BCJS = /** @class */ (function () {
         }
         return out;
     };
-    BCJS.prototype.getNewSession = function () {
+    BCJS.prototype.getServerURL = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var scp, axiosConfig, response;
+            var attempt, e_8, e_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
+                    case 0:
+                        if (this.BaseURL) {
+                            return [2 /*return*/, this.BaseURL];
+                        }
+                        attempt = 'https://localhost:1991';
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        // determine if it is https
+                        return [4 /*yield*/, axios_1["default"](attempt)];
+                    case 2:
+                        // determine if it is https
+                        _a.sent();
+                        this.BaseURL = attempt;
+                        return [2 /*return*/, this.BaseURL];
+                    case 3:
+                        e_8 = _a.sent();
+                        // not HTTPS
+                        this.log('Attempting to resolve localhost address: ' + attempt + ' FAILED!', types_1.LogLevel.verbose);
+                        return [3 /*break*/, 4];
+                    case 4:
+                        attempt = 'http://localhost:1992';
+                        _a.label = 5;
+                    case 5:
+                        _a.trys.push([5, 7, , 8]);
+                        // determine if it is http
+                        return [4 /*yield*/, axios_1["default"](attempt)];
+                    case 6:
+                        // determine if it is http
+                        _a.sent();
+                        this.BaseURL = attempt;
+                        return [2 /*return*/, this.BaseURL];
+                    case 7:
+                        e_9 = _a.sent();
+                        // neither, server must be offline
+                        this.log('Attempting to resolve localhost address: ' + attempt + ' FAILED! Is daemon offline?', types_1.LogLevel.warning);
+                        throw Error('Server offline!');
+                    case 8: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    BCJS.prototype.getNewSession = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var scp, axiosConfig, _a, response;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         scp = {
                             sessionType: this.authTokenUseCookies ? types_1.SessionAuthType.any : types_1.SessionAuthType.token,
@@ -1214,21 +1176,23 @@ var BCJS = /** @class */ (function () {
                             matchPath: this.authTokenMatchPath,
                             versionNumber: this.API_VERSION
                         };
-                        axiosConfig = {
-                            baseURL: this.Host,
-                            method: "POST",
-                            url: 'SetBCSessionParams',
-                            withCredentials: true,
-                            data: scp,
-                            headers: { "Api-Version": this.API_VERSION }
-                        };
+                        _a = {};
+                        return [4 /*yield*/, this.getServerURL()];
+                    case 1:
+                        axiosConfig = (_a.baseURL = _b.sent(),
+                            _a.method = "POST",
+                            _a.url = 'SetBCSessionParams',
+                            _a.withCredentials = true,
+                            _a.data = scp,
+                            _a.headers = { "Api-Version": this.API_VERSION },
+                            _a);
                         if (typeof (window) === 'undefined') {
-                            axiosConfig.headers["Origin"] = "https://localhost";
-                            axiosConfig.headers["Referer"] = "https://localhost";
+                            axiosConfig.headers.Origin = "https://localhost";
+                            axiosConfig.headers.Referer = "https://localhost";
                         }
                         return [4 /*yield*/, axios_1["default"](axiosConfig)];
-                    case 1:
-                        response = _a.sent();
+                    case 2:
+                        response = _b.sent();
                         return [2 /*return*/, response.data.d_token];
                 }
             });
@@ -1238,39 +1202,44 @@ var BCJS = /** @class */ (function () {
         var _this = this;
         var dataWithToken = __assign({}, (data || {}), { d_token: this.authToken });
         return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
-            var methodCheck, e_11, options, responseFunction;
+            var methodCheck, _a, _b, e_10, options, _c, responseFunction;
             var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
-                        if (!(this.endpointAllowsCredentials === undefined)) return [3 /*break*/, 4];
-                        _a.label = 1;
+                        if (!(this.endpointAllowsCredentials === undefined)) return [3 /*break*/, 5];
+                        _d.label = 1;
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, axios_1["default"]({ baseURL: this.Host, data: "{}", method: "POST", url: "/Devices" })];
-                    case 2:
-                        methodCheck = _a.sent();
-                        this.endpointAllowsCredentials = methodCheck.data.daemonError === types_1.DaemonErrorCodes.sessionError;
-                        return [3 /*break*/, 4];
+                        _d.trys.push([1, 4, , 5]);
+                        _a = axios_1["default"];
+                        _b = {};
+                        return [4 /*yield*/, this.getServerURL()];
+                    case 2: return [4 /*yield*/, _a.apply(void 0, [(_b.baseURL = _d.sent(), _b.data = "{}", _b.method = "POST", _b.url = "/Devices", _b)])];
                     case 3:
-                        e_11 = _a.sent();
-                        this.log("Daemon offline during initialization.", types_1.LogLevel.debug);
-                        return [2 /*return*/, rej(new types_1.DaemonError(e_11))];
+                        methodCheck = _d.sent();
+                        this.endpointAllowsCredentials = methodCheck.data.daemonError === types_1.DaemonErrorCodes.sessionError;
+                        return [3 /*break*/, 5];
                     case 4:
-                        options = {
-                            baseURL: this.Host,
-                            data: JSON.stringify(dataWithToken),
-                            method: "POST",
-                            url: endpoint,
-                            headers: {}
-                        };
+                        e_10 = _d.sent();
+                        this.log("Daemon offline during initialization.", types_1.LogLevel.debug);
+                        return [2 /*return*/, rej(new types_1.DaemonError(e_10))];
+                    case 5:
+                        _c = {};
+                        return [4 /*yield*/, this.getServerURL()];
+                    case 6:
+                        options = (_c.baseURL = _d.sent(),
+                            _c.data = JSON.stringify(dataWithToken),
+                            _c.method = "POST",
+                            _c.url = endpoint,
+                            _c.headers = {},
+                            _c);
                         if (this.endpointAllowsCredentials && this.authTokenUseCookies) {
                             options.withCredentials = true;
                             options.headers["Api-Version"] = this.API_VERSION;
                         }
                         if (typeof (window) === 'undefined') {
-                            options.headers["Origin"] = "https://localhost";
-                            options.headers["Referer"] = "https://localhost";
+                            options.headers.Origin = "https://localhost";
+                            options.headers.Referer = "https://localhost";
                         }
                         this.log("getResponsePromised - " + endpoint + " - " + options.data);
                         responseFunction = function (response) { return __awaiter(_this, void 0, void 0, function () {
@@ -1327,7 +1296,7 @@ var BCJS = /** @class */ (function () {
     };
     BCJS.prototype.getWallets = function (deviceID, activeTypes) {
         return __awaiter(this, void 0, void 0, function () {
-            var e_12, _a, ret, response, response_1, response_1_1, detailItem;
+            var e_11, _a, ret, response, response_1, response_1_1, detailItem;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -1347,12 +1316,12 @@ var BCJS = /** @class */ (function () {
                                 });
                             }
                         }
-                        catch (e_12_1) { e_12 = { error: e_12_1 }; }
+                        catch (e_11_1) { e_11 = { error: e_11_1 }; }
                         finally {
                             try {
                                 if (response_1_1 && !response_1_1.done && (_a = response_1["return"])) _a.call(response_1);
                             }
-                            finally { if (e_12) throw e_12.error; }
+                            finally { if (e_11) throw e_11.error; }
                         }
                         return [2 /*return*/, ret];
                 }
@@ -1370,7 +1339,7 @@ var BCJS = /** @class */ (function () {
         var _this = this;
         this.timeoutRef = setTimeout(function () { return _this.pollDevicesChanged(interval); }, interval);
         return new Promise(function (res) { return __awaiter(_this, void 0, void 0, function () {
-            var e_13;
+            var e_12;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1381,9 +1350,9 @@ var BCJS = /** @class */ (function () {
                         res();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_13 = _a.sent();
+                        e_12 = _a.sent();
                         this.FireAllStatusListeners(-1);
-                        console.error(e_13);
+                        console.error(e_12);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -1391,7 +1360,7 @@ var BCJS = /** @class */ (function () {
         }); });
     };
     BCJS.prototype.FireAllStatusListeners = function (args) {
-        var e_14, _a;
+        var e_13, _a;
         this.lastPushedStatus = args;
         try {
             for (var _b = __values(this.listeners), _c = _b.next(); !_c.done; _c = _b.next()) {
@@ -1399,69 +1368,48 @@ var BCJS = /** @class */ (function () {
                 listener.call(null, args);
             }
         }
-        catch (e_14_1) { e_14 = { error: e_14_1 }; }
+        catch (e_13_1) { e_13 = { error: e_13_1 }; }
         finally {
             try {
                 if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
             }
-            finally { if (e_14) throw e_14.error; }
+            finally { if (e_13) throw e_13.error; }
         }
-    };
-    BCJS.prototype.toLegacyWalletType = function (t) {
-        var stringId;
-        for (var typeProperty in types_1.WalletType) {
-            if (types_1.WalletType[typeProperty] === t) {
-                stringId = typeProperty;
-            }
-        }
-        if (stringId === undefined) {
-            return 2147483646;
-        }
-        for (var legacyTypeProperty in types_1.WalletType_Legacy) {
-            if (legacyTypeProperty === stringId) {
-                return types_1.WalletType_Legacy[legacyTypeProperty];
-            }
-        }
-        return 2147483646;
-    };
-    BCJS.prototype.fromLegacyWalletType = function (t) {
-        var stringId;
-        for (var legacyTypeProperty in types_1.WalletType_Legacy) {
-            if (types_1.WalletType_Legacy[legacyTypeProperty] === t) {
-                stringId = legacyTypeProperty;
-            }
-        }
-        if (stringId === undefined) {
-            return "Unknown:" + t;
-        }
-        for (var typeProperty in types_1.WalletType) {
-            if (typeProperty === stringId) {
-                return types_1.WalletType[typeProperty];
-            }
-        }
-        return "Unknown:" + t;
     };
     BCJS.prototype.showAuthPopup = function (id, passwordType) {
-        return new Promise(function (res) {
-            var isIE = window.ActiveXObject || "ActiveXObject" in window;
-            var target;
-            if (isIE) {
-                window.showModalDialog("https://localhost.bc-vault.com:1991/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType);
-                parent.postMessage("OKAY", "*");
-                res();
-            }
-            else {
-                target = window.open("https://localhost.bc-vault.com:1991/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType, "_blank", "location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500");
-                if (target === null)
-                    throw TypeError("Could not create popup!");
-                var timer_1 = setInterval(function () {
-                    if (target.closed) {
-                        clearInterval(timer_1);
+        var _this = this;
+        return new Promise(function (res) { return __awaiter(_this, void 0, void 0, function () {
+            var isIE, target, _a, _b, _c, _d, timer_1;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        isIE = window.ActiveXObject || "ActiveXObject" in window;
+                        if (!isIE) return [3 /*break*/, 2];
+                        _b = (_a = window).showModalDialog;
+                        return [4 /*yield*/, this.getServerURL()];
+                    case 1:
+                        _b.apply(_a, [(_e.sent()) + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType]);
+                        parent.postMessage("OKAY", "*");
                         res();
-                    }
-                }, 500);
-            }
-        });
+                        return [3 /*break*/, 4];
+                    case 2:
+                        _d = (_c = window).open;
+                        return [4 /*yield*/, this.getServerURL()];
+                    case 3:
+                        target = _d.apply(_c, [(_e.sent()) + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType, "_blank", "location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500"]);
+                        if (target === null)
+                            throw TypeError("Could not create popup!");
+                        timer_1 = setInterval(function () {
+                            if (target.closed) {
+                                clearInterval(timer_1);
+                                res();
+                            }
+                        }, 500);
+                        _e.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
     };
     BCJS.prototype.getSecureWindowResponse = function (passwordType) {
         var _this = this;

@@ -1,6 +1,5 @@
 import { SpaceObject, PasswordType, WalletType, VersionObject, TransactionData, BCDataRefreshStatusCode, BCObject, WalletTypeInfo, LogLevel, WalletDetailsQuery, WalletBatchDataResponse, hexString, AuthorizationHandler } from './types';
 export declare class BCJS {
-    readonly Host: string;
     /** Is BCData object polling already taking place? */
     isPolling: boolean;
     /** Set Logging verbosity */
@@ -11,10 +10,11 @@ export declare class BCJS {
     authTokenUseCookies: boolean;
     /** How long each auth grant will last in seconds since the last request. */
     authTokenExpireSeconds: number;
-    /** The path to match the auth-token against. This is a security feature and allows you to fine tune access. Default is: '/' (web root) */
-    authTokenMatchPath: string;
+    /** The path to match the auth-token against. This is a security feature and allows you to fine tune access. Default is: undefined (don't check the full path, warning: specifying this will require you to allow https://www.w3.org/TR/referrer-policy/#referrer-policy-origin-when-cross-origin on your webpage to avoid disrupting users who use the daemon in HTTP only mode (firefox, etc...)) */
+    authTokenMatchPath?: string;
     /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
     BCData: BCObject;
+    private BaseURL?;
     private readonly API_VERSION;
     private endpointAllowsCredentials;
     private lastSeenDevices;
@@ -500,6 +500,7 @@ export declare class BCJS {
     private strip0x;
     private toEtherCase;
     private parseHex;
+    private getServerURL;
     private getNewSession;
     private getResponsePromised;
     private assertIsBCHttpResponse;
@@ -508,8 +509,6 @@ export declare class BCJS {
     private arraysEqual;
     private pollDevicesChanged;
     private FireAllStatusListeners;
-    private toLegacyWalletType;
-    private fromLegacyWalletType;
     private showAuthPopup;
     private getSecureWindowResponse;
 }

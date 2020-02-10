@@ -1,11 +1,9 @@
 import axios from 'axios';
-import { Endpoint, PasswordType, WalletType, DaemonError, BCDataRefreshStatusCode, typeInfoMap, LogLevel, SessionAuthType, DaemonErrorCodes, WalletType_Legacy, WalletDetailsQuery } from './types';
-import { Keccak } from 'sha3';
+import { Endpoint, PasswordType, WalletType, DaemonError, BCDataRefreshStatusCode, typeInfoMap, LogLevel, SessionAuthType, DaemonErrorCodes, WalletDetailsQuery } from './types';
 import { polyfill } from 'es6-promise';
 polyfill();
 export class BCJS {
     constructor() {
-        this.Host = "https://localhost.bc-vault.com:1991/";
         /** Is BCData object polling already taking place? */
         this.isPolling = false;
         /** Set Logging verbosity */
@@ -14,8 +12,8 @@ export class BCJS {
         this.authTokenUseCookies = true;
         /** How long each auth grant will last in seconds since the last request. */
         this.authTokenExpireSeconds = 3600;
-        /** The path to match the auth-token against. This is a security feature and allows you to fine tune access. Default is: '/' (web root) */
-        this.authTokenMatchPath = '/';
+        /** The path to match the auth-token against. This is a security feature and allows you to fine tune access. Default is: undefined (don't check the full path, warning: specifying this will require you to allow https://www.w3.org/TR/referrer-policy/#referrer-policy-origin-when-cross-origin on your webpage to avoid disrupting users who use the daemon in HTTP only mode (firefox, etc...)) */
+        this.authTokenMatchPath = undefined;
         /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
         this.BCData = { devices: [] };
         this.API_VERSION = 2;
@@ -280,7 +278,7 @@ export class BCJS {
      */
     async getWalletBalance(type, sourcePublicID) {
         let httpr;
-        httpr = await this.getResponsePromised(Endpoint.GetWalletBalance, { walletType: this.toLegacyWalletType(type), walletTypeString: type, sourcePublicID });
+        httpr = await this.getResponsePromised(Endpoint.GetWalletBalance, { walletTypeString: type, sourcePublicID });
         this.assertIsBCHttpResponse(httpr);
         return httpr.body.data;
     }
@@ -373,11 +371,7 @@ export class BCJS {
         let httpr;
         httpr = await this.getResponsePromised(Endpoint.WalletTypes, { device });
         this.assertIsBCHttpResponse(httpr);
-        let newFormat = httpr.body.data;
-        if (typeof (newFormat[0]) === typeof (1)) {
-            newFormat = newFormat.map(x => this.fromLegacyWalletType(x));
-        }
-        return newFormat;
+        return httpr.body.data;
     }
     /**
       Gets a list of WalletTypes that are actually used on a specific device(have at least one wallet)
@@ -403,11 +397,7 @@ export class BCJS {
         let httpr;
         httpr = await this.getResponsePromised(Endpoint.SavedWalletTypes, { device });
         this.assertIsBCHttpResponse(httpr);
-        let newFormat = httpr.body.data;
-        if (typeof (newFormat[0]) === typeof (1)) {
-            newFormat = newFormat.map(x => this.fromLegacyWalletType(x));
-        }
-        return newFormat;
+        return httpr.body.data;
     }
     /**
      * @deprecated since 1.3.2, use getBatchWalletDetails instead
@@ -431,7 +421,7 @@ export class BCJS {
      */
     async getWalletsOfType(device, type) {
         let httpr;
-        httpr = await this.getResponsePromised(Endpoint.WalletsOfType, { device, walletType: this.toLegacyWalletType(type), walletTypeString: type });
+        httpr = await this.getResponsePromised(Endpoint.WalletsOfType, { device, walletTypeString: type });
         this.assertIsBCHttpResponse(httpr);
         return httpr.body.data;
     }
@@ -459,29 +449,10 @@ export class BCJS {
      */
     async getBatchWalletDetails(device, walletTypes, walletDetails = WalletDetailsQuery.all) {
         let httpr;
-        try {
-            httpr = await this.getResponsePromised(Endpoint.WalletsOfTypes, { device, walletTypes, walletDetails });
-            this.assertIsBCHttpResponse(httpr);
-            httpr.body.data.userDataParsed = this.parseHex(httpr.body.data.userData);
-            return httpr.body.data;
-        }
-        catch (e) {
-            // legacy daemon
-            const outArray = [];
-            for (const wt of walletTypes) {
-                const wallets = await this.getWalletsOfType(device, wt);
-                for (const wallet of wallets) {
-                    const walletUserData = await this.getWalletUserData(device, wt, wallet, false);
-                    outArray.push({
-                        address: wallet,
-                        type: wt,
-                        userData: walletUserData,
-                        userDataParsed: this.parseHex(walletUserData)
-                    });
-                }
-            }
-            return outArray;
-        }
+        httpr = await this.getResponsePromised(Endpoint.WalletsOfTypes, { device, walletTypes, walletDetails });
+        this.assertIsBCHttpResponse(httpr);
+        httpr.body.data.userDataParsed = this.parseHex(httpr.body.data.userData);
+        return httpr.body.data;
     }
     /**
      * @deprecated since 1.3.2, use getBatchWalletDetails instead
@@ -508,7 +479,7 @@ export class BCJS {
      */
     async getWalletUserData(device, type, publicAddress, shouldParseHex = true) {
         let httpr;
-        httpr = await this.getResponsePromised(Endpoint.WalletUserData, { device, walletType: this.toLegacyWalletType(type), walletTypeString: type, sourcePublicID: publicAddress });
+        httpr = await this.getResponsePromised(Endpoint.WalletUserData, { device, walletTypeString: type, sourcePublicID: publicAddress });
         this.assertIsBCHttpResponse(httpr);
         let responseString = httpr.body.data;
         if (shouldParseHex) {
@@ -542,7 +513,7 @@ export class BCJS {
     async CopyWalletToType(device, oldType, newType, publicAddress) {
         let httpr;
         const id = await this.getSecureWindowResponse(PasswordType.WalletPassword);
-        httpr = await this.getResponsePromised(Endpoint.CopyWalletToType, { device, walletType: this.toLegacyWalletType(oldType), walletTypeString: newType, newWalletType: this.toLegacyWalletType(newType), newWalletTypeString: newType, sourcePublicID: publicAddress, password: id });
+        httpr = await this.getResponsePromised(Endpoint.CopyWalletToType, { device, walletTypeString: oldType, newWalletTypeString: newType, sourcePublicID: publicAddress, password: id });
         this.assertIsBCHttpResponse(httpr);
         return true;
     }
@@ -570,7 +541,7 @@ export class BCJS {
      */
     async getIsAddressValid(device, type, publicAddress) {
         let httpr;
-        httpr = await this.getResponsePromised(Endpoint.IsAddressValid, { device, walletType: this.toLegacyWalletType(type), walletTypeString: type, address: publicAddress });
+        httpr = await this.getResponsePromised(Endpoint.IsAddressValid, { device, walletTypeString: type, address: publicAddress });
         return httpr.body.errorCode === 0x9000;
     }
     /**
@@ -597,7 +568,7 @@ export class BCJS {
      */
     async DisplayAddressOnDevice(device, type, publicAddress) {
         let httpr;
-        httpr = await this.getResponsePromised(Endpoint.DisplayAddress, { device, walletType: this.toLegacyWalletType(type), walletTypeString: type, publicID: publicAddress });
+        httpr = await this.getResponsePromised(Endpoint.DisplayAddress, { device, walletTypeString: type, publicID: publicAddress });
         this.assertIsBCHttpResponse(httpr);
         return true;
     }
@@ -624,7 +595,7 @@ export class BCJS {
      */
     async GenerateWallet(device, type) {
         const id = await this.getSecureWindowResponse(PasswordType.WalletPassword);
-        const httpr = await this.getResponsePromised(Endpoint.GenerateWallet, { device, walletType: this.toLegacyWalletType(type), walletTypeString: type, password: id });
+        const httpr = await this.getResponsePromised(Endpoint.GenerateWallet, { device, walletTypeString: type, password: id });
         this.assertIsBCHttpResponse(httpr);
         return httpr.body.data;
     }
@@ -680,8 +651,8 @@ export class BCJS {
     async GenerateTransaction(device, type, data, broadcast) {
         const id = await this.getSecureWindowResponse(PasswordType.WalletPassword);
         this.log("Got auth id:" + id, LogLevel.debug);
-        this.log("Sending object:" + JSON.stringify({ device, walletType: this.toLegacyWalletType(type), walletTypeString: type, transaction: data, password: id }), LogLevel.debug);
-        const httpr = await this.getResponsePromised(Endpoint.GenerateTransaction, { device, walletType: this.toLegacyWalletType(type), walletTypeString: type, transaction: data, password: id, broadcast });
+        this.log("Sending object:" + JSON.stringify({ device, walletTypeString: type, transaction: data, password: id }), LogLevel.debug);
+        const httpr = await this.getResponsePromised(Endpoint.GenerateTransaction, { device, walletTypeString: type, transaction: data, password: id, broadcast });
         this.log(httpr.body, LogLevel.debug);
         this.assertIsBCHttpResponse(httpr);
         // i know.
@@ -714,8 +685,8 @@ export class BCJS {
     async SignData(device, type, publicAddress, data) {
         const id = await this.getSecureWindowResponse(PasswordType.WalletPassword);
         this.log("Got auth id:" + id, LogLevel.debug);
-        this.log("Sending object:" + JSON.stringify({ device, walletType: this.toLegacyWalletType(type), walletTypeString: type, sourcePublicID: publicAddress, srcData: data, password: id }), LogLevel.debug);
-        const httpr = await this.getResponsePromised(Endpoint.SignData, { device, walletType: this.toLegacyWalletType(type), walletTypeString: type, sourcePublicID: publicAddress, srcData: data, password: id });
+        this.log("Sending object:" + JSON.stringify({ device, walletTypeString: type, sourcePublicID: publicAddress, srcData: data, password: id }), LogLevel.debug);
+        const httpr = await this.getResponsePromised(Endpoint.SignData, { device, walletTypeString: type, sourcePublicID: publicAddress, srcData: data, password: id });
         this.log("Response body:" + httpr.body, LogLevel.debug);
         this.assertIsBCHttpResponse(httpr);
         // i know.
@@ -786,16 +757,7 @@ export class BCJS {
         return str;
     }
     toEtherCase(inputString) {
-        const kec = new Keccak(256);
-        kec.update(inputString.toLowerCase());
-        const keccakArray = kec.digest('hex').split('');
-        const upperCase = '89abcdef';
-        return inputString.toLowerCase().split('').map((x, idx) => {
-            if (upperCase.indexOf(keccakArray[idx]) !== -1) {
-                return x.toUpperCase();
-            }
-            return x;
-        }).join('');
+        return inputString.toUpperCase();
     }
     parseHex(str) {
         let out = str;
@@ -810,6 +772,34 @@ export class BCJS {
         }
         return out;
     }
+    async getServerURL() {
+        if (this.BaseURL) {
+            return this.BaseURL;
+        }
+        let attempt = 'https://localhost:1991';
+        try {
+            // determine if it is https
+            await axios(attempt);
+            this.BaseURL = attempt;
+            return this.BaseURL;
+        }
+        catch (e) {
+            // not HTTPS
+            this.log('Attempting to resolve localhost address: ' + attempt + ' FAILED!', LogLevel.verbose);
+        }
+        attempt = 'http://localhost:1992';
+        try {
+            // determine if it is http
+            await axios(attempt);
+            this.BaseURL = attempt;
+            return this.BaseURL;
+        }
+        catch (e) {
+            // neither, server must be offline
+            this.log('Attempting to resolve localhost address: ' + attempt + ' FAILED! Is daemon offline?', LogLevel.warning);
+            throw Error('Server offline!');
+        }
+    }
     async getNewSession() {
         const scp = {
             sessionType: this.authTokenUseCookies ? SessionAuthType.any : SessionAuthType.token,
@@ -818,7 +808,7 @@ export class BCJS {
             versionNumber: this.API_VERSION
         };
         const axiosConfig = {
-            baseURL: this.Host,
+            baseURL: await this.getServerURL(),
             method: "POST",
             url: 'SetBCSessionParams',
             withCredentials: true,
@@ -826,8 +816,8 @@ export class BCJS {
             headers: { "Api-Version": this.API_VERSION }
         };
         if (typeof (window) === 'undefined') {
-            axiosConfig.headers["Origin"] = "https://localhost";
-            axiosConfig.headers["Referer"] = "https://localhost";
+            axiosConfig.headers.Origin = "https://localhost";
+            axiosConfig.headers.Referer = "https://localhost";
         }
         const response = await axios(axiosConfig);
         return response.data.d_token;
@@ -837,7 +827,7 @@ export class BCJS {
         return new Promise(async (res, rej) => {
             if (this.endpointAllowsCredentials === undefined) {
                 try {
-                    const methodCheck = await axios({ baseURL: this.Host, data: "{}", method: "POST", url: "/Devices" });
+                    const methodCheck = await axios({ baseURL: await this.getServerURL(), data: "{}", method: "POST", url: "/Devices" });
                     this.endpointAllowsCredentials = methodCheck.data.daemonError === DaemonErrorCodes.sessionError;
                 }
                 catch (e) {
@@ -846,7 +836,7 @@ export class BCJS {
                 }
             }
             const options = {
-                baseURL: this.Host,
+                baseURL: await this.getServerURL(),
                 data: JSON.stringify(dataWithToken),
                 method: "POST",
                 url: endpoint,
@@ -857,8 +847,8 @@ export class BCJS {
                 options.headers["Api-Version"] = this.API_VERSION;
             }
             if (typeof (window) === 'undefined') {
-                options.headers["Origin"] = "https://localhost";
-                options.headers["Referer"] = "https://localhost";
+                options.headers.Origin = "https://localhost";
+                options.headers.Referer = "https://localhost";
             }
             this.log(`getResponsePromised - ${endpoint} - ${options.data}`);
             const responseFunction = async (response) => {
@@ -938,51 +928,17 @@ export class BCJS {
             listener.call(null, args);
         }
     }
-    toLegacyWalletType(t) {
-        let stringId;
-        for (const typeProperty in WalletType) {
-            if (WalletType[typeProperty] === t) {
-                stringId = typeProperty;
-            }
-        }
-        if (stringId === undefined) {
-            return 2147483646;
-        }
-        for (const legacyTypeProperty in WalletType_Legacy) {
-            if (legacyTypeProperty === stringId) {
-                return WalletType_Legacy[legacyTypeProperty];
-            }
-        }
-        return 2147483646;
-    }
-    fromLegacyWalletType(t) {
-        let stringId;
-        for (const legacyTypeProperty in WalletType_Legacy) {
-            if (WalletType_Legacy[legacyTypeProperty] === t) {
-                stringId = legacyTypeProperty;
-            }
-        }
-        if (stringId === undefined) {
-            return "Unknown:" + t;
-        }
-        for (const typeProperty in WalletType) {
-            if (typeProperty === stringId) {
-                return WalletType[typeProperty];
-            }
-        }
-        return "Unknown:" + t;
-    }
     showAuthPopup(id, passwordType) {
-        return new Promise((res) => {
+        return new Promise(async (res) => {
             const isIE = window.ActiveXObject || "ActiveXObject" in window;
             let target;
             if (isIE) {
-                window.showModalDialog("https://localhost.bc-vault.com:1991/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType);
+                window.showModalDialog((await this.getServerURL()) + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType);
                 parent.postMessage("OKAY", "*");
                 res();
             }
             else {
-                target = window.open("https://localhost.bc-vault.com:1991/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType, "_blank", "location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500");
+                target = window.open((await this.getServerURL()) + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType, "_blank", "location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500");
                 if (target === null)
                     throw TypeError("Could not create popup!");
                 const timer = setInterval(() => {
