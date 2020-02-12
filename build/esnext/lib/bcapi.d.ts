@@ -14,7 +14,6 @@ export declare class BCJS {
     authTokenMatchPath?: string;
     /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
     BCData: BCObject;
-    private BaseURL?;
     private readonly API_VERSION;
     private endpointAllowsCredentials;
     private lastSeenDevices;

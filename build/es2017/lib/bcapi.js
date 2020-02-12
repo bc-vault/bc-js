@@ -453,8 +453,9 @@ class BCJS {
         let httpr;
         httpr = await this.getResponsePromised(types_1.Endpoint.WalletsOfTypes, { device, walletTypes, walletDetails });
         this.assertIsBCHttpResponse(httpr);
-        httpr.body.data.userDataRaw = httpr.body.data.userData;
-        httpr.body.data.userData = this.parseHex(httpr.body.data.userData);
+        httpr.body.data = httpr.body.data.map(x => {
+            return Object.assign({}, x, { userDataRaw: x.userData, userData: this.parseHex(x.userData) });
+        });
         return httpr.body.data;
     }
     /**
@@ -776,32 +777,7 @@ class BCJS {
         return out;
     }
     async getServerURL() {
-        if (this.BaseURL) {
-            return this.BaseURL;
-        }
-        let attempt = 'https://localhost:1991';
-        try {
-            // determine if it is https
-            await axios_1.default(attempt);
-            this.BaseURL = attempt;
-            return this.BaseURL;
-        }
-        catch (e) {
-            // not HTTPS
-            this.log('Attempting to resolve localhost address: ' + attempt + ' FAILED!', types_1.LogLevel.verbose);
-        }
-        attempt = 'http://localhost:1992';
-        try {
-            // determine if it is http
-            await axios_1.default(attempt);
-            this.BaseURL = attempt;
-            return this.BaseURL;
-        }
-        catch (e) {
-            // neither, server must be offline
-            this.log('Attempting to resolve localhost address: ' + attempt + ' FAILED! Is daemon offline?', types_1.LogLevel.warning);
-            throw Error('Server offline!');
-        }
+        return 'https://localhost:1991';
     }
     async getNewSession() {
         const scp = {

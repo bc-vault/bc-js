@@ -657,14 +657,16 @@ var BCJS = /** @class */ (function () {
         if (walletDetails === void 0) { walletDetails = types_1.WalletDetailsQuery.all; }
         return __awaiter(this, void 0, void 0, function () {
             var httpr;
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.WalletsOfTypes, { device: device, walletTypes: walletTypes, walletDetails: walletDetails })];
                     case 1:
                         httpr = _a.sent();
                         this.assertIsBCHttpResponse(httpr);
-                        httpr.body.data.userDataRaw = httpr.body.data.userData;
-                        httpr.body.data.userData = this.parseHex(httpr.body.data.userData);
+                        httpr.body.data = httpr.body.data.map(function (x) {
+                            return __assign({}, x, { userDataRaw: x.userData, userData: _this.parseHex(x.userData) });
+                        });
                         return [2 /*return*/, httpr.body.data];
                 }
             });
@@ -1120,48 +1122,8 @@ var BCJS = /** @class */ (function () {
     };
     BCJS.prototype.getServerURL = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var attempt, e_8, e_9;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (this.BaseURL) {
-                            return [2 /*return*/, this.BaseURL];
-                        }
-                        attempt = 'https://localhost:1991';
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        // determine if it is https
-                        return [4 /*yield*/, axios_1["default"](attempt)];
-                    case 2:
-                        // determine if it is https
-                        _a.sent();
-                        this.BaseURL = attempt;
-                        return [2 /*return*/, this.BaseURL];
-                    case 3:
-                        e_8 = _a.sent();
-                        // not HTTPS
-                        this.log('Attempting to resolve localhost address: ' + attempt + ' FAILED!', types_1.LogLevel.verbose);
-                        return [3 /*break*/, 4];
-                    case 4:
-                        attempt = 'http://localhost:1992';
-                        _a.label = 5;
-                    case 5:
-                        _a.trys.push([5, 7, , 8]);
-                        // determine if it is http
-                        return [4 /*yield*/, axios_1["default"](attempt)];
-                    case 6:
-                        // determine if it is http
-                        _a.sent();
-                        this.BaseURL = attempt;
-                        return [2 /*return*/, this.BaseURL];
-                    case 7:
-                        e_9 = _a.sent();
-                        // neither, server must be offline
-                        this.log('Attempting to resolve localhost address: ' + attempt + ' FAILED! Is daemon offline?', types_1.LogLevel.warning);
-                        throw Error('Server offline!');
-                    case 8: return [2 /*return*/];
-                }
+                return [2 /*return*/, 'https://localhost:1991'];
             });
         });
     };
@@ -1203,7 +1165,7 @@ var BCJS = /** @class */ (function () {
         var _this = this;
         var dataWithToken = __assign({}, (data || {}), { d_token: this.authToken });
         return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
-            var methodCheck, _a, _b, e_10, options, _c, responseFunction;
+            var methodCheck, _a, _b, e_8, options, _c, responseFunction;
             var _this = this;
             return __generator(this, function (_d) {
                 switch (_d.label) {
@@ -1221,9 +1183,9 @@ var BCJS = /** @class */ (function () {
                         this.endpointAllowsCredentials = methodCheck.data.daemonError === types_1.DaemonErrorCodes.sessionError;
                         return [3 /*break*/, 5];
                     case 4:
-                        e_10 = _d.sent();
+                        e_8 = _d.sent();
                         this.log("Daemon offline during initialization.", types_1.LogLevel.debug);
-                        return [2 /*return*/, rej(new types_1.DaemonError(e_10))];
+                        return [2 /*return*/, rej(new types_1.DaemonError(e_8))];
                     case 5:
                         _c = {};
                         return [4 /*yield*/, this.getServerURL()];
@@ -1297,7 +1259,7 @@ var BCJS = /** @class */ (function () {
     };
     BCJS.prototype.getWallets = function (deviceID, activeTypes) {
         return __awaiter(this, void 0, void 0, function () {
-            var e_11, _a, ret, response, response_1, response_1_1, detailItem;
+            var e_9, _a, ret, response, response_1, response_1_1, detailItem;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -1317,12 +1279,12 @@ var BCJS = /** @class */ (function () {
                                 });
                             }
                         }
-                        catch (e_11_1) { e_11 = { error: e_11_1 }; }
+                        catch (e_9_1) { e_9 = { error: e_9_1 }; }
                         finally {
                             try {
                                 if (response_1_1 && !response_1_1.done && (_a = response_1["return"])) _a.call(response_1);
                             }
-                            finally { if (e_11) throw e_11.error; }
+                            finally { if (e_9) throw e_9.error; }
                         }
                         return [2 /*return*/, ret];
                 }
@@ -1340,7 +1302,7 @@ var BCJS = /** @class */ (function () {
         var _this = this;
         this.timeoutRef = setTimeout(function () { return _this.pollDevicesChanged(interval); }, interval);
         return new Promise(function (res) { return __awaiter(_this, void 0, void 0, function () {
-            var e_12;
+            var e_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1351,9 +1313,9 @@ var BCJS = /** @class */ (function () {
                         res();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_12 = _a.sent();
+                        e_10 = _a.sent();
                         this.FireAllStatusListeners(-1);
-                        console.error(e_12);
+                        console.error(e_10);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -1361,7 +1323,7 @@ var BCJS = /** @class */ (function () {
         }); });
     };
     BCJS.prototype.FireAllStatusListeners = function (args) {
-        var e_13, _a;
+        var e_11, _a;
         this.lastPushedStatus = args;
         try {
             for (var _b = __values(this.listeners), _c = _b.next(); !_c.done; _c = _b.next()) {
@@ -1369,12 +1331,12 @@ var BCJS = /** @class */ (function () {
                 listener.call(null, args);
             }
         }
-        catch (e_13_1) { e_13 = { error: e_13_1 }; }
+        catch (e_11_1) { e_11 = { error: e_11_1 }; }
         finally {
             try {
                 if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
             }
-            finally { if (e_13) throw e_13.error; }
+            finally { if (e_11) throw e_11.error; }
         }
     };
     BCJS.prototype.showAuthPopup = function (id, passwordType) {
