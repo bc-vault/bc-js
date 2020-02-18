@@ -64,6 +64,21 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<dl class="tsd-comment-tags">
+						<dt>description</dt>
+						<dd><p>The DaemonError class contains a BCHttpResponse and a HttpResponse, depending on where the failure was</p>
+						</dd>
+						<dt>description</dt>
+						<dd><p>HttpResponse !== undefined if the response code was != 200 or if the request itself failed</p>
+						</dd>
+						<dt>description</dt>
+						<dd><p>BCHttpResponse !== undefined if the request succeeded but the device returned an error code.</p>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -114,7 +129,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in lib/types.ts:135</li>
+									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/d9b7da2/src/lib/types.ts#L135">lib/types.ts:135</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -139,9 +154,16 @@
 					<div class="tsd-signature tsd-kind-icon">BCHttp<wbr>Response<span class="tsd-signature-symbol">:</span> <a href="daemonerror.html#bchttpresponse" class="tsd-signature-type">BCHttpResponse</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:131</li>
+							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/d9b7da2/src/lib/types.ts#L131">lib/types.ts:131</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><p>BCHttpResponse !== undefined if the request succeeded but the device returned an error code.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="daemonhttpresponse" class="tsd-anchor"></a>
@@ -149,9 +171,16 @@
 					<div class="tsd-signature tsd-kind-icon">Daemon<wbr>Http<wbr>Response<span class="tsd-signature-symbol">:</span> <a href="daemonerror.html#daemonhttpresponse" class="tsd-signature-type">DaemonHttpResponse</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:135</li>
+							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/d9b7da2/src/lib/types.ts#L135">lib/types.ts:135</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><p>DaemonHttpResponse !== undefined if the request reached the daemon, who then reject it for a specified reason.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="httpresponse" class="tsd-anchor"></a>
@@ -159,9 +188,16 @@
 					<div class="tsd-signature tsd-kind-icon">Http<wbr>Response<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AxiosError</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in lib/types.ts:127</li>
+							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/d9b7da2/src/lib/types.ts#L127">lib/types.ts:127</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><p>HttpResponse !== undefined if the request failed, this means the daemon could not be reached.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="message" class="tsd-anchor"></a>
@@ -170,7 +206,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from Error.message</p>
 						<ul>
-							<li>Defined in C:/Users/zan/Desktop/work/bc-js/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:974</li>
+							<li>Defined in C:/Users/zan/Desktop/dev/RS/bc-js/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:974</li>
 						</ul>
 					</aside>
 				</section>
@@ -181,7 +217,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from Error.name</p>
 						<ul>
-							<li>Defined in C:/Users/zan/Desktop/work/bc-js/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:973</li>
+							<li>Defined in C:/Users/zan/Desktop/dev/RS/bc-js/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:973</li>
 						</ul>
 					</aside>
 				</section>
@@ -192,7 +228,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from Error.stack</p>
 						<ul>
-							<li>Defined in C:/Users/zan/Desktop/work/bc-js/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:975</li>
+							<li>Defined in C:/Users/zan/Desktop/dev/RS/bc-js/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:975</li>
 						</ul>
 					</aside>
 				</section>
@@ -202,7 +238,7 @@
 					<div class="tsd-signature tsd-kind-icon">Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ErrorConstructor</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in C:/Users/zan/Desktop/work/bc-js/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:984</li>
+							<li>Defined in C:/Users/zan/Desktop/dev/RS/bc-js/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:984</li>
 						</ul>
 					</aside>
 				</section>
