@@ -10,7 +10,7 @@ export declare class BCJS {
     authTokenUseCookies: boolean;
     /** How long each auth grant will last in seconds since the last request. */
     authTokenExpireSeconds: number;
-    /** The path to match the auth-token against. This is a security feature and allows you to fine tune access. Default is: undefined (don't check the full path, warning: specifying this will require you to allow https://www.w3.org/TR/referrer-policy/#referrer-policy-origin-when-cross-origin on your webpage to avoid disrupting users who use the daemon in HTTP only mode (firefox, etc...)) */
+    /** The path to match the auth-token against. This is a security feature and allows you to fine tune access. Default is: undefined (don't check the full path, note: specifying this may require you to allow https://www.w3.org/TR/referrer-policy/#referrer-policy-origin-when-cross-origin on your webpage depending on which browsers you target) */
     authTokenMatchPath?: string;
     /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
     BCData: BCObject;
