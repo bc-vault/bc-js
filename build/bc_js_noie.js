@@ -222,7 +222,7 @@ class BCJS {
         this.authTokenMatchPath = undefined;
         /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
         this.BCData = { devices: [] };
-        this.API_VERSION = 2;
+        this.API_VERSION = 4;
         this.lastSeenDevices = [];
         this.listeners = [];
         this.lastPushedStatus = types_1.BCDataRefreshStatusCode.Ready;
@@ -890,6 +890,13 @@ class BCJS {
      */
     GenerateTransaction(device, type, data, broadcast) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (data.contractData !== undefined) {
+                // check compatibility
+                const apiVersion = yield this.getVersion();
+                if (apiVersion < 4) {
+                    throw new Error("Unsupported parameter: contract data. Update daemon.");
+                }
+            }
             const id = yield this.getSecureWindowResponse(types_1.PasswordType.WalletPassword);
             this.log("Got auth id:" + id, types_1.LogLevel.debug);
             this.log("Sending object:" + JSON.stringify({ device, walletTypeString: type, transaction: data, password: id }), types_1.LogLevel.debug);
@@ -1023,9 +1030,7 @@ class BCJS {
         return out;
     }
     getServerURL() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return 'https://localhost:1991';
-        });
+        return 'https://localhost:1991';
     }
     getNewSession() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -1036,7 +1041,7 @@ class BCJS {
                 versionNumber: this.API_VERSION
             };
             const axiosConfig = {
-                baseURL: yield this.getServerURL(),
+                baseURL: this.getServerURL(),
                 method: "POST",
                 url: 'SetBCSessionParams',
                 withCredentials: true,
@@ -1051,12 +1056,23 @@ class BCJS {
             return response.data.d_token;
         });
     }
+    getVersion() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.REMOTE_API_VERSION === undefined) {
+                this.log('Getting remote version...', types_1.LogLevel.verbose);
+                const response = yield axios_1.default(this.getServerURL() + '/version');
+                this.REMOTE_API_VERSION = parseInt(response.data, 10);
+                this.log('Got remote version:' + this.REMOTE_API_VERSION, types_1.LogLevel.verbose);
+            }
+            return this.REMOTE_API_VERSION;
+        });
+    }
     getResponsePromised(endpoint, data) {
         const dataWithToken = Object.assign({}, (data || {}), { d_token: this.authToken });
         return new Promise((res, rej) => __awaiter(this, void 0, void 0, function* () {
             if (this.endpointAllowsCredentials === undefined) {
                 try {
-                    const methodCheck = yield axios_1.default({ baseURL: yield this.getServerURL(), data: "{}", method: "POST", url: "/Devices" });
+                    const methodCheck = yield axios_1.default({ baseURL: this.getServerURL(), data: "{}", method: "POST", url: "/Devices" });
                     this.endpointAllowsCredentials = methodCheck.data.daemonError === types_1.DaemonErrorCodes.sessionError;
                 }
                 catch (e) {
@@ -1065,7 +1081,7 @@ class BCJS {
                 }
             }
             const options = {
-                baseURL: yield this.getServerURL(),
+                baseURL: this.getServerURL(),
                 data: JSON.stringify(dataWithToken),
                 method: "POST",
                 url: endpoint,
@@ -1164,12 +1180,12 @@ class BCJS {
             const isIE = window.ActiveXObject || "ActiveXObject" in window;
             let target;
             if (isIE) {
-                window.showModalDialog((yield this.getServerURL()) + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType);
+                window.showModalDialog(this.getServerURL() + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType);
                 parent.postMessage("OKAY", "*");
                 res();
             }
             else {
-                target = window.open((yield this.getServerURL()) + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType, "_blank", "location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500");
+                target = window.open(this.getServerURL() + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType, "_blank", "location=yes,menubar=yes,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height=500");
                 if (target === null)
                     throw TypeError("Could not create popup!");
                 const timer = setInterval(() => {

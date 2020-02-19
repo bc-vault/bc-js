@@ -284,7 +284,7 @@ var BCJS = /** @class */ (function () {
         this.authTokenMatchPath = undefined;
         /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
         this.BCData = { devices: [] };
-        this.API_VERSION = 2;
+        this.API_VERSION = 4;
         this.lastSeenDevices = [];
         this.listeners = [];
         this.lastPushedStatus = types_1.BCDataRefreshStatusCode.Ready;
@@ -1120,16 +1120,25 @@ var BCJS = /** @class */ (function () {
      */
     BCJS.prototype.GenerateTransaction = function (device, type, data, broadcast) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, httpr;
+            var apiVersion, id, httpr;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getSecureWindowResponse(types_1.PasswordType.WalletPassword)];
+                    case 0:
+                        if (!(data.contractData !== undefined)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.getVersion()];
                     case 1:
+                        apiVersion = _a.sent();
+                        if (apiVersion < 4) {
+                            throw new Error("Unsupported parameter: contract data. Update daemon.");
+                        }
+                        _a.label = 2;
+                    case 2: return [4 /*yield*/, this.getSecureWindowResponse(types_1.PasswordType.WalletPassword)];
+                    case 3:
                         id = _a.sent();
                         this.log("Got auth id:" + id, types_1.LogLevel.debug);
                         this.log("Sending object:" + JSON.stringify({ device: device, walletTypeString: type, transaction: data, password: id }), types_1.LogLevel.debug);
                         return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.GenerateTransaction, { device: device, walletTypeString: type, transaction: data, password: id, broadcast: broadcast })];
-                    case 2:
+                    case 4:
                         httpr = _a.sent();
                         this.log(httpr.body, types_1.LogLevel.debug);
                         this.assertIsBCHttpResponse(httpr);
@@ -1314,17 +1323,13 @@ var BCJS = /** @class */ (function () {
         return out;
     };
     BCJS.prototype.getServerURL = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, 'https://localhost:1991'];
-            });
-        });
+        return 'https://localhost:1991';
     };
     BCJS.prototype.getNewSession = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var scp, axiosConfig, _a, response;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var scp, axiosConfig, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         scp = {
                             sessionType: this.authTokenUseCookies ? types_1.SessionAuthType.any : types_1.SessionAuthType.token,
@@ -1332,24 +1337,41 @@ var BCJS = /** @class */ (function () {
                             matchPath: this.authTokenMatchPath,
                             versionNumber: this.API_VERSION
                         };
-                        _a = {};
-                        return [4 /*yield*/, this.getServerURL()];
-                    case 1:
-                        axiosConfig = (_a.baseURL = _b.sent(),
-                            _a.method = "POST",
-                            _a.url = 'SetBCSessionParams',
-                            _a.withCredentials = true,
-                            _a.data = scp,
-                            _a.headers = { "Api-Version": this.API_VERSION },
-                            _a);
+                        axiosConfig = {
+                            baseURL: this.getServerURL(),
+                            method: "POST",
+                            url: 'SetBCSessionParams',
+                            withCredentials: true,
+                            data: scp,
+                            headers: { "Api-Version": this.API_VERSION }
+                        };
                         if (typeof (window) === 'undefined') {
                             axiosConfig.headers.Origin = "https://localhost";
                             axiosConfig.headers.Referer = "https://localhost";
                         }
                         return [4 /*yield*/, axios_1["default"](axiosConfig)];
-                    case 2:
-                        response = _b.sent();
+                    case 1:
+                        response = _a.sent();
                         return [2 /*return*/, response.data.d_token];
+                }
+            });
+        });
+    };
+    BCJS.prototype.getVersion = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(this.REMOTE_API_VERSION === undefined)) return [3 /*break*/, 2];
+                        this.log('Getting remote version...', types_1.LogLevel.verbose);
+                        return [4 /*yield*/, axios_1["default"](this.getServerURL() + '/version')];
+                    case 1:
+                        response = _a.sent();
+                        this.REMOTE_API_VERSION = parseInt(response.data, 10);
+                        this.log('Got remote version:' + this.REMOTE_API_VERSION, types_1.LogLevel.verbose);
+                        _a.label = 2;
+                    case 2: return [2 /*return*/, this.REMOTE_API_VERSION];
                 }
             });
         });
@@ -1358,37 +1380,32 @@ var BCJS = /** @class */ (function () {
         var _this = this;
         var dataWithToken = __assign({}, (data || {}), { d_token: this.authToken });
         return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
-            var methodCheck, _a, _b, e_8, options, _c, responseFunction;
+            var methodCheck, e_8, options, responseFunction;
             var _this = this;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        if (!(this.endpointAllowsCredentials === undefined)) return [3 /*break*/, 5];
-                        _d.label = 1;
+                        if (!(this.endpointAllowsCredentials === undefined)) return [3 /*break*/, 4];
+                        _a.label = 1;
                     case 1:
-                        _d.trys.push([1, 4, , 5]);
-                        _a = axios_1["default"];
-                        _b = {};
-                        return [4 /*yield*/, this.getServerURL()];
-                    case 2: return [4 /*yield*/, _a.apply(void 0, [(_b.baseURL = _d.sent(), _b.data = "{}", _b.method = "POST", _b.url = "/Devices", _b)])];
-                    case 3:
-                        methodCheck = _d.sent();
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, axios_1["default"]({ baseURL: this.getServerURL(), data: "{}", method: "POST", url: "/Devices" })];
+                    case 2:
+                        methodCheck = _a.sent();
                         this.endpointAllowsCredentials = methodCheck.data.daemonError === types_1.DaemonErrorCodes.sessionError;
-                        return [3 /*break*/, 5];
-                    case 4:
-                        e_8 = _d.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_8 = _a.sent();
                         this.log("Daemon offline during initialization.", types_1.LogLevel.debug);
                         return [2 /*return*/, rej(new types_1.DaemonError(e_8))];
-                    case 5:
-                        _c = {};
-                        return [4 /*yield*/, this.getServerURL()];
-                    case 6:
-                        options = (_c.baseURL = _d.sent(),
-                            _c.data = JSON.stringify(dataWithToken),
-                            _c.method = "POST",
-                            _c.url = endpoint,
-                            _c.headers = {},
-                            _c);
+                    case 4:
+                        options = {
+                            baseURL: this.getServerURL(),
+                            data: JSON.stringify(dataWithToken),
+                            method: "POST",
+                            url: endpoint,
+                            headers: {}
+                        };
                         if (this.endpointAllowsCredentials && this.authTokenUseCookies) {
                             options.withCredentials = true;
                             options.headers["Api-Version"] = this.API_VERSION;
@@ -1535,35 +1552,26 @@ var BCJS = /** @class */ (function () {
     BCJS.prototype.showAuthPopup = function (id, passwordType) {
         var _this = this;
         return new Promise(function (res) { return __awaiter(_this, void 0, void 0, function () {
-            var isIE, target, _a, _b, _c, _d, timer_1;
-            return __generator(this, function (_e) {
-                switch (_e.label) {
-                    case 0:
-                        isIE = window.ActiveXObject || "ActiveXObject" in window;
-                        if (!isIE) return [3 /*break*/, 2];
-                        _b = (_a = window).showModalDialog;
-                        return [4 /*yield*/, this.getServerURL()];
-                    case 1:
-                        _b.apply(_a, [(_e.sent()) + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType]);
-                        parent.postMessage("OKAY", "*");
-                        res();
-                        return [3 /*break*/, 4];
-                    case 2:
-                        _d = (_c = window).open;
-                        return [4 /*yield*/, this.getServerURL()];
-                    case 3:
-                        target = _d.apply(_c, [(_e.sent()) + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType, "_blank", "location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500"]);
-                        if (target === null)
-                            throw TypeError("Could not create popup!");
-                        timer_1 = setInterval(function () {
-                            if (target.closed) {
-                                clearInterval(timer_1);
-                                res();
-                            }
-                        }, 500);
-                        _e.label = 4;
-                    case 4: return [2 /*return*/];
+            var isIE, target, timer_1;
+            return __generator(this, function (_a) {
+                isIE = window.ActiveXObject || "ActiveXObject" in window;
+                if (isIE) {
+                    window.showModalDialog(this.getServerURL() + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType);
+                    parent.postMessage("OKAY", "*");
+                    res();
                 }
+                else {
+                    target = window.open(this.getServerURL() + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType, "_blank", "location=yes,menubar=yes,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height=500");
+                    if (target === null)
+                        throw TypeError("Could not create popup!");
+                    timer_1 = setInterval(function () {
+                        if (target.closed) {
+                            clearInterval(timer_1);
+                            res();
+                        }
+                    }, 500);
+                }
+                return [2 /*return*/];
             });
         }); });
     };

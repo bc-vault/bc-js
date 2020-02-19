@@ -97,7 +97,7 @@ export interface HttpResponse{
      */
     to:string;
     /**
-     * @description the transaction fee count (in eth this is the Gas Limit, btc and others, ignored field)
+     * @description the transaction fee count (in eth this is not optional as the Gas Limit, in btc and others it's an ignored field)
      */
     feeCount?:number;
     /**
@@ -113,7 +113,11 @@ export interface HttpResponse{
     /** 
      * @description an optional set of parameters used for offline transaction generation.
     */
-    advanced?:AdvancedOptions
+	advanced?:AdvancedOptions
+	/**
+	 * @description Optional contract data specified for ethereum transactions
+	 */
+	contractData?: hexString
   }
   /**
    * @description The DaemonError class contains a BCHttpResponse and a HttpResponse, depending on where the failure was

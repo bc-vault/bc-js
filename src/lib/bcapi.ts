@@ -23,7 +23,8 @@ export class BCJS {
 	public BCData: BCObject = { devices: [] };
 
 
-	private readonly API_VERSION = 2;
+	private readonly API_VERSION = 4;
+	private REMOTE_API_VERSION?:number;
 	private endpointAllowsCredentials: boolean;
 	private lastSeenDevices: number[] = [];
 	private listeners: Array<(status: BCDataRefreshStatusCode) => void> = []
@@ -677,6 +678,13 @@ export class BCJS {
 	  @returns         The raw transaction hex prefixed with '0x' if operation was successful, otherwise will throw
 	 */
 	public async GenerateTransaction(device: number, type: WalletType, data: TransactionData, broadcast?: boolean): Promise<string> {
+		if(data.contractData !== undefined) {
+			// check compatibility
+			const apiVersion = await this.getVersion();
+			if(apiVersion < 4) {
+				throw new Error("Unsupported parameter: contract data. Update daemon.");
+			}
+		}
 		const id = await this.getSecureWindowResponse(PasswordType.WalletPassword);
 		this.log("Got auth id:" + id, LogLevel.debug);
 		this.log("Sending object:" + JSON.stringify({ device, walletTypeString: type, transaction: data, password: id }), LogLevel.debug);
@@ -808,7 +816,7 @@ export class BCJS {
 		}
 		return out;
 	}
-	private async getServerURL(): Promise<string>{
+	private getServerURL(): string{
 		return 'https://localhost:1991';
 
 	}
@@ -820,7 +828,7 @@ export class BCJS {
 			versionNumber: this.API_VERSION
 		}
 		const axiosConfig: AxiosRequestConfig = {
-			baseURL: await this.getServerURL(),
+			baseURL: this.getServerURL(),
 			method: "POST",
 			url: 'SetBCSessionParams',
 			withCredentials: true,
@@ -834,13 +842,21 @@ export class BCJS {
 		const response = await axios(axiosConfig)
 		return response.data.d_token;
 	}
+	private async getVersion(): Promise<number>{
+		if(this.REMOTE_API_VERSION === undefined) {
+			this.log('Getting remote version...',LogLevel.verbose)
+			const response = await axios(this.getServerURL()+'/version');
+			this.REMOTE_API_VERSION = parseInt(response.data,10);
+			this.log('Got remote version:' + this.REMOTE_API_VERSION,LogLevel.verbose)
+		}
+		return this.REMOTE_API_VERSION;
+	}
 	private getResponsePromised(endpoint: Endpoint, data?: object): Promise<HttpResponse> {
 		const dataWithToken = { ...(data || {}), d_token: this.authToken }
-		
 		return new Promise(async (res, rej) => {
 			if (this.endpointAllowsCredentials === undefined) {
 				try {
-					const methodCheck = await axios({ baseURL: await this.getServerURL(), data: "{}", method: "POST", url: "/Devices" });
+					const methodCheck = await axios({ baseURL: this.getServerURL(), data: "{}", method: "POST", url: "/Devices" });
 					this.endpointAllowsCredentials = methodCheck.data.daemonError === DaemonErrorCodes.sessionError;
 				} catch (e) {
 					this.log("Daemon offline during initialization.", LogLevel.debug)
@@ -848,7 +864,7 @@ export class BCJS {
 				}
 			}
 			const options: AxiosRequestConfig = {
-				baseURL: await this.getServerURL(),
+				baseURL: this.getServerURL(),
 				data: JSON.stringify(dataWithToken),
 				method: "POST",
 				url: endpoint,
@@ -945,11 +961,11 @@ export class BCJS {
 			const isIE = (window as any).ActiveXObject || "ActiveXObject" in window;
 			let target: Window | null;
 			if (isIE) {
-				(window as any).showModalDialog((await this.getServerURL()) + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType);
+				(window as any).showModalDialog(this.getServerURL() + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType);
 				parent.postMessage("OKAY", "*");
 				res();
 			} else {
-				target = window.open((await this.getServerURL()) + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType, "_blank", "location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height:500");
+				target = window.open(this.getServerURL() + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType, "_blank", "location=yes,menubar=yes,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height=500");
 				if (target === null) throw TypeError("Could not create popup!");
 				const timer = setInterval(() => {
 					if ((target as Window).closed) {

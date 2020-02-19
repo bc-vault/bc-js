@@ -95,6 +95,7 @@
         window.status=0;//0 == waiting for next update, 1 == updating, -1 == server connection lost
         window.addEventListener("load",function(){
             window.bc = _bcvault;
+			bc.logLevel = bc.LogLevel.verbose
             bc.startObjectPolling(5000,150);
             window.vm = new Vue({
                 el:"#app",

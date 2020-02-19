@@ -1,6 +1,6 @@
 {
   "name": "bc-vault-js",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Javascript library for interfacing with the BC VAULT daemon via HTTP.",
   "main": "build/es2017/index.js",
   "typings": "build/es2017/index.d.ts",

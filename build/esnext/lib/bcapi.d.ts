@@ -15,6 +15,7 @@ export declare class BCJS {
     /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
     BCData: BCObject;
     private readonly API_VERSION;
+    private REMOTE_API_VERSION?;
     private endpointAllowsCredentials;
     private lastSeenDevices;
     private listeners;
@@ -501,6 +502,7 @@ export declare class BCJS {
     private parseHex;
     private getServerURL;
     private getNewSession;
+    private getVersion;
     private getResponsePromised;
     private assertIsBCHttpResponse;
     private log;
