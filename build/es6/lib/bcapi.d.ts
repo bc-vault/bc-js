@@ -383,6 +383,7 @@ export declare class BCJS {
     getIsAddressValid(device: number, type: WalletType, publicAddress: string): Promise<boolean>;
     /**
       Displays address on device for verification
+      @deprecated You should not use this function as it is not supported on newer firmwares.
       ### Example (es3)
       ```js
       bc.DisplayAddressOnDevice(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
