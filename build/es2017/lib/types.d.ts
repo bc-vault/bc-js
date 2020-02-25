@@ -118,7 +118,7 @@ export interface TransactionData {
     contractData?: hexString;
 }
 /**
- * @description The DaemonError class contains a BCHttpResponse and a HttpResponse, depending on where the failure was
+ * @description The DaemonError class contains a BCHttpResponse, HttpResponse, DaemonHttpResponse, or , depending on where the failure was
  * @description HttpResponse !== undefined if the response code was != 200 or if the request itself failed
  * @description BCHttpResponse !== undefined if the request succeeded but the device returned an error code.
  */
@@ -135,7 +135,11 @@ export declare class DaemonError extends Error {
      * @description DaemonHttpResponse !== undefined if the request reached the daemon, who then reject it for a specified reason.
      */
     DaemonHttpResponse?: DaemonHttpResponse;
-    constructor(data: BCHttpResponse | DaemonHttpResponse | AxiosError, m?: string);
+    /**
+     * @description jsError !==
+     */
+    jsError?: JSErrorCode;
+    constructor(data: BCHttpResponse | DaemonHttpResponse | AxiosError | JSErrorCode, m?: string);
 }
 export interface VersionObject {
     major: number;
@@ -230,14 +234,25 @@ export interface BCDevice {
     locked: boolean;
 }
 /**
- * This is a function which must submit a device or wallet password to the daemon for use in the next call.
+ * Setting this parameter is not needed in the browser, but is required for NodeJS. This is a function which must submit a device or wallet password to the daemon for use in the next call.
  * See showAuthPopup and the popup for implementation ideas. A function of this type must be specified in the constructor of BCJS in node, but in the browser it is ignored/optional.
  * The call you are expected to make can be found in the source of:
  * https://localhost.bc-vault.com:1991/PasswordInput?channelID=1&channelPasswordType=global
  *
  * If the call was not successful, reject the promise. If it was, resolve it with no value.
+ *
+ * The `preAuthReference` object is passed from the PreAuthorizationHandler called previously.
  */
-export declare type AuthorizationHandler = (authID: string, passwordType: PasswordType) => Promise<void>;
+export declare type AuthorizationHandler = (authID: string, passwordType: PasswordType, preAuthReference?: any) => Promise<void>;
+/**
+ * This is a function which is called prior to AuthorizationHandler and prepares it for use. In the browser this function is used to prime a popup window.
+ *
+ * If the call was not successful, reject the promise. If it was, resolve it with a value you expect to be passed to AuthorizationHandler.
+ *
+ * This function does NOT need to be overwritten for NodeJS compatibility.
+ *
+*/
+export declare type PreAuthorizationHandler = (passwordType: PasswordType) => Promise<any>;
 export interface WalletData {
     publicKey: string;
     userData: string;
@@ -279,6 +294,9 @@ export declare enum DaemonErrorCodes {
     sessionError = 1,
     parameterError = 2,
     httpsInvalid = 3
+}
+export declare enum JSErrorCode {
+    popupCreateFailed = 1
 }
 export declare enum WalletDetailsQuery {
     none = 0,

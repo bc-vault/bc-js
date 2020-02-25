@@ -227,7 +227,7 @@ class BCJS {
         this.listeners = [];
         this.lastPushedStatus = types_1.BCDataRefreshStatusCode.Ready;
     }
-    BCJS(authWindowHandler) {
+    BCJS(authWindowHandler, preAuthWindowHandler) {
         if (typeof (window) === 'undefined') {
             // is nodejs, authWindowHandler MUST be specified!
             if (typeof (authWindowHandler) !== 'function') {
@@ -237,6 +237,13 @@ class BCJS {
                 this.authHandler = authWindowHandler;
             }
         }
+        if (typeof (preAuthWindowHandler) !== 'function' && typeof (preAuthWindowHandler) !== 'undefined') {
+            throw new Error('type of preAuthWindowHandler must be either undefined or function');
+        }
+        if (typeof (preAuthWindowHandler) === 'function' && !authWindowHandler) {
+            throw new Error('AuthWindowHandler must be specified if using preAuthWindowHandler.');
+        }
+        this.preAuthHandler = preAuthWindowHandler;
     }
     /**
       Starts polling daemon for changes and updates BCData object
@@ -245,14 +252,14 @@ class BCJS {
         bc.startObjectPolling(150);
         //=> bc.BCData will now be updated if the getDevices array changes
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
         bc.startObjectPolling(150);
         //=> bc.BCData will now be updated if the getDevices array changes
       ```
-    
-      
+
+
     @param deviceInterval how many milliseconds to wait between getDevices pings to daemon
     @throws        Will throw "Already polling" if polling is already taking place.
      */
@@ -271,7 +278,7 @@ class BCJS {
         bc.stopObjectPolling();
         //=> bc.BCData will now not be updated if the getDevices array changes
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
         bc.startObjectPolling(150);
@@ -295,15 +302,15 @@ class BCJS {
         console.log(JSON.stringify(bc.BCData));//Updated
       });
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
         console.log(JSON.stringify(bc.BCData));//Old
         await bc.triggerManualUpdate();
         console.log(JSON.stringify(bc.BCData));//Updated
       ```
-    
-      
+
+
     @param fullUpdate Force an update or only update data if a new device connects or disconnects.
     @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
     @throws        Will throw an AxiosError if the request itself failed or if status code != 200
@@ -380,7 +387,7 @@ class BCJS {
         // => 1
         // => 0
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
         bc.AddBCDataChangedListener(console.log);
@@ -388,8 +395,8 @@ class BCJS {
         // => 1
         // => 0
       ```
-    
-      
+
+
      */
     AddBCDataChangedListener(func) {
         this.listeners.push(func);
@@ -401,14 +408,14 @@ class BCJS {
         console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
         // => {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
         console.log(JSON.stringify(bc.getWalletTypeInfo(1)));
         // => {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}
       ```
-    
-      
+
+
      */
     getWalletTypeInfo(id) {
         return types_1.typeInfoMap.find(x => x.type === id);
@@ -420,14 +427,14 @@ class BCJS {
       bc.getDevices().then(console.log)
       // => [1,2]
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       console.log(await bc.getDevices())
       // => [1,2]
       ```
-    
-      
+
+
     @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
     @throws        Will throw an AxiosError if the request itself failed or if status code != 200
     @returns       An array of Device IDs of currently connected devices
@@ -447,14 +454,14 @@ class BCJS {
       bc.getFirmwareVersion(1).then(console.log)
       // => {"major":1,"minor":0,"revision":1,"date":{"day":17,"month":10,"year":2017},"apiVersion":{"major":1,"minor":0}}
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       console.log(await bc.getFirmwareVersion(1))
       // => {"major":1,"minor":0,"revision":1,"date":{"day":17,"month":10,"year":2017},"apiVersion":{"major":1,"minor":0}}
       ```
-    
-      
+
+
       @param device  DeviceID obtained from getDevices
       @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
       @throws        Will throw an AxiosError if the request itself failed or if status code != 200
@@ -475,14 +482,14 @@ class BCJS {
       bc.getWalletBalance("BitCoin1","1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV").then(console.log)
       // => {"errorCode": 36864,"data": "0"}
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       console.log(await bc.getWalletBalance("BitCoin1","1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"))
       // => {"errorCode": 36864,"data": "0"}
       ```
-    
-      
+
+
       @param device  DeviceID obtained from getDevices
       @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
       @throws        Will throw an AxiosError if the request itself failed or if status code != 200
@@ -503,14 +510,14 @@ class BCJS {
       bc.getAvailableSpace(1).then(console.log)
       // => {"available":4294967295,"complete":4294967295}
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       console.log(await bc.getAvailableSpace(1))
       // => {"available":4294967295,"complete":4294967295}
       ```
-    
-      
+
+
       @param device  DeviceID obtained from getDevices
       @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
       @throws        Will throw an AxiosError if the request itself failed or if status code != 200
@@ -531,14 +538,14 @@ class BCJS {
       bc.getDeviceUID(1).then(console.log)
       // => "0x9d8e1b33b93d7c27fb4fc17857e22fb529937947152ca7af441095949b20ba02"
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       console.log(await bc.getDeviceUID(1))
       // => "0x9d8e1b33b93d7c27fb4fc17857e22fb529937947152ca7af441095949b20ba02"
       ```
-    
-      
+
+
       @param device  DeviceID obtained from getDevices
       @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
       @throws        Will throw an AxiosError if the request itself failed or if status code != 200
@@ -572,14 +579,14 @@ class BCJS {
       bc.getSupportedWalletTypes("BitCoin1").then(console.log)
       // => [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       console.log(await bc.getSupportedWalletTypes(1))
       // => [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]
       ```
-    
-      
+
+
       @param device  DeviceID obtained from getDevices
       @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
       @throws        Will throw an AxiosError if the request itself failed or if status code != 200
@@ -600,14 +607,14 @@ class BCJS {
       bc.getActiveWalletTypes(1).then(console.log)
       // => ["BitCoin1","Ethereum"]
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       console.log(await bc.getActiveWalletTypes(1))
       // => ["BitCoin1","Ethereum"]
       ```
-    
-      
+
+
       @param device  DeviceID obtained from getDevices
       @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
       @throws        Will throw an AxiosError if the request itself failed or if status code != 200
@@ -629,7 +636,7 @@ class BCJS {
       bc.getWalletsOfType(1,"BitCoin1").then(console.log)
       // => ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       console.log(await bc.getWalletsOfType(1,"BitCoin1"))
@@ -656,14 +663,14 @@ class BCJS {
       bc.getBatchWalletDetails(1,"BitCoin1").then(console.log)
       // => an array of type WalletBatchDataResponse
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       console.log(await bc.getBatchWalletDetails(1,"BitCoin1"))
       // => an array of type WalletBatchDataResponse
       ```
-    
-      
+
+
       @param device           DeviceID obtained from getDevices
       @param walletTypes      WalletTypes obtained from getActiveWalletTypes or getSupportedWalletTypes
       @param walletDetails    Query details flags, can be combined with binary OR
@@ -690,14 +697,14 @@ class BCJS {
       bc.getWalletUserData(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",true).then(console.log)
       // => "This is my mining wallet!"
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       console.log(await bc.getWalletUserData(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",true))
       // => "This is my mining wallet!"
       ```
-    
-      
+
+
       @param device  DeviceID obtained from getDevices
       @param type    WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
       @param publicAddress publicAddress obtained from getWalletsOfType
@@ -724,14 +731,14 @@ class BCJS {
       bc.CopyWalletToType(1,"BitCoin1","BcCash01","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
       // => "true"
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       await bc.CopyWalletToType(1,"BitCoin1","BcCash01","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
       // => true
       ```
-    
-      
+
+
       @param device  DeviceID obtained from getDevices
       @param type    WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
       @param newType WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
@@ -756,14 +763,14 @@ class BCJS {
       bc.getIsAddressValid(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
       // => "true"
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       await bc.getIsAddressValid(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
       // => true
       ```
-    
-      
+
+
       @param device  DeviceID obtained from getDevices
       @param type    WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
       @param publicAddress publicAddress obtained from getWalletsOfType
@@ -786,14 +793,14 @@ class BCJS {
       bc.DisplayAddressOnDevice(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc").then(console.log)
       // => "true"
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       await bc.DisplayAddressOnDevice(1,"BitCoin1","1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc")
       // => true
       ```
-    
-      
+
+
       @param device  DeviceID obtained from getDevices
       @param type    WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
       @param publicAddress publicAddress obtained from getWalletsOfType
@@ -816,14 +823,14 @@ class BCJS {
       bc.GenerateWallet(1,"BitCoin1").then(console.log)
       // => "true"
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       await bc.GenerateWallet(1,"BitCoin1")
       // => true
       ```
-    
-      
+
+
       @param device  DeviceID obtained from getDevices
       @param type    WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
       @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
@@ -844,13 +851,13 @@ class BCJS {
       ```js
       bc.EnterGlobalPin(1).then(console.log)
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       await bc.EnterGlobalPin(1)
       ```
-    
-      
+
+
       @param device  DeviceID obtained from getDevices
       @throws        Will throw a DaemonError if the status code of the request was rejected by the server for any reason
       @throws        Will throw an AxiosError if the request itself failed or if status code != 200
@@ -872,15 +879,15 @@ class BCJS {
       bc.GenerateTransaction(1,"BitCoin1",trxOptions).then(console.log)
       // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       var trxOptions = {from:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",to:"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc",feeCount:0,feePrice:"50000",amount:"500000000"};
       await bc.GenerateTransaction(1,"BitCoin1",trxOptions)
       // generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address
       ```
-    
-      
+
+
       @param device    DeviceID obtained from getDevices
       @param type      WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
       @param data      Transaction data object
@@ -916,14 +923,14 @@ class BCJS {
       bc.SignData(1,bc.WalletType.ethereum,"0x9283099a29556fcf8fff5b2cea2d4f67cb7a7a8b","0x4920616d20627574206120737461636b2065786368616e676520706f7374").then(console.log)
       // => "0x..."
       ```
-    
+
       ### Example (es6 (node and most browsers))
       ```js
       await bc.SignData(1,bc.WalletType.ethereum,"0x9283099a29556fcf8fff5b2cea2d4f67cb7a7a8b","0x4920616d20627574206120737461636b2065786368616e676520706f7374")
       // => "0x..."
       ```
-    
-      
+
+
       @param device  DeviceID obtained from getDevices
       @param type    WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes
       @param publicAddress publicAddress obtained from getWalletsOfType
@@ -1176,21 +1183,18 @@ class BCJS {
             listener.call(null, args);
         }
     }
-    showAuthPopup(id, passwordType) {
+    showAuthPopup(id, passwordType, popupReference) {
         return new Promise((res) => __awaiter(this, void 0, void 0, function* () {
             const isIE = window.ActiveXObject || "ActiveXObject" in window;
-            let target;
             if (isIE) {
                 window.showModalDialog(this.getServerURL() + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType);
                 parent.postMessage("OKAY", "*");
                 res();
             }
             else {
-                target = window.open(this.getServerURL() + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType, "_blank", "location=yes,menubar=yes,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height=500");
-                if (target === null)
-                    throw TypeError("Could not create popup!");
+                popupReference.location.href = this.getServerURL() + "/PasswordInput?channelID=" + id + "&channelPasswordType=" + passwordType;
                 const timer = setInterval(() => {
-                    if (target.closed) {
+                    if (popupReference.closed) {
                         clearInterval(timer);
                         res();
                     }
@@ -1199,17 +1203,30 @@ class BCJS {
         }));
     }
     getSecureWindowResponse(passwordType) {
-        return new Promise((res) => __awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
+            let preAuthObj = undefined;
+            if (this.preAuthHandler === undefined) {
+                const isIE = window.ActiveXObject || "ActiveXObject" in window;
+                if (window && !isIE) {
+                    preAuthObj = window.open('127.0.0.1', '_blank', 'location=yes,menubar=yes,resizable=no,scrollbars=no,status=no,toolbar=no,centerscreen=yes,width=750,height=500');
+                    if (preAuthObj === null) {
+                        throw new types_1.DaemonError(types_1.JSErrorCode.popupCreateFailed, 'Could not create popup!');
+                    }
+                }
+            }
+            else {
+                preAuthObj = this.preAuthHandler(passwordType);
+            }
             const x = yield this.getResponsePromised(types_1.Endpoint.GetAuthID);
             const id = x.body;
             if (this.authHandler === undefined) {
-                yield this.showAuthPopup(id, passwordType);
+                yield this.showAuthPopup(id, passwordType, preAuthObj);
             }
             else {
-                yield this.authHandler(id, passwordType);
+                yield this.authHandler(id, passwordType, preAuthObj);
             }
-            res(id);
-        }));
+            return id;
+        });
     }
 }
 exports.BCJS = BCJS;
@@ -1249,7 +1266,7 @@ var StellarCreateAccount;
     StellarCreateAccount[StellarCreateAccount["FetchFromNetwork"] = 255] = "FetchFromNetwork";
 })(StellarCreateAccount = exports.StellarCreateAccount || (exports.StellarCreateAccount = {}));
 /**
- * @description The DaemonError class contains a BCHttpResponse and a HttpResponse, depending on where the failure was
+ * @description The DaemonError class contains a BCHttpResponse, HttpResponse, DaemonHttpResponse, or , depending on where the failure was
  * @description HttpResponse !== undefined if the response code was != 200 or if the request itself failed
  * @description BCHttpResponse !== undefined if the request succeeded but the device returned an error code.
  */
@@ -1270,6 +1287,10 @@ class DaemonError extends Error {
         }
         if (data['daemonError'] !== undefined) {
             this.DaemonHttpResponse = data;
+            return;
+        }
+        if (typeof (data) === typeof (JSErrorCode.popupCreateFailed)) {
+            this.jsError = data;
             return;
         }
         throw new Error('Error could not be parsed, this should never happen.');
@@ -1378,6 +1399,10 @@ var DaemonErrorCodes;
     DaemonErrorCodes[DaemonErrorCodes["parameterError"] = 2] = "parameterError";
     DaemonErrorCodes[DaemonErrorCodes["httpsInvalid"] = 3] = "httpsInvalid";
 })(DaemonErrorCodes = exports.DaemonErrorCodes || (exports.DaemonErrorCodes = {}));
+var JSErrorCode;
+(function (JSErrorCode) {
+    JSErrorCode[JSErrorCode["popupCreateFailed"] = 1] = "popupCreateFailed";
+})(JSErrorCode = exports.JSErrorCode || (exports.JSErrorCode = {}));
 var WalletDetailsQuery;
 (function (WalletDetailsQuery) {
     WalletDetailsQuery[WalletDetailsQuery["none"] = 0] = "none";

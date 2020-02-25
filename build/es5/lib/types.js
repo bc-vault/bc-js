@@ -42,7 +42,7 @@ var StellarCreateAccount;
     StellarCreateAccount[StellarCreateAccount["FetchFromNetwork"] = 255] = "FetchFromNetwork";
 })(StellarCreateAccount = exports.StellarCreateAccount || (exports.StellarCreateAccount = {}));
 /**
- * @description The DaemonError class contains a BCHttpResponse and a HttpResponse, depending on where the failure was
+ * @description The DaemonError class contains a BCHttpResponse, HttpResponse, DaemonHttpResponse, or , depending on where the failure was
  * @description HttpResponse !== undefined if the response code was != 200 or if the request itself failed
  * @description BCHttpResponse !== undefined if the request succeeded but the device returned an error code.
  */
@@ -65,6 +65,10 @@ var DaemonError = /** @class */ (function (_super) {
         }
         if (data['daemonError'] !== undefined) {
             _this.DaemonHttpResponse = data;
+            return _this;
+        }
+        if (typeof (data) === typeof (JSErrorCode.popupCreateFailed)) {
+            _this.jsError = data;
             return _this;
         }
         throw new Error('Error could not be parsed, this should never happen.');
@@ -175,6 +179,10 @@ var DaemonErrorCodes;
     DaemonErrorCodes[DaemonErrorCodes["parameterError"] = 2] = "parameterError";
     DaemonErrorCodes[DaemonErrorCodes["httpsInvalid"] = 3] = "httpsInvalid";
 })(DaemonErrorCodes = exports.DaemonErrorCodes || (exports.DaemonErrorCodes = {}));
+var JSErrorCode;
+(function (JSErrorCode) {
+    JSErrorCode[JSErrorCode["popupCreateFailed"] = 1] = "popupCreateFailed";
+})(JSErrorCode = exports.JSErrorCode || (exports.JSErrorCode = {}));
 var WalletDetailsQuery;
 (function (WalletDetailsQuery) {
     WalletDetailsQuery[WalletDetailsQuery["none"] = 0] = "none";
