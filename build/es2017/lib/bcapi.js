@@ -23,6 +23,24 @@ class BCJS {
         this.listeners = [];
         this.lastPushedStatus = types_1.BCDataRefreshStatusCode.Ready;
     }
+    /**
+     * The BCJS constructor.
+     * @param authWindowHandler Setting this parameter is not needed in the browser, but is required for NodeJS. This is a function which must submit a device or wallet password to the daemon for use in the next call.
+     * See showAuthPopup and the popup for implementation ideas. A function of this type must be specified in the constructor of BCJS in node, but in the browser it is ignored/optional.
+     * The call you are expected to make can be found in the source of:
+     * https://localhost.bc-vault.com:1991/PasswordInput?channelID=1&channelPasswordType=global
+     *
+     * If the call was not successful, reject the promise. If it was, resolve it with no value.
+     *
+     * The `preAuthReference` object is passed from the `preAuthWindowHandler` called previously.
+     *
+     * @param preAuthWindowHandler This is a function which is called prior to `authWindowHandler` and prepares it for use. In the browser this function is used to prime a popup window.
+     *
+     * If the call was not successful, reject the promise. If it was, resolve it with a value you expect to be passed to `authWindowHandler`.
+     *
+     * This function does NOT need to be overwritten for NodeJS compatibility.
+     *
+     */
     BCJS(authWindowHandler, preAuthWindowHandler) {
         if (typeof (window) === 'undefined') {
             // is nodejs, authWindowHandler MUST be specified!

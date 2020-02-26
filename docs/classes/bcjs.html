@@ -232,7 +232,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:201</li>
+									<li>Defined in src/lib/bcapi.ts:220</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -292,16 +292,34 @@ bc.triggerManualUpdate();
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:35</li>
+									<li>Defined in src/lib/bcapi.ts:54</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>The BCJS constructor.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> authWindowHandler: <a href="../globals.html#authorizationhandler" class="tsd-signature-type">AuthorizationHandler</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Setting this parameter is not needed in the browser, but is required for NodeJS. This is a function which must submit a device or wallet password to the daemon for use in the next call.
+											See showAuthPopup and the popup for implementation ideas. A function of this type must be specified in the constructor of BCJS in node, but in the browser it is ignored/optional.
+											The call you are expected to make can be found in the source of:
+										<a href="https://localhost.bc-vault.com:1991/PasswordInput?channelID=1&amp;channelPasswordType=global">https://localhost.bc-vault.com:1991/PasswordInput?channelID=1&amp;channelPasswordType=global</a></p>
+										<p>If the call was not successful, reject the promise. If it was, resolve it with no value.</p>
+										<p>The <code>preAuthReference</code> object is passed from the <code>preAuthWindowHandler</code> called previously.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> preAuthWindowHandler: <a href="../globals.html#preauthorizationhandler" class="tsd-signature-type">PreAuthorizationHandler</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>This is a function which is called prior to <code>authWindowHandler</code> and prepares it for use. In the browser this function is used to prime a popup window.</p>
+										<p>If the call was not successful, reject the promise. If it was, resolve it with a value you expect to be passed to <code>authWindowHandler</code>.</p>
+										<p>This function does NOT need to be overwritten for NodeJS compatibility.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -318,7 +336,7 @@ bc.triggerManualUpdate();
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:540</li>
+									<li>Defined in src/lib/bcapi.ts:559</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -383,7 +401,7 @@ bc.triggerManualUpdate();
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:602</li>
+									<li>Defined in src/lib/bcapi.ts:621</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -448,7 +466,7 @@ bc.triggerManualUpdate();
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:656</li>
+									<li>Defined in src/lib/bcapi.ts:675</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -498,7 +516,7 @@ bc.triggerManualUpdate();
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:689</li>
+									<li>Defined in src/lib/bcapi.ts:708</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -568,7 +586,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:632</li>
+									<li>Defined in src/lib/bcapi.ts:651</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -624,7 +642,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:732</li>
+									<li>Defined in src/lib/bcapi.ts:751</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -692,7 +710,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:416</li>
+									<li>Defined in src/lib/bcapi.ts:435</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -742,7 +760,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:325</li>
+									<li>Defined in src/lib/bcapi.ts:344</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -792,7 +810,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:472</li>
+									<li>Defined in src/lib/bcapi.ts:491</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -854,7 +872,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:351</li>
+									<li>Defined in src/lib/bcapi.ts:370</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -904,7 +922,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:243</li>
+									<li>Defined in src/lib/bcapi.ts:262</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -945,7 +963,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:270</li>
+									<li>Defined in src/lib/bcapi.ts:289</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -995,7 +1013,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:571</li>
+									<li>Defined in src/lib/bcapi.ts:590</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1057,7 +1075,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:390</li>
+									<li>Defined in src/lib/bcapi.ts:409</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1107,7 +1125,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:298</li>
+									<li>Defined in src/lib/bcapi.ts:317</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1157,7 +1175,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:220</li>
+									<li>Defined in src/lib/bcapi.ts:239</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1195,7 +1213,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:505</li>
+									<li>Defined in src/lib/bcapi.ts:524</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1261,7 +1279,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:443</li>
+									<li>Defined in src/lib/bcapi.ts:462</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1318,7 +1336,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:70</li>
+									<li>Defined in src/lib/bcapi.ts:89</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1364,7 +1382,7 @@ bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-stri
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:92</li>
+									<li>Defined in src/lib/bcapi.ts:111</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1398,7 +1416,7 @@ bc.stopObjectPolling();
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:122</li>
+									<li>Defined in src/lib/bcapi.ts:141</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1450,7 +1468,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:749</li>
+									<li>Defined in src/lib/bcapi.ts:768</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1494,7 +1512,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:790</li>
+									<li>Defined in src/lib/bcapi.ts:809</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1541,7 +1559,7 @@ bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyw
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/bcapi.ts:771</li>
+									<li>Defined in src/lib/bcapi.ts:790</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
