@@ -135,59 +135,89 @@
 					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L15">lib/bcapi.ts:15</a></li>
+							<li>Defined in src/lib/bcapi.ts:15</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Get/Set token to be used for device actions</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="authtokenexpireseconds" class="tsd-anchor"></a>
 					<h3>auth<wbr>Token<wbr>Expire<wbr>Seconds</h3>
-					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<wbr>Expire<wbr>Seconds<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;3600</span></div>
+					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<wbr>Expire<wbr>Seconds<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 3600</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L19">lib/bcapi.ts:19</a></li>
+							<li>Defined in src/lib/bcapi.ts:19</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>How long each auth grant will last in seconds since the last request.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="authtokenmatchpath" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> auth<wbr>Token<wbr>Match<wbr>Path</h3>
-					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<wbr>Match<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;undefined</span></div>
+					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<wbr>Match<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L21">lib/bcapi.ts:21</a></li>
+							<li>Defined in src/lib/bcapi.ts:21</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The path to match the auth-token against. This is a security feature and allows you to fine tune access. Default is: undefined (don&#39;t check the full path, note: specifying this may require you to allow <a href="https://www.w3.org/TR/referrer-policy/#referrer-policy-origin-when-cross-origin">https://www.w3.org/TR/referrer-policy/#referrer-policy-origin-when-cross-origin</a> on your webpage depending on which browsers you target)</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="authtokenusecookies" class="tsd-anchor"></a>
 					<h3>auth<wbr>Token<wbr>Use<wbr>Cookies</h3>
-					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<wbr>Use<wbr>Cookies<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
+					<div class="tsd-signature tsd-kind-icon">auth<wbr>Token<wbr>Use<wbr>Cookies<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L17">lib/bcapi.ts:17</a></li>
+							<li>Defined in src/lib/bcapi.ts:17</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Use cookies for session management. If set to false no cookies will be set and the session will be lost when &#39;authToken&#39; is unloaded. It will need to be manually specified. It will be automatically refreshed if a request fails due to a token error.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="ispolling" class="tsd-anchor"></a>
 					<h3>is<wbr>Polling</h3>
-					<div class="tsd-signature tsd-kind-icon">is<wbr>Polling<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Polling<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L11">lib/bcapi.ts:11</a></li>
+							<li>Defined in src/lib/bcapi.ts:11</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Is BCData object polling already taking place?</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="loglevel" class="tsd-anchor"></a>
 					<h3>log<wbr>Level</h3>
-					<div class="tsd-signature tsd-kind-icon">log<wbr>Level<span class="tsd-signature-symbol">:</span> <a href="../enums/loglevel.html" class="tsd-signature-type">LogLevel</a><span class="tsd-signature-symbol"> =&nbsp;LogLevel.debug</span></div>
+					<div class="tsd-signature tsd-kind-icon">log<wbr>Level<span class="tsd-signature-symbol">:</span> <a href="../enums/loglevel.html" class="tsd-signature-type">LogLevel</a><span class="tsd-signature-symbol"> = LogLevel.debug</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L13">lib/bcapi.ts:13</a></li>
+							<li>Defined in src/lib/bcapi.ts:13</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Set Logging verbosity</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -196,22 +226,41 @@
 					<a name="addbcdatachangedlistener" class="tsd-anchor"></a>
 					<h3>AddBCData<wbr>Changed<wbr>Listener</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">AddBCData<wbr>Changed<wbr>Listener<span class="tsd-signature-symbol">(</span>func<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">AddBCData<wbr>Changed<wbr>Listener<span class="tsd-signature-symbol">(</span>func<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>status<span class="tsd-signature-symbol">: </span><a href="../enums/bcdatarefreshstatuscode.html" class="tsd-signature-type">BCDataRefreshStatusCode</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L201">lib/bcapi.ts:201</a></li>
+									<li>Defined in src/lib/bcapi.ts:201</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Adds a status changed listener for updates to the BCData object</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.AddBCDataChangedListener(<span class="hljs-built_in">console</span>.log);
+bc.triggerManualUpdate();
+<span class="hljs-comment">// =&gt; 1</span>
+<span class="hljs-comment">// =&gt; 0</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js">bc.AddBCDataChangedListener(<span class="hljs-built_in">console</span>.log);
+bc.triggerManualUpdate();
+<span class="hljs-comment">// =&gt; 1</span>
+<span class="hljs-comment">// =&gt; 0</span></code></pre>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>func: <span class="tsd-signature-type">function</span></h5>
+									<h5>func: <span class="tsd-signature-symbol">(</span>status<span class="tsd-signature-symbol">: </span><a href="../enums/bcdatarefreshstatuscode.html" class="tsd-signature-type">BCDataRefreshStatusCode</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+											<ul class="tsd-signatures tsd-kind-type-literal">
 												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>status<span class="tsd-signature-symbol">: </span><a href="../enums/bcdatarefreshstatuscode.html" class="tsd-signature-type">BCDataRefreshStatusCode</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
@@ -237,13 +286,13 @@
 					<a name="bcjs-1" class="tsd-anchor"></a>
 					<h3>BCJS</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">BCJS<span class="tsd-signature-symbol">(</span>authWindowHandler<span class="tsd-signature-symbol">: </span><a href="../globals.html#authorizationhandler" class="tsd-signature-type">AuthorizationHandler</a>, preAuthWindowHandler<span class="tsd-signature-symbol">: </span><a href="../globals.html#preauthorizationhandler" class="tsd-signature-type">PreAuthorizationHandler</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">BCJS<span class="tsd-signature-symbol">(</span>authWindowHandler<span class="tsd-signature-symbol">?: </span><a href="../globals.html#authorizationhandler" class="tsd-signature-type">AuthorizationHandler</a>, preAuthWindowHandler<span class="tsd-signature-symbol">?: </span><a href="../globals.html#preauthorizationhandler" class="tsd-signature-type">PreAuthorizationHandler</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L35">lib/bcapi.ts:35</a></li>
+									<li>Defined in src/lib/bcapi.ts:35</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -269,22 +318,54 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L540">lib/bcapi.ts:540</a></li>
+									<li>Defined in src/lib/bcapi.ts:540</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Copies a wallet private key to another walletType (in case of a fork etc.)</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"BcCash01"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; "true"</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-keyword">await</span> bc.CopyWalletToType(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"BcCash01"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
+<span class="hljs-comment">// =&gt; true</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 								<li>
 									<h5>oldType: <a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a></h5>
 								</li>
 								<li>
 									<h5>newType: <a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes</p>
+									</div>
 								</li>
 								<li>
 									<h5>publicAddress: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>publicAddress obtained from getWalletsOfType</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -302,19 +383,54 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L602">lib/bcapi.ts:602</a></li>
+									<li>Defined in src/lib/bcapi.ts:602</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Displays address on device for verification</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>deprecated</dt>
+									<dd><p>You should not use this function as it is not supported on newer firmwares.</p>
+										<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+											<h3>Example (es3)</h3>
+										</a>
+										<pre><code class="language-js">bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; "true"</span></code></pre>
+										<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+											<h3>Example (es6 (node and most browsers))</h3>
+										</a>
+										<pre><code class="language-js"><span class="hljs-keyword">await</span> bc.DisplayAddressOnDevice(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
+<span class="hljs-comment">// =&gt; true</span></code></pre>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 								<li>
 									<h5>type: <a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes</p>
+									</div>
 								</li>
 								<li>
 									<h5>publicAddress: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>publicAddress obtained from getWalletsOfType</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -332,16 +448,40 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L656">lib/bcapi.ts:656</a></li>
+									<li>Defined in src/lib/bcapi.ts:656</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Prompt the user to unlock the device</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.EnterGlobalPin(<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)</code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-keyword">await</span> bc.EnterGlobalPin(<span class="hljs-number">1</span>)</code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> passwordType: <a href="../enums/passwordtype.html" class="tsd-signature-type">PasswordType</a><span class="tsd-signature-symbol"> =&nbsp;PasswordType.GlobalPassword</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> passwordType: <a href="../enums/passwordtype.html" class="tsd-signature-type">PasswordType</a><span class="tsd-signature-symbol"> = PasswordType.GlobalPassword</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -352,28 +492,65 @@
 					<a name="generatetransaction" class="tsd-anchor"></a>
 					<h3>Generate<wbr>Transaction</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">Generate<wbr>Transaction<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, type<span class="tsd-signature-symbol">: </span><a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a>, data<span class="tsd-signature-symbol">: </span><a href="../interfaces/transactiondata.html" class="tsd-signature-type">TransactionData</a>, broadcast<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">Generate<wbr>Transaction<span class="tsd-signature-symbol">(</span>device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, type<span class="tsd-signature-symbol">: </span><a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a>, data<span class="tsd-signature-symbol">: </span><a href="../interfaces/transactiondata.html" class="tsd-signature-type">TransactionData</a>, broadcast<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L689">lib/bcapi.ts:689</a></li>
+									<li>Defined in src/lib/bcapi.ts:689</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Generates a new transaction on the device</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js"><span class="hljs-keyword">var</span> trxOptions = {<span class="hljs-attr">from</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">to</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">feeCount</span>:<span class="hljs-number">0</span>,<span class="hljs-attr">feePrice</span>:<span class="hljs-string">"50000"</span>,<span class="hljs-attr">amount</span>:<span class="hljs-string">"500000000"</span>};
+bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,trxOptions).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-keyword">var</span> trxOptions = {<span class="hljs-attr">from</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">to</span>:<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-attr">feeCount</span>:<span class="hljs-number">0</span>,<span class="hljs-attr">feePrice</span>:<span class="hljs-string">"50000"</span>,<span class="hljs-attr">amount</span>:<span class="hljs-string">"500000000"</span>};
+<span class="hljs-keyword">await</span> bc.GenerateTransaction(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,trxOptions)
+<span class="hljs-comment">// generates a transaction of type bitCoinCash which uses 0.00050000 BCH as fee and sends 5 BCH back to the same address</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 								<li>
 									<h5>type: <a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes</p>
+									</div>
 								</li>
 								<li>
 									<h5>data: <a href="../interfaces/transactiondata.html" class="tsd-signature-type">TransactionData</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Transaction data object</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> broadcast: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Whether to broadcast the transaction to the blockchain automatically</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -391,16 +568,45 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L632">lib/bcapi.ts:632</a></li>
+									<li>Defined in src/lib/bcapi.ts:632</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Generates a new wallet on the device</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; "true"</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-keyword">await</span> bc.GenerateWallet(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>)
+<span class="hljs-comment">// =&gt; true</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 								<li>
 									<h5>type: <a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -418,22 +624,57 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L732">lib/bcapi.ts:732</a></li>
+									<li>Defined in src/lib/bcapi.ts:732</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Signs data on the device</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.SignData(<span class="hljs-number">1</span>,bc.WalletType.ethereum,<span class="hljs-string">"0x9283099a29556fcf8fff5b2cea2d4f67cb7a7a8b"</span>,<span class="hljs-string">"0x4920616d20627574206120737461636b2065786368616e676520706f7374"</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; "0x..."</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-keyword">await</span> bc.SignData(<span class="hljs-number">1</span>,bc.WalletType.ethereum,<span class="hljs-string">"0x9283099a29556fcf8fff5b2cea2d4f67cb7a7a8b"</span>,<span class="hljs-string">"0x4920616d20627574206120737461636b2065786368616e676520706f7374"</span>)
+<span class="hljs-comment">// =&gt; "0x..."</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 								<li>
 									<h5>type: <a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes</p>
+									</div>
 								</li>
 								<li>
 									<h5>publicAddress: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>publicAddress obtained from getWalletsOfType</p>
+									</div>
 								</li>
 								<li>
 									<h5>data: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Message data as a hex string prefixed with 0x</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -451,13 +692,39 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L416">lib/bcapi.ts:416</a></li>
+									<li>Defined in src/lib/bcapi.ts:416</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets a list of WalletTypes that are actually used on a specific device(have at least one wallet)</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.getActiveWalletTypes(<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; ["BitCoin1","Ethereum"]</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getActiveWalletTypes(<span class="hljs-number">1</span>))
+<span class="hljs-comment">// =&gt; ["BitCoin1","Ethereum"]</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -475,13 +742,39 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L325">lib/bcapi.ts:325</a></li>
+									<li>Defined in src/lib/bcapi.ts:325</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the available space on a specific device</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.getAvailableSpace(<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; {"available":4294967295,"complete":4294967295}</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getAvailableSpace(<span class="hljs-number">1</span>))
+<span class="hljs-comment">// =&gt; {"available":4294967295,"complete":4294967295}</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/spaceobject.html" class="tsd-signature-type">SpaceObject</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -499,19 +792,51 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L472">lib/bcapi.ts:472</a></li>
+									<li>Defined in src/lib/bcapi.ts:472</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the requested data about wallets stored on the device. Details to query can be specified through the final parameter, which is set to query all details by default.</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.getBatchWalletDetails(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; an array of type WalletBatchDataResponse</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getBatchWalletDetails(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>))
+<span class="hljs-comment">// =&gt; an array of type WalletBatchDataResponse</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 								<li>
 									<h5>walletTypes: <a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>WalletTypes obtained from getActiveWalletTypes or getSupportedWalletTypes</p>
+									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> walletDetails: <a href="../enums/walletdetailsquery.html" class="tsd-signature-type">WalletDetailsQuery</a><span class="tsd-signature-symbol"> =&nbsp;WalletDetailsQuery.all</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> walletDetails: <a href="../enums/walletdetailsquery.html" class="tsd-signature-type">WalletDetailsQuery</a><span class="tsd-signature-symbol"> = WalletDetailsQuery.all</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Query details flags, can be combined with binary OR</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/walletbatchdataresponse.html" class="tsd-signature-type">WalletBatchDataResponse</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -529,13 +854,39 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L351">lib/bcapi.ts:351</a></li>
+									<li>Defined in src/lib/bcapi.ts:351</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets an ID unique to each device. Will not persist device wipes and will change according to the HTTP Origin. This ID will persist reboots and requires global-pin authorization.</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.getDeviceUID(<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; "0x9d8e1b33b93d7c27fb4fc17857e22fb529937947152ca7af441095949b20ba02"</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getDeviceUID(<span class="hljs-number">1</span>))
+<span class="hljs-comment">// =&gt; "0x9d8e1b33b93d7c27fb4fc17857e22fb529937947152ca7af441095949b20ba02"</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#hexstring" class="tsd-signature-type">hexString</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -553,9 +904,32 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L243">lib/bcapi.ts:243</a></li>
+									<li>Defined in src/lib/bcapi.ts:243</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the currently connected devices.</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.getDevices().then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; [1,2]</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getDevices())
+<span class="hljs-comment">// =&gt; [1,2]</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>An array of Device IDs of currently connected devices</p>
 						</li>
@@ -571,13 +945,39 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L270">lib/bcapi.ts:270</a></li>
+									<li>Defined in src/lib/bcapi.ts:270</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the firmware version of a specific device.</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.getFirmwareVersion(<span class="hljs-number">1</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; {"major":1,"minor":0,"revision":1,"date":{"day":17,"month":10,"year":2017},"apiVersion":{"major":1,"minor":0}}</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getFirmwareVersion(<span class="hljs-number">1</span>))
+<span class="hljs-comment">// =&gt; {"major":1,"minor":0,"revision":1,"date":{"day":17,"month":10,"year":2017},"apiVersion":{"major":1,"minor":0}}</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/versionobject.html" class="tsd-signature-type">VersionObject</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -595,19 +995,51 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L571">lib/bcapi.ts:571</a></li>
+									<li>Defined in src/lib/bcapi.ts:571</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Check if address is valid for a specific WalletType</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; "true"</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-keyword">await</span> bc.getIsAddressValid(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>)
+<span class="hljs-comment">// =&gt; true</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 								<li>
 									<h5>type: <a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes</p>
+									</div>
 								</li>
 								<li>
 									<h5>publicAddress: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>publicAddress obtained from getWalletsOfType</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -625,13 +1057,39 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L390">lib/bcapi.ts:390</a></li>
+									<li>Defined in src/lib/bcapi.ts:390</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the supported WalletTypes on a specific device</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.getSupportedWalletTypes(<span class="hljs-string">"BitCoin1"</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getSupportedWalletTypes(<span class="hljs-number">1</span>))
+<span class="hljs-comment">// =&gt; [  "BitCoin1",  "BcCash01",  "Ethereum",  "LiteCoi1",  "Dash0001", ...]</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -649,9 +1107,32 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L298">lib/bcapi.ts:298</a></li>
+									<li>Defined in src/lib/bcapi.ts:298</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the balance in currency-specific minimum units for the specified wallet from a web-service.</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.getWalletBalance(<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; {"errorCode": 36864,"data": "0"}</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletBalance(<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1PekCrsopzENYBa82YpmmBtJcsNgu4PqEV"</span>))
+<span class="hljs-comment">// =&gt; {"errorCode": 36864,"data": "0"}</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -676,19 +1157,31 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L220">lib/bcapi.ts:220</a></li>
+									<li>Defined in src/lib/bcapi.ts:220</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns WalletTypeInfo(name, ticker, etc...) for a specified WalletType if it exists</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.getWalletTypeInfo(<span class="hljs-number">1</span>)));
+<span class="hljs-comment">// =&gt; {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.getWalletTypeInfo(<span class="hljs-number">1</span>)));
+<span class="hljs-comment">// =&gt; {"type":"BcCash01","name":"Bitcoin Cash","ticker":"BCH"}</span></code></pre>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>id: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/wallettypeinfo.html" class="tsd-signature-type">WalletTypeInfo</a>
-								<span class="tsd-signature-symbol"> | </span>
-								<span class="tsd-signature-type">undefined</span>
-							</h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/wallettypeinfo.html" class="tsd-signature-type">WalletTypeInfo</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -702,22 +1195,55 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L505">lib/bcapi.ts:505</a></li>
+									<li>Defined in src/lib/bcapi.ts:505</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>deprecated</dt>
+									<dd><p>since 1.3.2, use getBatchWalletDetails instead
+										Gets the user data associated with a publicAddress on this device</p>
+										<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+											<h3>Example (es3)</h3>
+										</a>
+										<pre><code class="language-js">bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-literal">true</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; "This is my mining wallet!"</span></code></pre>
+										<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+											<h3>Example (es6 (node and most browsers))</h3>
+										</a>
+										<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletUserData(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>,<span class="hljs-string">"1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"</span>,<span class="hljs-literal">true</span>))
+<span class="hljs-comment">// =&gt; "This is my mining wallet!"</span></code></pre>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 								<li>
 									<h5>type: <a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes</p>
+									</div>
 								</li>
 								<li>
 									<h5>publicAddress: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>publicAddress obtained from getWalletsOfType</p>
+									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> shouldParseHex: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> shouldParseHex: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -735,16 +1261,46 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L443">lib/bcapi.ts:443</a></li>
+									<li>Defined in src/lib/bcapi.ts:443</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>deprecated</dt>
+									<dd><p>since 1.3.2, use getBatchWalletDetails instead
+										Gets an array(string) of public keys of a specific WalletTypes on a device</p>
+										<a href="#example-es5-old-browsers" id="example-es5-old-browsers" style="color: inherit; text-decoration: none;">
+											<h3>Example (es5 (old browsers))</h3>
+										</a>
+										<pre><code class="language-js">bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>).then(<span class="hljs-built_in">console</span>.log)
+<span class="hljs-comment">// =&gt; ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]</span></code></pre>
+										<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+											<h3>Example (es6 (node and most browsers))</h3>
+										</a>
+										<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> bc.getWalletsOfType(<span class="hljs-number">1</span>,<span class="hljs-string">"BitCoin1"</span>))
+<span class="hljs-comment">// =&gt; ["1271DpdZ7iM6sXRasvjAQ6Hg2zw8bS3ADc"]</span></code></pre>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>device: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DeviceID obtained from getDevices</p>
+									</div>
 								</li>
 								<li>
 									<h5>type: <a href="../enums/wallettype.html" class="tsd-signature-type">WalletType</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>WalletType obtained from getActiveWalletTypes or getSupportedWalletTypes</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -762,13 +1318,36 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L70">lib/bcapi.ts:70</a></li>
+									<li>Defined in src/lib/bcapi.ts:70</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Starts polling daemon for changes and updates BCData object</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.startObjectPolling(<span class="hljs-number">150</span>);
+<span class="hljs-comment">//=&gt; bc.BCData will now be updated if the getDevices array changes</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js">bc.startObjectPolling(<span class="hljs-number">150</span>);
+<span class="hljs-comment">//=&gt; bc.BCData will now be updated if the getDevices array changes</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw &quot;Already polling&quot; if polling is already taking place.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> deviceInterval: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;150</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> deviceInterval: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 150</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>how many milliseconds to wait between getDevices pings to daemon</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -785,9 +1364,26 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L92">lib/bcapi.ts:92</a></li>
+									<li>Defined in src/lib/bcapi.ts:92</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Stops polling daemon for changes</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js">bc.startObjectPolling(<span class="hljs-number">150</span>);
+bc.stopObjectPolling();
+<span class="hljs-comment">//=&gt; bc.BCData will now not be updated if the getDevices array changes</span></code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js">bc.startObjectPolling(<span class="hljs-number">150</span>);
+bc.stopObjectPolling();
+<span class="hljs-comment">//=&gt; bc.BCData will now not be updated if the getDevices array changes</span></code></pre>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -802,13 +1398,42 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L122">lib/bcapi.ts:122</a></li>
+									<li>Defined in src/lib/bcapi.ts:122</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Triggers a manual update to BCData.</p>
+									<a href="#example-es3" id="example-es3" style="color: inherit; text-decoration: none;">
+										<h3>Example (es3)</h3>
+									</a>
+									<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.BCData));<span class="hljs-comment">//Old</span>
+bc.triggerManualUpdate().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.BCData));<span class="hljs-comment">//Updated</span>
+});</code></pre>
+								</div>
+								<a href="#example-es6-node-and-most-browsers" id="example-es6-node-and-most-browsers" style="color: inherit; text-decoration: none;">
+									<h3>Example (es6 (node and most browsers))</h3>
+								</a>
+								<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.BCData));<span class="hljs-comment">//Old</span>
+<span class="hljs-keyword">await</span> bc.triggerManualUpdate();
+<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bc.BCData));<span class="hljs-comment">//Updated</span></code></pre>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Will throw a DaemonError if the status code of the request was rejected by the server for any reason</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Will throw an AxiosError if the request itself failed or if status code != 200</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> fullUpdate: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> fullUpdate: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Force an update or only update data if a new device connects or disconnects.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -819,23 +1444,23 @@
 					<a name="web3_getaccounts" class="tsd-anchor"></a>
 					<h3>web3_<wbr><wbr>Get<wbr>Accounts</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">web3_<wbr><wbr>Get<wbr>Accounts<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">web3_<wbr><wbr>Get<wbr>Accounts<span class="tsd-signature-symbol">(</span>cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L749">lib/bcapi.ts:749</a></li>
+									<li>Defined in src/lib/bcapi.ts:749</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>cb: <span class="tsd-signature-type">function</span></h5>
+									<h5>cb: <span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
@@ -863,13 +1488,13 @@
 					<a name="web3_signpersonalmessage" class="tsd-anchor"></a>
 					<h3>web3_<wbr>sign<wbr>Personal<wbr>Message</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">web3_<wbr>sign<wbr>Personal<wbr>Message<span class="tsd-signature-symbol">(</span>msgParams<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">web3_<wbr>sign<wbr>Personal<wbr>Message<span class="tsd-signature-symbol">(</span>msgParams<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L790">lib/bcapi.ts:790</a></li>
+									<li>Defined in src/lib/bcapi.ts:790</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -878,11 +1503,11 @@
 									<h5>msgParams: <span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li>
-									<h5>cb: <span class="tsd-signature-type">function</span></h5>
+									<h5>cb: <span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
@@ -910,13 +1535,13 @@
 					<a name="web3_signtransaction" class="tsd-anchor"></a>
 					<h3>web3_<wbr>sign<wbr>Transaction</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">web3_<wbr>sign<wbr>Transaction<span class="tsd-signature-symbol">(</span>txParams<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">web3_<wbr>sign<wbr>Transaction<span class="tsd-signature-symbol">(</span>txParams<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, cb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L771">lib/bcapi.ts:771</a></li>
+									<li>Defined in src/lib/bcapi.ts:771</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -925,11 +1550,11 @@
 									<h5>txParams: <span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li>
-									<h5>cb: <span class="tsd-signature-type">function</span></h5>
+									<h5>cb: <span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
@@ -962,16 +1587,21 @@
 					<div class="tsd-signature tsd-kind-icon">BCData<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L23">lib/bcapi.ts:23</a></li>
+							<li>Defined in src/lib/bcapi.ts:23</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling</p>
+						</div>
+					</div>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 						<a name="bcdata.devices" class="tsd-anchor"></a>
 						<h3>devices</h3>
-						<div class="tsd-signature tsd-kind-icon">devices<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
+						<div class="tsd-signature tsd-kind-icon">devices<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/bcapi.ts#L23">lib/bcapi.ts:23</a></li>
+								<li>Defined in src/lib/bcapi.ts:23</li>
 							</ul>
 						</aside>
 					</section>
@@ -988,39 +1618,6 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum">
-						<a href="../enums/addresstype.html" class="tsd-kind-icon">Address<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/bcdatarefreshstatuscode.html" class="tsd-kind-icon">BCData<wbr>Refresh<wbr>Status<wbr>Code</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/daemonerrorcodes.html" class="tsd-kind-icon">Daemon<wbr>Error<wbr>Codes</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/endpoint.html" class="tsd-kind-icon">Endpoint</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/jserrorcode.html" class="tsd-kind-icon">JSError<wbr>Code</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/loglevel.html" class="tsd-kind-icon">Log<wbr>Level</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/passwordtype.html" class="tsd-kind-icon">Password<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/sessionauthtype.html" class="tsd-kind-icon">Session<wbr>Auth<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/stellarcreateaccount.html" class="tsd-kind-icon">Stellar<wbr>Create<wbr>Account</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/walletdetailsquery.html" class="tsd-kind-icon">Wallet<wbr>Details<wbr>Query</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/wallettype.html" class="tsd-kind-icon">Wallet<wbr>Type</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
@@ -1129,90 +1726,6 @@
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class">
-						<a href="daemonerror.html" class="tsd-kind-icon">Daemon<wbr>Error</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedbnb.html" class="tsd-kind-icon">AdvancedBNB</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedbtc.html" class="tsd-kind-icon">AdvancedBTC</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedeos.html" class="tsd-kind-icon">AdvancedEOS</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedeth.html" class="tsd-kind-icon">AdvancedETH</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedoptions.html" class="tsd-kind-icon">Advanced<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedtrx.html" class="tsd-kind-icon">AdvancedTRX</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedxlm.html" class="tsd-kind-icon">AdvancedXLM</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedxrp.html" class="tsd-kind-icon">AdvancedXRP</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/apiversionobject.html" class="tsd-kind-icon">Api<wbr>Version<wbr>Object</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/bcdevice.html" class="tsd-kind-icon">BCDevice</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/bchttpresponse.html" class="tsd-kind-icon">BCHttp<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/bcobject.html" class="tsd-kind-icon">BCObject</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/daemonhttpresponse.html" class="tsd-kind-icon">Daemon<wbr>Http<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/dateobject.html" class="tsd-kind-icon">Date<wbr>Object</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/httpresponse.html" class="tsd-kind-icon">Http<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/sessioncreateparameters.html" class="tsd-kind-icon">Session<wbr>Create<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/spaceobject.html" class="tsd-kind-icon">Space<wbr>Object</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/transactiondata.html" class="tsd-kind-icon">Transaction<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/utxo.html" class="tsd-kind-icon">Utxo</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/versionobject.html" class="tsd-kind-icon">Version<wbr>Object</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/walletbatchdataresponse.html" class="tsd-kind-icon">Wallet<wbr>Batch<wbr>Data<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/walletdata.html" class="tsd-kind-icon">Wallet<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/wallettypeinfo.html" class="tsd-kind-icon">Wallet<wbr>Type<wbr>Info</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#authorizationhandler" class="tsd-kind-icon">Authorization<wbr>Handler</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#preauthorizationhandler" class="tsd-kind-icon">Pre<wbr>Authorization<wbr>Handler</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#hexstring" class="tsd-kind-icon">hex<wbr>String</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#typeinfomap" class="tsd-kind-icon">type<wbr>Info<wbr>Map</a>
-					</li>
 				</ul>
 			</nav>
 		</div>
@@ -1290,7 +1803,7 @@
                 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-        ga('create', 'UA-118197678-1', '');
+        ga('create', 'UA-118197678-1', 'auto');
         ga('send', 'pageview');
     </script>
 </body>

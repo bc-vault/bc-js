@@ -64,11 +64,26 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<dl class="tsd-comment-tags">
+						<dt>description</dt>
+						<dd><p>The DaemonError class contains a BCHttpResponse, HttpResponse, DaemonHttpResponse, or , depending on where the failure was</p>
+						</dd>
+						<dt>description</dt>
+						<dd><p>HttpResponse !== undefined if the response code was != 200 or if the request itself failed</p>
+						</dd>
+						<dt>description</dt>
+						<dd><p>BCHttpResponse !== undefined if the request succeeded but the device returned an error code.</p>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="tsd-signature-type">Error</span>
+						<a href="daemonerror.html#error" class="tsd-signature-type">Error</a>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">DaemonError</span>
@@ -115,7 +130,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/types.ts#L143">lib/types.ts:143</a></li>
+									<li>Defined in src/lib/types.ts:143</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -124,7 +139,7 @@
 									<h5>data: <a href="../interfaces/bchttpresponse.html" class="tsd-signature-type">BCHttpResponse</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/daemonhttpresponse.html" class="tsd-signature-type">DaemonHttpResponse</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">AxiosError</span><span class="tsd-signature-symbol"> | </span><a href="../enums/jserrorcode.html" class="tsd-signature-type">JSErrorCode</a></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> m: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;DaemonError&quot;</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> m: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;DaemonError&quot;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="daemonerror.html" class="tsd-signature-type">DaemonError</a></h4>
@@ -140,9 +155,16 @@
 					<div class="tsd-signature tsd-kind-icon">BCHttp<wbr>Response<span class="tsd-signature-symbol">:</span> <a href="daemonerror.html#bchttpresponse" class="tsd-signature-type">BCHttpResponse</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/types.ts#L135">lib/types.ts:135</a></li>
+							<li>Defined in src/lib/types.ts:135</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><p>BCHttpResponse !== undefined if the request succeeded but the device returned an error code.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="daemonhttpresponse" class="tsd-anchor"></a>
@@ -150,9 +172,16 @@
 					<div class="tsd-signature tsd-kind-icon">Daemon<wbr>Http<wbr>Response<span class="tsd-signature-symbol">:</span> <a href="daemonerror.html#daemonhttpresponse" class="tsd-signature-type">DaemonHttpResponse</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/types.ts#L139">lib/types.ts:139</a></li>
+							<li>Defined in src/lib/types.ts:139</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><p>DaemonHttpResponse !== undefined if the request reached the daemon, who then reject it for a specified reason.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="httpresponse" class="tsd-anchor"></a>
@@ -160,9 +189,16 @@
 					<div class="tsd-signature tsd-kind-icon">Http<wbr>Response<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AxiosError</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/types.ts#L131">lib/types.ts:131</a></li>
+							<li>Defined in src/lib/types.ts:131</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><p>HttpResponse !== undefined if the request failed, this means the daemon could not be reached.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="jserror" class="tsd-anchor"></a>
@@ -170,18 +206,25 @@
 					<div class="tsd-signature tsd-kind-icon">js<wbr>Error<span class="tsd-signature-symbol">:</span> <a href="../enums/jserrorcode.html" class="tsd-signature-type">JSErrorCode</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bc-vault/bc-js/blob/b796235/src/lib/types.ts#L143">lib/types.ts:143</a></li>
+							<li>Defined in src/lib/types.ts:143</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>description</dt>
+							<dd><p>jsError !==</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="message" class="tsd-anchor"></a>
 					<h3>message</h3>
 					<div class="tsd-signature tsd-kind-icon">message<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from Error.message</p>
+						<p>Inherited from <a href="daemonerror.html">DaemonError</a>.<a href="daemonerror.html#message">message</a></p>
 						<ul>
-							<li>Defined in C:/Users/zan/Desktop/dev/RS/bc-js/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:974</li>
+							<li>Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:974</li>
 						</ul>
 					</aside>
 				</section>
@@ -190,9 +233,9 @@
 					<h3>name</h3>
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from Error.name</p>
+						<p>Inherited from <a href="daemonerror.html">DaemonError</a>.<a href="daemonerror.html#name">name</a></p>
 						<ul>
-							<li>Defined in C:/Users/zan/Desktop/dev/RS/bc-js/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:973</li>
+							<li>Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:973</li>
 						</ul>
 					</aside>
 				</section>
@@ -201,9 +244,9 @@
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> stack</h3>
 					<div class="tsd-signature tsd-kind-icon">stack<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from Error.stack</p>
+						<p>Inherited from <a href="daemonerror.html">DaemonError</a>.<a href="daemonerror.html#stack">stack</a></p>
 						<ul>
-							<li>Defined in C:/Users/zan/Desktop/dev/RS/bc-js/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:975</li>
+							<li>Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:975</li>
 						</ul>
 					</aside>
 				</section>
@@ -213,7 +256,7 @@
 					<div class="tsd-signature tsd-kind-icon">Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ErrorConstructor</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in C:/Users/zan/Desktop/dev/RS/bc-js/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:984</li>
+							<li>Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:984</li>
 						</ul>
 					</aside>
 				</section>
@@ -229,42 +272,6 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum">
-						<a href="../enums/addresstype.html" class="tsd-kind-icon">Address<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/bcdatarefreshstatuscode.html" class="tsd-kind-icon">BCData<wbr>Refresh<wbr>Status<wbr>Code</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/daemonerrorcodes.html" class="tsd-kind-icon">Daemon<wbr>Error<wbr>Codes</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/endpoint.html" class="tsd-kind-icon">Endpoint</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/jserrorcode.html" class="tsd-kind-icon">JSError<wbr>Code</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/loglevel.html" class="tsd-kind-icon">Log<wbr>Level</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/passwordtype.html" class="tsd-kind-icon">Password<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/sessionauthtype.html" class="tsd-kind-icon">Session<wbr>Auth<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/stellarcreateaccount.html" class="tsd-kind-icon">Stellar<wbr>Create<wbr>Account</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/walletdetailsquery.html" class="tsd-kind-icon">Wallet<wbr>Details<wbr>Query</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/wallettype.html" class="tsd-kind-icon">Wallet<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="bcjs.html" class="tsd-kind-icon">BCJS</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
@@ -301,87 +308,6 @@
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedbnb.html" class="tsd-kind-icon">AdvancedBNB</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedbtc.html" class="tsd-kind-icon">AdvancedBTC</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedeos.html" class="tsd-kind-icon">AdvancedEOS</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedeth.html" class="tsd-kind-icon">AdvancedETH</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedoptions.html" class="tsd-kind-icon">Advanced<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedtrx.html" class="tsd-kind-icon">AdvancedTRX</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedxlm.html" class="tsd-kind-icon">AdvancedXLM</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/advancedxrp.html" class="tsd-kind-icon">AdvancedXRP</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/apiversionobject.html" class="tsd-kind-icon">Api<wbr>Version<wbr>Object</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/bcdevice.html" class="tsd-kind-icon">BCDevice</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/bchttpresponse.html" class="tsd-kind-icon">BCHttp<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/bcobject.html" class="tsd-kind-icon">BCObject</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/daemonhttpresponse.html" class="tsd-kind-icon">Daemon<wbr>Http<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/dateobject.html" class="tsd-kind-icon">Date<wbr>Object</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/httpresponse.html" class="tsd-kind-icon">Http<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/sessioncreateparameters.html" class="tsd-kind-icon">Session<wbr>Create<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/spaceobject.html" class="tsd-kind-icon">Space<wbr>Object</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/transactiondata.html" class="tsd-kind-icon">Transaction<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/utxo.html" class="tsd-kind-icon">Utxo</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/versionobject.html" class="tsd-kind-icon">Version<wbr>Object</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/walletbatchdataresponse.html" class="tsd-kind-icon">Wallet<wbr>Batch<wbr>Data<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/walletdata.html" class="tsd-kind-icon">Wallet<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/wallettypeinfo.html" class="tsd-kind-icon">Wallet<wbr>Type<wbr>Info</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#authorizationhandler" class="tsd-kind-icon">Authorization<wbr>Handler</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#preauthorizationhandler" class="tsd-kind-icon">Pre<wbr>Authorization<wbr>Handler</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#hexstring" class="tsd-kind-icon">hex<wbr>String</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#typeinfomap" class="tsd-kind-icon">type<wbr>Info<wbr>Map</a>
-					</li>
 				</ul>
 			</nav>
 		</div>
@@ -459,7 +385,7 @@
                 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-        ga('create', 'UA-118197678-1', '');
+        ga('create', 'UA-118197678-1', 'auto');
         ga('send', 'pageview');
     </script>
 </body>
