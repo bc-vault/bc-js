@@ -38,10 +38,10 @@ export declare class BCJS {
      *
      * If the call was not successful, reject the promise. If it was, resolve it with a value you expect to be passed to `authWindowHandler`.
      *
-     * This function does NOT need to be overwritten for NodeJS compatibility.
+     * This function is completely optional and can be left undefined.
      *
      */
-    BCJS(authWindowHandler?: AuthorizationHandler, preAuthWindowHandler?: PreAuthorizationHandler): void;
+    constructor(authWindowHandler?: AuthorizationHandler, preAuthWindowHandler?: PreAuthorizationHandler);
     /**
       Starts polling daemon for changes and updates BCData object
       ### Example (es3)

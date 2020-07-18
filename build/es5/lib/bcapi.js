@@ -78,7 +78,25 @@ var types_1 = require("./types");
 var es6_promise_1 = require("es6-promise");
 es6_promise_1.polyfill();
 var BCJS = /** @class */ (function () {
-    function BCJS() {
+    /**
+     * The BCJS constructor.
+     * @param authWindowHandler Setting this parameter is not needed in the browser, but is required for NodeJS. This is a function which must submit a device or wallet password to the daemon for use in the next call.
+     * See showAuthPopup and the popup for implementation ideas. A function of this type must be specified in the constructor of BCJS in node, but in the browser it is ignored/optional.
+     * The call you are expected to make can be found in the source of:
+     * https://localhost.bc-vault.com:1991/PasswordInput?channelID=1&channelPasswordType=global
+     *
+     * If the call was not successful, reject the promise. If it was, resolve it with no value.
+     *
+     * The `preAuthReference` object is passed from the `preAuthWindowHandler` called previously.
+     *
+     * @param preAuthWindowHandler This is a function which is called prior to `authWindowHandler` and prepares it for use. In the browser this function is used to prime a popup window.
+     *
+     * If the call was not successful, reject the promise. If it was, resolve it with a value you expect to be passed to `authWindowHandler`.
+     *
+     * This function is completely optional and can be left undefined.
+     *
+     */
+    function BCJS(authWindowHandler, preAuthWindowHandler) {
         /** Is BCData object polling already taking place? */
         this.isPolling = false;
         /** Set Logging verbosity */
@@ -95,26 +113,6 @@ var BCJS = /** @class */ (function () {
         this.lastSeenDevices = [];
         this.listeners = [];
         this.lastPushedStatus = types_1.BCDataRefreshStatusCode.Ready;
-    }
-    /**
-     * The BCJS constructor.
-     * @param authWindowHandler Setting this parameter is not needed in the browser, but is required for NodeJS. This is a function which must submit a device or wallet password to the daemon for use in the next call.
-     * See showAuthPopup and the popup for implementation ideas. A function of this type must be specified in the constructor of BCJS in node, but in the browser it is ignored/optional.
-     * The call you are expected to make can be found in the source of:
-     * https://localhost.bc-vault.com:1991/PasswordInput?channelID=1&channelPasswordType=global
-     *
-     * If the call was not successful, reject the promise. If it was, resolve it with no value.
-     *
-     * The `preAuthReference` object is passed from the `preAuthWindowHandler` called previously.
-     *
-     * @param preAuthWindowHandler This is a function which is called prior to `authWindowHandler` and prepares it for use. In the browser this function is used to prime a popup window.
-     *
-     * If the call was not successful, reject the promise. If it was, resolve it with a value you expect to be passed to `authWindowHandler`.
-     *
-     * This function does NOT need to be overwritten for NodeJS compatibility.
-     *
-     */
-    BCJS.prototype.BCJS = function (authWindowHandler, preAuthWindowHandler) {
         if (typeof (window) === 'undefined') {
             // is nodejs, authWindowHandler MUST be specified!
             if (typeof (authWindowHandler) !== 'function') {
@@ -131,7 +129,7 @@ var BCJS = /** @class */ (function () {
             throw new Error('AuthWindowHandler must be specified if using preAuthWindowHandler.');
         }
         this.preAuthHandler = preAuthWindowHandler;
-    };
+    }
     /**
       Starts polling daemon for changes and updates BCData object
       ### Example (es3)
@@ -685,7 +683,11 @@ var BCJS = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.WalletsOfTypes, { device: device, walletTypes: walletTypes, walletDetails: walletDetails })];
+                    case 0:
+                        if (walletTypes.length === 0) {
+                            return [2 /*return*/, []];
+                        }
+                        return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.WalletsOfTypes, { device: device, walletTypes: walletTypes, walletDetails: walletDetails })];
                     case 1:
                         httpr = _a.sent();
                         this.assertIsBCHttpResponse(httpr);
@@ -1307,6 +1309,9 @@ var BCJS = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         ret = [];
+                        if (activeTypes.length === 0) {
+                            return [2 /*return*/, []];
+                        }
                         return [4 /*yield*/, this.getBatchWalletDetails(deviceID, activeTypes)];
                     case 1:
                         response = _b.sent();
@@ -1412,7 +1417,6 @@ var BCJS = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        preAuthObj = undefined;
                         if (this.preAuthHandler === undefined) {
                             isIE = window.ActiveXObject || "ActiveXObject" in window;
                             if (window && !isIE) {

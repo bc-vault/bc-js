@@ -48,10 +48,10 @@ export class BCJS {
  *
  * If the call was not successful, reject the promise. If it was, resolve it with a value you expect to be passed to `authWindowHandler`.
  *
- * This function does NOT need to be overwritten for NodeJS compatibility.
+ * This function is completely optional and can be left undefined.
  *
  */
-	public BCJS(authWindowHandler?: AuthorizationHandler,preAuthWindowHandler?: PreAuthorizationHandler) {
+	public constructor(authWindowHandler?: AuthorizationHandler,preAuthWindowHandler?: PreAuthorizationHandler) {
 		if (typeof (window) === 'undefined') {
 			// is nodejs, authWindowHandler MUST be specified!
 			if (typeof (authWindowHandler) !== 'function') {
@@ -490,6 +490,9 @@ export class BCJS {
 	 */
 	public async getBatchWalletDetails(device: number, walletTypes: WalletType[], walletDetails: WalletDetailsQuery = WalletDetailsQuery.all): Promise<WalletBatchDataResponse[]> {
 		let httpr;
+		if(walletTypes.length === 0){
+			return [];
+		}
 		httpr = await this.getResponsePromised(Endpoint.WalletsOfTypes, { device, walletTypes, walletDetails });
 		this.assertIsBCHttpResponse(httpr);
 		httpr.body.data = httpr.body.data.map(x=>{
@@ -947,6 +950,9 @@ export class BCJS {
 	}
 	private async getWallets(deviceID: number, activeTypes: WalletType[]): Promise<WalletData[]> {
 		const ret: WalletData[] = [];
+		if(activeTypes.length === 0){
+			return [];
+		}
 		const response = await this.getBatchWalletDetails(deviceID, activeTypes);
 		for (const detailItem of response) {
 			ret.push({
@@ -1004,7 +1010,7 @@ export class BCJS {
 	}
 
 	private async getSecureWindowResponse(passwordType: PasswordType): Promise<string> {
-		let preAuthObj:any = undefined;
+		let preAuthObj:any;
 		if (this.preAuthHandler === undefined) {
 			const isIE = (window as any).ActiveXObject || "ActiveXObject" in window;
 			if(window && !isIE){
