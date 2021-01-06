@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -11,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BCJS = void 0;
 const axios_1 = __importDefault(require("axios"));
 const types_1 = require("./types");
 const es6_promise_1 = require("es6-promise");
@@ -510,7 +512,7 @@ class BCJS {
             httpr = yield this.getResponsePromised(types_1.Endpoint.WalletsOfTypes, { device, walletTypes, walletDetails });
             this.assertIsBCHttpResponse(httpr);
             httpr.body.data = httpr.body.data.map(x => {
-                return Object.assign({}, x, { userDataRaw: x.userData, userData: this.parseHex(x.userData) });
+                return Object.assign(Object.assign({}, x), { userDataRaw: x.userData, userData: this.parseHex(x.userData) });
             });
             return httpr.body.data;
         });
@@ -902,7 +904,7 @@ class BCJS {
         });
     }
     getResponsePromised(endpoint, data) {
-        const dataWithToken = Object.assign({}, (data || {}), { d_token: this.authToken });
+        const dataWithToken = Object.assign(Object.assign({}, (data || {})), { d_token: this.authToken });
         return new Promise((res, rej) => __awaiter(this, void 0, void 0, function* () {
             if (this.endpointAllowsCredentials === undefined) {
                 try {
@@ -936,7 +938,7 @@ class BCJS {
                     this.log(`Creating new session.`, types_1.LogLevel.debug);
                     this.authToken = yield this.getNewSession();
                     this.log(`New session created: ${this.authToken}`, types_1.LogLevel.debug);
-                    options.data = JSON.stringify(Object.assign({}, dataWithToken, { d_token: this.authToken }));
+                    options.data = JSON.stringify(Object.assign(Object.assign({}, dataWithToken), { d_token: this.authToken }));
                     axios_1.default(options).then((authenticatedResponse) => {
                         if (authenticatedResponse.data.daemonError) {
                             return rej(new types_1.DaemonError(authenticatedResponse.data));

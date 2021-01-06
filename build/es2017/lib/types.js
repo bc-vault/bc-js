@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.WalletDetailsQuery = exports.JSErrorCode = exports.DaemonErrorCodes = exports.SessionAuthType = exports.PasswordType = exports.BCDataRefreshStatusCode = exports.typeInfoMap = exports.WalletType = exports.Endpoint = exports.DaemonError = exports.StellarCreateAccount = exports.AddressType = exports.LogLevel = void 0;
 var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["verbose"] = 1] = "verbose";

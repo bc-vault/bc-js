@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BCJS = void 0;
 const axios_1 = require("axios");
 const types_1 = require("./types");
 const es6_promise_1 = require("es6-promise");
@@ -480,7 +481,7 @@ class BCJS {
         httpr = await this.getResponsePromised(types_1.Endpoint.WalletsOfTypes, { device, walletTypes, walletDetails });
         this.assertIsBCHttpResponse(httpr);
         httpr.body.data = httpr.body.data.map(x => {
-            return Object.assign({}, x, { userDataRaw: x.userData, userData: this.parseHex(x.userData) });
+            return Object.assign(Object.assign({}, x), { userDataRaw: x.userData, userData: this.parseHex(x.userData) });
         });
         return httpr.body.data;
     }
@@ -845,7 +846,7 @@ class BCJS {
         return this.REMOTE_API_VERSION;
     }
     getResponsePromised(endpoint, data) {
-        const dataWithToken = Object.assign({}, (data || {}), { d_token: this.authToken });
+        const dataWithToken = Object.assign(Object.assign({}, (data || {})), { d_token: this.authToken });
         return new Promise(async (res, rej) => {
             if (this.endpointAllowsCredentials === undefined) {
                 try {
@@ -879,7 +880,7 @@ class BCJS {
                     this.log(`Creating new session.`, types_1.LogLevel.debug);
                     this.authToken = await this.getNewSession();
                     this.log(`New session created: ${this.authToken}`, types_1.LogLevel.debug);
-                    options.data = JSON.stringify(Object.assign({}, dataWithToken, { d_token: this.authToken }));
+                    options.data = JSON.stringify(Object.assign(Object.assign({}, dataWithToken), { d_token: this.authToken }));
                     axios_1.default(options).then((authenticatedResponse) => {
                         if (authenticatedResponse.data.daemonError) {
                             return rej(new types_1.DaemonError(authenticatedResponse.data));
