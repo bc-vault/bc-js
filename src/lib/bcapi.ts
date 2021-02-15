@@ -721,7 +721,7 @@ export class BCJS {
 				throw new Error("Unsupported parameter: memo. Update daemon.");
 			}
 		}
-		if(data.advanced?.eth?.chainID !== undefined){
+		if(data.advanced && data.advanced.eth && data.advanced.eth.chainID !== undefined){
 			if(apiVersion < 5) {
 				throw new Error("Unsupported parameter: advanced.eth.chainID. Update daemon.");
 			}
