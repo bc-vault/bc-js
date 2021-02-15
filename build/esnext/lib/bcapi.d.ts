@@ -307,7 +307,7 @@ export declare class BCJS {
      */
     getWalletsOfType(device: number, type: WalletType): Promise<string[]>;
     /**
-      Gets the requested data about wallets stored on the device. Details to query can be specified through the final parameter, which is set to query all details by default.
+      Gets the requested data about wallets stored on the device. Details to query can be specified through the final parameter, which is set to query all details by default. Anything not queried will be filled with the empty value of that type, ie '' for strings and 0 for numbers.
       ### Example (es3)
       ```js
       bc.getBatchWalletDetails(1,"BitCoin1").then(console.log)

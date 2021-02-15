@@ -23,7 +23,7 @@ export class BCJS {
 	public BCData: BCObject = { devices: [] };
 
 
-	private readonly API_VERSION = 4;
+	private readonly API_VERSION = 5;
 	private REMOTE_API_VERSION?:number;
 	private endpointAllowsCredentials: boolean;
 	private lastSeenDevices: number[] = [];
@@ -467,7 +467,7 @@ export class BCJS {
 		return httpr.body.data as string[];
 	}
 	/**
-	  Gets the requested data about wallets stored on the device. Details to query can be specified through the final parameter, which is set to query all details by default.
+	  Gets the requested data about wallets stored on the device. Details to query can be specified through the final parameter, which is set to query all details by default. Anything not queried will be filled with the empty value of that type, ie '' for strings and 0 for numbers.
 	  ### Example (es3)
 	  ```js
 	  bc.getBatchWalletDetails(1,"BitCoin1").then(console.log)
@@ -709,12 +709,25 @@ export class BCJS {
 	  @returns         The raw transaction hex prefixed with '0x' if operation was successful, otherwise will throw
 	 */
 	public async GenerateTransaction(device: number, type: WalletType, data: TransactionData, broadcast?: boolean): Promise<string> {
+		const apiVersion = await this.getVersion();
 		if(data.contractData !== undefined) {
 			// check compatibility
-			const apiVersion = await this.getVersion();
 			if(apiVersion < 4) {
 				throw new Error("Unsupported parameter: contract data. Update daemon.");
 			}
+		}
+		if(data.memo){
+			if(apiVersion < 5) {
+				throw new Error("Unsupported parameter: memo. Update daemon.");
+			}
+		}
+		if(data.advanced?.eth?.chainID !== undefined){
+			if(apiVersion < 5) {
+				throw new Error("Unsupported parameter: advanced.eth.chainID. Update daemon.");
+			}
+		}
+		if(!data.feeCount){
+			data.feeCount =0;
 		}
 		const id = await this.getSecureWindowResponse(PasswordType.WalletPassword);
 		this.log("Got auth id:" + id, LogLevel.debug);
@@ -940,8 +953,9 @@ export class BCJS {
 		});
 	}
 	private assertIsBCHttpResponse(httpr: HttpResponse): void {
-
-		if ((httpr.body as BCHttpResponse).errorCode !== 0x9000) throw new DaemonError(httpr.body as BCHttpResponse);
+		if ((httpr.body as BCHttpResponse).errorCode !== 0x9000){
+			throw new DaemonError(httpr.body as BCHttpResponse)
+		}
 	}
 	private log(msg: any, level = LogLevel.verbose): void {
 		if (this.logLevel <= level) {

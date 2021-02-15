@@ -120,6 +120,8 @@ var WalletType;
     WalletType["dash"] = "Dash0001";
     WalletType["dogeCoin"] = "DogeCoi1";
     WalletType["groestlcoin"] = "Groestl1";
+    WalletType["velas"] = "Velas__1";
+    WalletType["cardano"] = "Cardano1";
     WalletType["erc20Salt"] = "E2Salt_1";
     WalletType["erc20Polymath"] = "E2Polym1";
     WalletType["erc200x"] = "E2_0X__1";
@@ -145,6 +147,8 @@ exports.typeInfoMap = [
     { type: WalletType.binanceCoin, name: "Binance", ticker: "BNB" },
     { type: WalletType.tron, name: "TRON", ticker: "TRX" },
     { type: WalletType.groestlcoin, name: "Groestlcoin", ticker: "GRS" },
+    { type: WalletType.velas, name: "Velas", ticker: "VLX" },
+    { type: WalletType.cardano, name: "Cardano", ticker: "ADA" },
     { type: WalletType.erc20Salt, name: "Salt", ticker: "SALT" },
     { type: WalletType.erc20Polymath, name: "Polymath", ticker: "POLY" },
     { type: WalletType.erc200x, name: "0X", ticker: "ZRX" },

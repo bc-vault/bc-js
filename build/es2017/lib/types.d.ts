@@ -52,6 +52,7 @@ export interface AdvancedBTC {
 }
 export interface AdvancedETH {
     nonce: number;
+    chainID: number;
 }
 export interface AdvancedTRX {
     timeStamp: number;
@@ -109,6 +110,10 @@ export interface TransactionData {
      */
     amount: string;
     /**
+     * @description The memo of the transaction, maximum size is 128 bytes. Optional. Can be hex encoded. As with all hexStrings, 0x prefix can be escaped with 0\x.
+     */
+    memo?: hexString;
+    /**
      * @description an optional set of parameters used for offline transaction generation.
     */
     advanced?: AdvancedOptions;
@@ -157,6 +162,15 @@ export interface DateObject {
     month: number;
     year: number;
 }
+export interface WalletTypeInfo {
+    type: WalletType;
+    name: string;
+    ticker: string;
+}
+export interface SpaceObject {
+    readonly available: number;
+    readonly complete: number;
+}
 export declare enum Endpoint {
     Devices = "Devices",
     FirmwareVersion = "FirmwareVersion",
@@ -179,10 +193,6 @@ export declare enum Endpoint {
     SignData = "SignData",
     DeviceUID = "DeviceUID"
 }
-export interface SpaceObject {
-    readonly available: number;
-    readonly complete: number;
-}
 export declare enum WalletType {
     none = 0,
     bitCoin = "BitCoin1",
@@ -198,6 +208,8 @@ export declare enum WalletType {
     dash = "Dash0001",
     dogeCoin = "DogeCoi1",
     groestlcoin = "Groestl1",
+    velas = "Velas__1",
+    cardano = "Cardano1",
     erc20Salt = "E2Salt_1",
     erc20Polymath = "E2Polym1",
     erc200x = "E2_0X__1",
@@ -211,11 +223,6 @@ export declare enum WalletType {
     erc20Xaurum = "E2Xauru1",
     erc20OmiseGo = "E2Omise1",
     erc20WaltonChain = "E2WaltC1"
-}
-export interface WalletTypeInfo {
-    type: WalletType;
-    name: string;
-    ticker: string;
 }
 export declare const typeInfoMap: WalletTypeInfo[];
 export interface BCObject {

@@ -70,21 +70,40 @@
                     '<input id="swal-input0" class="swal2-input" placeholder="Destination Address">' +
                     '<input id="swal-input1" class="swal2-input" placeholder="Amount in &micro;Units">'+
                     '<input id="swal-input2" class="swal2-input" placeholder="Fee(or FeePrice if applicable) in &micro;Units">'+
-                    '<input id="swal-input3" class="swal2-input" placeholder="FeeCount(if applicable) in &micro;Units">',
+                    '<input id="swal-input3" class="swal2-input" placeholder="FeeCount(if applicable) in &micro;Units">'+
+                    '<input id="swal-input4" class="swal2-input" placeholder="Memo(if applicable)">'+
+                    '<input id="swal-input5" class="swal2-input" placeholder="ChainID(ethereum only)">',
                 focusConfirm: false,
                 preConfirm: () => {
                     return [
                         document.getElementById('swal-input0').value,
                         document.getElementById('swal-input1').value,
                         document.getElementById('swal-input2').value,
-                        document.getElementById('swal-input3').value
+                        document.getElementById('swal-input3').value,
+                        document.getElementById('swal-input4').value,
+                        document.getElementById('swal-input5').value
                     ]
                 }
             }).then(function(values){
                 if(values && values.value && values.value[0] != "" && values.value[1] != "" && values.value[2] != ""){
                     var input = values.value;
                     var trxOptions = {from:wallet,to:input[0],feeCount:input[3],feePrice:input[2],amount:input[1]};
-                    bc.GenerateTransaction(device, walletType,trxOptions,true);
+                    if(input[4] !== ''){
+                        trxOptions.memo = input[4];
+                    }
+                    if(input[5] !== ''){
+                        trxOptions.advanced={
+                            eth:{
+                                chainID:input[5]
+                            }
+                        }
+                    }
+                    bc.GenerateTransaction(device, walletType,trxOptions,true).then((hex)=>{
+                        Swal("Transaction submit success!","TXBody = "+hex,'success');
+
+                    },(e)=>{
+                        Swal("GenerateTransaction Error!",JSON.stringify(e),'error');
+                    });
                 }else{
                     Swal("Bad input!");
                 }
@@ -149,7 +168,7 @@
                     </div>  
                     <ul class="list-group row list-group">
                         <li v-for="wallet in device.activeWallets" v-if="wallet.walletType == currency" class="list-group-item">
-                            {{wallet.publicKey}}
+                            <p>{{wallet.publicKey}}</p>
                             <p class="balanceP" v-if="balanceList.find(function(x){return x.walletType ==  currency && x.publicKey == wallet.publicKey}) != undefined">({{balanceList.find(function(x){return x.walletType ==  currency && x.publicKey == wallet.publicKey}).balance}} &micro;Units)</p>
                             <div class="rightButtons">
                                     <i class="fas fa-sync-alt clickable" v-on:click="getWalletBalance(currency,wallet.publicKey)" title="Refresh Balance"></i>
