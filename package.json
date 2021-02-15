@@ -21,8 +21,8 @@
     "test:lint": "tslint --project . ",
     "test:unit": "nyc ava",
     "doc": "run-s doc:html",
-    "doc:html": "typedoc --excludePrivate --gaID UA-118197678-1 --name bc-js --out docs src/index.ts",
-    "doc:json": "typedoc --excludePrivate --gaID UA-118197678-1 --name bc-js --json docs/typedoc.json src/index.ts",
+    "doc:html": "typedoc --excludePrivate --gaID UA-118197678-1 --name bc-js --out docs src/lib/bcapi.ts src/lib/types.ts",
+    "doc:json": "typedoc --excludePrivate --gaID UA-118197678-1 --name bc-js --json docs/typedoc.json src/lib/bcapi.ts src/lib/types.ts",
     "version": "standard-version",
     "clean": "trash build test"
   },
@@ -50,9 +50,9 @@
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-immutable": "^6.0.1",
-    "typedoc": "^0.20.13",
-    "typescript": "^4.1.3",
-    "uglify-js": "^3.12.4"
+    "typedoc": "^0.20.25",
+    "typescript": "^4.1.5",
+    "uglify-js": "^3.12.8"
   },
   "ava": {
     "failFast": true,
