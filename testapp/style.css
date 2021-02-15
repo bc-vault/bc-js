@@ -34,8 +34,10 @@
 .boxOverlay:hover{
     opacity:1;
 }
-.infoRow{
+.boxContainer > .infoRow{
     width:100%;
+    overflow-x: auto;
+    margin-left: 0;
     text-align:center;
 }
 .container{
@@ -68,6 +70,13 @@
     float:left;
     width: 100%;
     overflow: hidden;
+}
+.list-group-item > p{
+    width: 350px;
+    overflow:hidden;
+    overflow-x:auto;
+    display: inline-block;
+
 }
 .list-group-item > *{
     font-size:0.78rem;

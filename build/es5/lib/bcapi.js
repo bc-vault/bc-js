@@ -109,7 +109,7 @@ var BCJS = /** @class */ (function () {
         this.authTokenMatchPath = undefined;
         /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
         this.BCData = { devices: [] };
-        this.API_VERSION = 4;
+        this.API_VERSION = 5;
         this.lastSeenDevices = [];
         this.listeners = [];
         this.lastPushedStatus = types_1.BCDataRefreshStatusCode.Ready;
@@ -655,7 +655,7 @@ var BCJS = /** @class */ (function () {
         });
     };
     /**
-      Gets the requested data about wallets stored on the device. Details to query can be specified through the final parameter, which is set to query all details by default.
+      Gets the requested data about wallets stored on the device. Details to query can be specified through the final parameter, which is set to query all details by default. Anything not queried will be filled with the empty value of that type, ie '' for strings and 0 for numbers.
       ### Example (es3)
       ```js
       bc.getBatchWalletDetails(1,"BitCoin1").then(console.log)
@@ -958,22 +958,35 @@ var BCJS = /** @class */ (function () {
             var apiVersion, id, httpr;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        if (!(data.contractData !== undefined)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this.getVersion()];
+                    case 0: return [4 /*yield*/, this.getVersion()];
                     case 1:
                         apiVersion = _a.sent();
-                        if (apiVersion < 4) {
-                            throw new Error("Unsupported parameter: contract data. Update daemon.");
+                        if (data.contractData !== undefined) {
+                            // check compatibility
+                            if (apiVersion < 4) {
+                                throw new Error("Unsupported parameter: contract data. Update daemon.");
+                            }
                         }
-                        _a.label = 2;
-                    case 2: return [4 /*yield*/, this.getSecureWindowResponse(types_1.PasswordType.WalletPassword)];
-                    case 3:
+                        if (data.memo) {
+                            if (apiVersion < 5) {
+                                throw new Error("Unsupported parameter: memo. Update daemon.");
+                            }
+                        }
+                        if (data.advanced ? .eth ? .chainID !== undefined :  : ) {
+                            if (apiVersion < 5) {
+                                throw new Error("Unsupported parameter: advanced.eth.chainID. Update daemon.");
+                            }
+                        }
+                        if (!data.feeCount) {
+                            data.feeCount = 0;
+                        }
+                        return [4 /*yield*/, this.getSecureWindowResponse(types_1.PasswordType.WalletPassword)];
+                    case 2:
                         id = _a.sent();
                         this.log("Got auth id:" + id, types_1.LogLevel.debug);
                         this.log("Sending object:" + JSON.stringify({ device: device, walletTypeString: type, transaction: data, password: id }), types_1.LogLevel.debug);
                         return [4 /*yield*/, this.getResponsePromised(types_1.Endpoint.GenerateTransaction, { device: device, walletTypeString: type, transaction: data, password: id, broadcast: broadcast })];
-                    case 4:
+                    case 3:
                         httpr = _a.sent();
                         this.log(httpr.body, types_1.LogLevel.debug);
                         this.assertIsBCHttpResponse(httpr);
@@ -1293,8 +1306,9 @@ var BCJS = /** @class */ (function () {
         }); });
     };
     BCJS.prototype.assertIsBCHttpResponse = function (httpr) {
-        if (httpr.body.errorCode !== 0x9000)
+        if (httpr.body.errorCode !== 0x9000) {
             throw new types_1.DaemonError(httpr.body);
+        }
     };
     BCJS.prototype.log = function (msg, level) {
         if (level === void 0) { level = types_1.LogLevel.verbose; }

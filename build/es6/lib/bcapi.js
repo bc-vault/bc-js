@@ -47,7 +47,7 @@ class BCJS {
         this.authTokenMatchPath = undefined;
         /** The current state of the daemon, updated either manually or on device connect/disconnect after calling startObjectPolling  */
         this.BCData = { devices: [] };
-        this.API_VERSION = 4;
+        this.API_VERSION = 5;
         this.lastSeenDevices = [];
         this.listeners = [];
         this.lastPushedStatus = types_1.BCDataRefreshStatusCode.Ready;
@@ -480,7 +480,7 @@ class BCJS {
         });
     }
     /**
-      Gets the requested data about wallets stored on the device. Details to query can be specified through the final parameter, which is set to query all details by default.
+      Gets the requested data about wallets stored on the device. Details to query can be specified through the final parameter, which is set to query all details by default. Anything not queried will be filled with the empty value of that type, ie '' for strings and 0 for numbers.
       ### Example (es3)
       ```js
       bc.getBatchWalletDetails(1,"BitCoin1").then(console.log)
@@ -724,12 +724,25 @@ class BCJS {
      */
     GenerateTransaction(device, type, data, broadcast) {
         return __awaiter(this, void 0, void 0, function* () {
+            const apiVersion = yield this.getVersion();
             if (data.contractData !== undefined) {
                 // check compatibility
-                const apiVersion = yield this.getVersion();
                 if (apiVersion < 4) {
                     throw new Error("Unsupported parameter: contract data. Update daemon.");
                 }
+            }
+            if (data.memo) {
+                if (apiVersion < 5) {
+                    throw new Error("Unsupported parameter: memo. Update daemon.");
+                }
+            }
+            if (data.advanced ? .eth ? .chainID !== undefined :  : ) {
+                if (apiVersion < 5) {
+                    throw new Error("Unsupported parameter: advanced.eth.chainID. Update daemon.");
+                }
+            }
+            if (!data.feeCount) {
+                data.feeCount = 0;
             }
             const id = yield this.getSecureWindowResponse(types_1.PasswordType.WalletPassword);
             this.log("Got auth id:" + id, types_1.LogLevel.debug);
@@ -959,8 +972,9 @@ class BCJS {
         }));
     }
     assertIsBCHttpResponse(httpr) {
-        if (httpr.body.errorCode !== 0x9000)
+        if (httpr.body.errorCode !== 0x9000) {
             throw new types_1.DaemonError(httpr.body);
+        }
     }
     log(msg, level = types_1.LogLevel.verbose) {
         if (this.logLevel <= level) {
