@@ -7,7 +7,7 @@ export class BCJS {
 
 
 
-	/** Is BCData object polling already taking place? */
+	/** Is BCData object polling already taking place? *///
 	public isPolling = false;
 	/** Set Logging verbosity */
 	public logLevel: LogLevel = LogLevel.debug;

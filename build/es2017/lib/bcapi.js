@@ -25,7 +25,7 @@ class BCJS {
      *
      */
     constructor(authWindowHandler, preAuthWindowHandler) {
-        /** Is BCData object polling already taking place? */
+        /** Is BCData object polling already taking place? */ //
         this.isPolling = false;
         /** Set Logging verbosity */
         this.logLevel = types_1.LogLevel.debug;

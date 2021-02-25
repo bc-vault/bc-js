@@ -1,7 +1,6 @@
 import { SpaceObject, PasswordType, WalletType, VersionObject, TransactionData, BCDataRefreshStatusCode, BCObject, WalletTypeInfo, LogLevel, WalletDetailsQuery, WalletBatchDataResponse, hexString, AuthorizationHandler, PreAuthorizationHandler } from './types';
 export declare class BCJS {
-    /** Is BCData object polling already taking place? */
-    isPolling: boolean;
+    /** Is BCData object polling already taking place? */ isPolling: boolean;
     /** Set Logging verbosity */
     logLevel: LogLevel;
     /** Get/Set token to be used for device actions */

@@ -1,6 +1,6 @@
 {
   "name": "bc-vault-js",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Javascript library for interfacing with the BC VAULT daemon via HTTP.",
   "main": "build/es2017/index.js",
   "typings": "build/es2017/index.d.ts",
@@ -9,7 +9,6 @@
   "license": "MIT",
   "keywords": [],
   "scripts": {
-    "info": "npm-scripts-info",
     "browserify:ie": "browserify build/es5/index.browser.js --standalone _bcvault -o build/bc_js_ie.js",
     "browserify:noie": "browserify build/es6/index.browser.js --standalone _bcvault -o build/bc_js_noie.js",
     "build": "run-s clean && run-p build:* && run-p browserify:*",
@@ -17,22 +16,15 @@
     "build:module": "tsc -p tsconfig.module.json",
     "build:node": "tsc -p tsconfig.node.json",
     "build:ie": "tsc -p tsconfig.iecompat.json",
-    "test": "run-s build test:*",
-    "test:lint": "tslint --project . ",
-    "test:unit": "nyc ava",
     "doc": "run-s doc:html",
     "doc:html": "typedoc --excludePrivate --gaID UA-118197678-1 --name bc-js --out docs src/lib/bcapi.ts src/lib/types.ts",
     "doc:json": "typedoc --excludePrivate --gaID UA-118197678-1 --name bc-js --json docs/typedoc.json src/lib/bcapi.ts src/lib/types.ts",
-    "version": "standard-version",
     "clean": "trash build test"
   },
   "scripts-info": {
-    "info": "Display information about the package scripts",
     "build": "Clean and rebuild the project",
-    "test": "Lint and unit test the project",
     "doc": "Generate HTML API documentation and open it in a browser",
-    "doc:json": "Generate API documentation in typedoc JSON format",
-    "version": "Bump package.json version, update CHANGELOG.md, tag release"
+    "doc:json": "Generate API documentation in typedoc JSON format"
   },
   "engines": {
     "node": ">=8.9"
